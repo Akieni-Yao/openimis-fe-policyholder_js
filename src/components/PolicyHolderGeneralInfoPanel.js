@@ -25,7 +25,7 @@ import {
   MAX_ADDRESS_LENGTH,
   MAX_CODE_LENGTH,
   MAX_EMAIL_LENGTH,
-  MAX_FAX_LENGTH,
+  MAX_FAX_LENGTH, MAX_MAIN_ACTIVITY_LENGTH,
   MAX_PAYMENTREFERENCE_LENGTH,
   MAX_PHONE_LENGTH,
   MAX_TRADENAME_LENGTH,
@@ -233,7 +233,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid item xs={5} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="tradeName"
@@ -244,6 +244,105 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="mainActivity"
+              required
+              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              value={!!edited && !!edited.mainActivity ? edited.mainActivity : ""}
+              onChange={(v) => this.updateAttribute("mainActivity", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="contactName"
+              value={!!edited && !!edited.contactName ? edited.contactName : ""}
+              onChange={(v) => this.updateAttribute("contactName", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="shortName"
+              required
+              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              value={!!edited && !!edited.shortName ? edited.shortName : ""}
+              onChange={(v) => this.updateAttribute("shortName", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="niu"
+              required
+              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              value={!!edited && !!edited.niu ? edited.niu : ""}
+              onChange={(v) => this.updateAttribute("niu", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="rccm"
+              required
+              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              value={!!edited && !!edited.rccm ? edited.rccm : ""}
+              onChange={(v) => this.updateAttribute("rccm", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="nbEmployees"
+              type="number"
+              required
+              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              value={!!edited && !!edited.nbEmployees ? edited.nbEmployees : ""}
+              onChange={(v) => this.updateAttribute("nbEmployees", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+
+
+          <Grid item xs={2} className={classes.item}>
+            <PublishedComponent
+              pubRef="core.DatePicker"
+              module="policyHolder"
+              label="dateValidFrom"
+              required
+              maxDate={!!edited && !!edited.dateValidTo && edited.dateValidTo}
+              value={
+                !!edited && !!edited.dateValidFrom ? edited.dateValidFrom : null
+              }
+              onChange={(v) => this.updateAttribute("dateValidFrom", v)}
+              readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <PublishedComponent
+              pubRef="core.DatePicker"
+              module="policyHolder"
+              label="dateValidTo"
+              minDate={
+                !!edited && !!edited.dateValidFrom && edited.dateValidFrom
+              }
+              value={
+                !!edited && !!edited.dateValidTo ? edited.dateValidTo : null
+              }
+              onChange={(v) => this.updateAttribute("dateValidTo", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+
+
           <Grid item xs={8}>
             <PublishedComponent
               pubRef="location.DetailedLocation"
@@ -276,18 +375,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
-            <TextInput
-              module="policyHolder"
-              label="fax"
-              inputProps={{ maxLength: MAX_FAX_LENGTH }}
-              value={!!edited && !!edited.fax ? edited.fax : ""}
-              error={this.regexError("fax", edited.fax)}
-              onChange={(v) => this.updateAttribute("fax", v)}
-              readOnly={isPolicyHolderPortalUser}
-            />
-          </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid item xs={4} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="email"
@@ -298,15 +386,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
-            <TextInput
-              module="policyHolder"
-              label="contactName"
-              value={!!edited && !!edited.contactName ? edited.contactName : ""}
-              onChange={(v) => this.updateAttribute("contactName", v)}
-              readOnly={isPolicyHolderPortalUser}
-            />
-          </Grid>
+
           <Grid item xs={2} className={classes.item}>
             <PublishedComponent
               pubRef="policyHolder.LegalFormPicker"
@@ -349,15 +429,57 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+
+
+          <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
-              label="bankAccount"
+              label="bank"
               value={!!edited && !!edited.bankAccount ? edited.bankAccount : ""}
               onChange={(v) => this.updateAttribute("bankAccount", v)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="bankCode"
+              value={!!edited && !!edited.bankAccount ? edited.bankAccount : ""}
+              onChange={(v) => this.updateAttribute("bankAccount", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="bankLockerCode"
+              value={!!edited && !!edited.bankAccount ? edited.bankAccount : ""}
+              onChange={(v) => this.updateAttribute("bankAccount", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="bankAccountNb"
+              value={!!edited && !!edited.bankAccount ? edited.bankAccount : ""}
+              onChange={(v) => this.updateAttribute("bankAccount", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="bankKey"
+              value={!!edited && !!edited.bankAccount ? edited.bankAccount : ""}
+              onChange={(v) => this.updateAttribute("bankAccount", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+
+
+
+
           <Grid item xs={2} className={classes.item}>
             <TextInput
               module="policyHolder"
@@ -373,35 +495,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                 edited.paymentReference
               )}
               onChange={(v) => this.updateAttribute("paymentReference", v)}
-              readOnly={isPolicyHolderPortalUser}
-            />
-          </Grid>
-          <Grid item xs={2} className={classes.item}>
-            <PublishedComponent
-              pubRef="core.DatePicker"
-              module="policyHolder"
-              label="dateValidFrom"
-              required
-              maxDate={!!edited && !!edited.dateValidTo && edited.dateValidTo}
-              value={
-                !!edited && !!edited.dateValidFrom ? edited.dateValidFrom : null
-              }
-              onChange={(v) => this.updateAttribute("dateValidFrom", v)}
-              readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
-            />
-          </Grid>
-          <Grid item xs={2} className={classes.item}>
-            <PublishedComponent
-              pubRef="core.DatePicker"
-              module="policyHolder"
-              label="dateValidTo"
-              minDate={
-                !!edited && !!edited.dateValidFrom && edited.dateValidFrom
-              }
-              value={
-                !!edited && !!edited.dateValidTo ? edited.dateValidTo : null
-              }
-              onChange={(v) => this.updateAttribute("dateValidTo", v)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>

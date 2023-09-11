@@ -29,6 +29,7 @@ export const POLICYHOLDERCONTRIBUTIONPLANBUNDLE_TAB_VALUE = "policyHolderContrib
 export const POLICYHOLDERUSER_TAB_VALUE = "policyHolderUsersTab"
 export const MAX_CODE_LENGTH = 32
 export const MAX_TRADENAME_LENGTH = 255
+export const MAX_MAIN_ACTIVITY_LENGTH = 255
 export const MAX_ADDRESS_LENGTH = 1024
 export const MAX_PHONE_LENGTH = 16
 export const MAX_FAX_LENGTH = 16
