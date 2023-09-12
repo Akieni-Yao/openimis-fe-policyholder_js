@@ -31,7 +31,7 @@ const styles = (theme) => ({
   item: theme.paper.item,
 });
 
-const jsonFields = ["address", "contactName", "bankAccount"];
+const jsonFields = ["address", "contactName", "bankAccount", "jsonExt"];
 
 class PolicyHolderForm extends Component {
   constructor(props) {

@@ -27,6 +27,7 @@ const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
   "dateValidFrom",
   "dateValidTo",
   "isDeleted",
+  "jsonExt",
 ];
 
 export const POLICYHOLDER_PICKER_PROJECTION = ["id", "code", "tradeName"];
@@ -262,6 +263,14 @@ function formatPolicyHolderGQL(policyHolder) {
         ${
           !!policyHolder.dateValidTo
             ? `dateValidTo: "${dateTimeToDate(policyHolder.dateValidTo)}"`
+            : ""
+        }
+        ${
+          !!policyHolder.jsonExt
+            ? `jsonExt: ${JSON.stringify(policyHolder.jsonExt).replace(
+                /\\n/g,
+                "\\n"
+              )}`
             : ""
         }
     `;
