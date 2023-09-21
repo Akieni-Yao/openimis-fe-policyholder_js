@@ -14,6 +14,7 @@ import {
   formatMessageWithValues,
   journalize,
   Helmet,
+  FormattedMessage
 } from "@openimis/fe-core";
 import { fetchPolicyHolder, clearPolicyHolder } from "../actions";
 import {
@@ -23,7 +24,8 @@ import {
 } from "../constants";
 import PolicyHolderGeneralInfoPanel from "./PolicyHolderGeneralInfoPanel";
 import PolicyHolderTabPanel from "./PolicyHolderTabPanel";
-
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 const styles = (theme) => ({
   paper: theme.paper.paper,
   paperHeader: theme.paper.header,
@@ -41,7 +43,6 @@ class PolicyHolderForm extends Component {
       isFormValid: true,
     };
   }
-
   wrapJSONFields = (policyHolder) => {
     jsonFields.forEach((item) => {
       if (!!policyHolder[item]) {
@@ -99,10 +100,11 @@ class PolicyHolderForm extends Component {
   isMandatoryFieldsEmpty = () => {
     const { policyHolder } = this.state;
     if (
-      !!policyHolder.code &&
+      // !!policyHolder.code &&
       !!policyHolder.tradeName &&
       !!policyHolder.locations &&
-      !!policyHolder.dateValidFrom
+      !!policyHolder.dateValidFrom &&
+      !!policyHolder.activityCode
     ) {
       return false;
     }
@@ -120,10 +122,11 @@ class PolicyHolderForm extends Component {
   canSave = () =>
     !this.isMandatoryFieldsEmpty() &&
     this.doesPolicyHolderChange() &&
-    this.props.isPolicyHolderCodeValid &&
+    // this.props.isPolicyHolderCodeValid &&
     this.state.isFormValid;
 
   save = (policyHolder) => {
+
     this.wrapJSONFields(policyHolder);
     this.props.save(policyHolder);
     this.unwrapJSONFields(policyHolder);
@@ -171,8 +174,7 @@ class PolicyHolderForm extends Component {
           saveTooltip={formatMessage(
             intl,
             "policyHolder",
-            `savePolicyHolderButton.tooltip.${
-              this.canSave() ? "enabled" : "disabled"
+            `savePolicyHolderButton.tooltip.${this.canSave() ? "enabled" : "disabled"
             }`
           )}
           onValidation={this.onValidation}
@@ -181,6 +183,19 @@ class PolicyHolderForm extends Component {
           isPolicyHolderPortalUser={this.isPolicyHolderPortalUser()}
           openDirty={save}
         />
+        {this.props.snackbar &&
+          <Snackbar open={this.props.snackbar} autoHideDuration={2000} anchorOrigin={{ horizontal: 'center', vertical: 'top' }} onClose={this.props.handleClose}>
+
+            < Alert variant="filled" severity="success" >
+
+              <FormattedMessage
+                module="policyHolder"
+                id="policyHolder.CreatePolicyHolder.snackbar"
+              />
+            </Alert >
+          </Snackbar>
+        }
+
       </Fragment>
     );
   }
@@ -195,6 +210,7 @@ const mapStateToProps = (state) => ({
     state.policyHolder?.validationFields?.policyHolderCode?.isValid,
   submittingMutation: state.policyHolder.submittingMutation,
   mutation: state.policyHolder.mutation,
+
 });
 
 const mapDispatchToProps = (dispatch) => {

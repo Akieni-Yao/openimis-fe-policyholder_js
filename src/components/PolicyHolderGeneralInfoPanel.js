@@ -134,6 +134,28 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         },
       }
     );
+    this.state = {
+      dataArray: [
+        { "val": "1", "code": "AEP" },
+        { "val": "2", "code": "BAM" },
+        { "val": "3", "code": "BTP" },
+        { "val": "4", "code": "COM" },
+        { "val": "5", "code": "ENV" },
+        { "val": "6", "code": "EXF" },
+        { "val": "7", "code": "HER" },
+        { "val": "8", "code": "IND" },
+        { "val": "9", "code": "JEL" },
+        { "val": "10", "code": "MIS" },
+        { "val": "11", "code": "PET" },
+        { "val": "12", "code": "PPT" },
+        { "val": "13", "code": "PRJ" },
+        { "val": "14", "code": "SEM" },
+        { "val": "15", "code": "SER" },
+        { "val": "16", "code": "TEL" },
+        { "val": "17", "code": "TEN" },
+        { "val": "18", "code": "AUT" },
+      ],
+    };
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -170,7 +192,18 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
   };
 
   updateAttributes = (updates) => {
-    let data = _.merge({}, this.state.data, updates);
+    const findCodeByValue = () => {
+      const { dataArray } = this.state;
+      for (let i = 0; i < this.state.dataArray.length; i++) {
+        if (this.state.dataArray[i].val == updates.activityCode) {
+          return this.state.dataArray[i].code;
+        }
+      }
+      return undefined;
+
+    }
+    const activityCode = findCodeByValue();
+    let data = _.merge({}, this.state.data, updates, { jsonExt: { "activityCode": activityCode } });
     this.props.onEditedChanged(data);
   };
 
@@ -185,7 +218,9 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       isCodeValid,
       isCodeValidating,
       validationError,
+      policyHolderId
     } = this.props;
+
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -222,7 +257,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         )}
         <Grid container className={classes.item}>
           <Grid item xs={2} className={classes.item}>
-            <ValidatedTextInput
+            {/* <ValidatedTextInput
               itemQueryIdentifier="policyHolderCode"
               codeTakenLabel="policyHolder.codeTaken"
               shouldValidate={this.shouldValidate}
@@ -238,6 +273,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={!!edited && !!edited.code ? edited.code : ""}
               onChange={(v) => this.updateAttribute("code", v)}
               readOnly={isPolicyHolderPortalUser}
+            /> */}
+            <TextInput
+              module="policyHolder"
+              label="code"
+              // inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
+              value={!!edited && !!edited.code ? edited.code : ""}
+              onChange={(v) => this.updateAttribute("code", v)}
+              readOnly={true}
             />
           </Grid>
           <Grid item xs={5} className={classes.item}>
@@ -258,7 +301,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.mainActivity : ""}
-              onChange={(v) => this.updateAttributes({jsonExt:{mainActivity: v}})}
+              onChange={(v) => this.updateAttributes({ jsonExt: { mainActivity: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -278,7 +321,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.shortName : ""}
-              onChange={(v) => this.updateAttributes({jsonExt:{shortName: v}})}
+              onChange={(v) => this.updateAttributes({ jsonExt: { shortName: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -289,7 +332,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.niu : ""}
-              onChange={(v) => this.updateAttributes({jsonExt:{niu: v}})}
+              onChange={(v) => this.updateAttributes({ jsonExt: { niu: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -300,7 +343,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.rccm : ""}
-              onChange={(v) => this.updateAttributes({jsonExt:{rccm: v}})}
+              onChange={(v) => this.updateAttributes({ jsonExt: { rccm: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -313,7 +356,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.nbEmployees : ""}
-              onChange={(v) => this.updateAttributes({jsonExt:{nbEmployees: v}})}
+              onChange={(v) => this.updateAttributes({ jsonExt: { nbEmployees: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -411,11 +454,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               pubRef="policyHolder.ActivityCodePicker"
               module="policyHolder"
               label="activityCode"
-              withNull
+              required
               nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-              value={!!edited ? edited.activityCode : null}
+              value={!!edited.activityCode ? edited.activityCode : ""}
               onChange={(v) => this.updateAttribute("activityCode", v)}
-              readOnly={isPolicyHolderPortalUser}
+              readOnly={!!policyHolderId && !!edited.activityCode ? true : isPolicyHolderPortalUser}
+
             />
           </Grid>
           <Grid item xs={2} className={classes.item}>
@@ -443,7 +487,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="bank"
               value={!!edited && !!edited.bankAccount ? edited.bankAccount.bank : ""}
-              onChange={(v) => this.updateAttributes({bankAccount: {bank: v}})}
+              onChange={(v) => this.updateAttributes({ bankAccount: { bank: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -452,7 +496,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="bankCode"
               value={!!edited && !!edited.bankAccount ? edited.bankAccount.bankCode : ""}
-              onChange={(v) => this.updateAttributes({bankAccount: {bankCode: v}})}
+              onChange={(v) => this.updateAttributes({ bankAccount: { bankCode: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -461,7 +505,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="bankLockerCode"
               value={!!edited && !!edited.bankAccount ? edited.bankAccount.lockerCode : ""}
-              onChange={(v) => this.updateAttributes({bankAccount: {lockerCode: v}})}
+              onChange={(v) => this.updateAttributes({ bankAccount: { lockerCode: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -470,7 +514,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="bankAccountNb"
               value={!!edited && !!edited.bankAccount ? edited.bankAccount.accountNb : ""}
-              onChange={(v) => this.updateAttributes({bankAccount: {accountNb: v}})}
+              onChange={(v) => this.updateAttributes({ bankAccount: { accountNb: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -479,7 +523,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="bankKey"
               value={!!edited && !!edited.bankAccount ? edited.bankAccount.bankKey : ""}
-              onChange={(v) => this.updateAttributes({bankAccount: {bankKey: v}})}
+              onChange={(v) => this.updateAttributes({ bankAccount: { bankKey: v } })}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -511,10 +555,11 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
   }
 }
 
-const mapStateToProps = (store) => ({
-  isCodeValid: store.policyHolder?.validationFields?.policyHolderCode?.isValid,
-  isCodeValidating:
-    store.policyHolder?.validationFields?.policyHolderCode?.isValidating,
+const mapStateToProps = (store, props) => ({
+  // isCodeValid: store.policyHolder?.validationFields?.policyHolderCode?.isValid,
+  // isCodeValidating:
+  //   store.policyHolder?.validationFields?.policyHolderCode?.isValidating,
+  policyHolderId: props?.edited?.id,
   validationError:
     store.policyHolder?.validationFields?.policyHolderCode?.validationError,
   savedPolicyHolderCode: store.policyHolder?.policyHolder?.code,

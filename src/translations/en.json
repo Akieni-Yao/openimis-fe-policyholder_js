@@ -100,5 +100,6 @@
     "policyHolder.policyHolderUser.dialog.delete.title": "Are you sure you want to delete {user}?",
     "policyHolder.DeletePolicyHolderUser.mutationLabel": "{user} is removed from {policyHolder}",
     "policyHolder.policyHolderUser.dialog.replace.title": "Add new version of Policy Holder User",
-    "policyHolder.ReplacePolicyHolderUser.mutationLabel": "{newUser} is replacing {oldUser} on {policyHolder}"
+    "policyHolder.ReplacePolicyHolderUser.mutationLabel": "{newUser} is replacing {oldUser} on {policyHolder}",
+    "policyHolder.CreatePolicyHolder.snackbar": "The registration has been successfully completed"
 }

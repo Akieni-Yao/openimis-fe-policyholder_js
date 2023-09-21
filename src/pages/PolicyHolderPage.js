@@ -13,41 +13,58 @@ import {
     RIGHT_POLICYHOLDER_UPDATE,
     RIGHT_PORTALPOLICYHOLDER_SEARCH
 } from "../constants";
+import Alert from '@material-ui/lab/Alert';
 
 const styles = theme => ({
     page: theme.page,
 });
 
 class PolicyHolderPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { snackbar: false };
+    }
     back = () => {
         historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
     }
 
-    save = (policyHolder) => {
+    save = async (policyHolder) => {
         const { intl, createPolicyHolder, updatePolicyHolder } = this.props;
-        if (!!policyHolder.id) {
-            updatePolicyHolder(
-                policyHolder,
-                formatMessageWithValues(
-                    intl,
-                    "policyHolder",
-                    "UpdatePolicyHolder.mutationLabel",
-                    this.titleParams(policyHolder)
-                ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
-            );
-        } else {
-            createPolicyHolder(
-                policyHolder,
-                formatMessageWithValues(
-                    intl,
-                    "policyHolder",
-                    "CreatePolicyHolder.mutationLabel",
-                    this.titleParams(policyHolder)
-                ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
-            );
+        try {
+            if (!!policyHolder.id) {
+                const response = await updatePolicyHolder(
+                    policyHolder,
+                    formatMessageWithValues(
+                        intl,
+                        "policyHolder",
+                        "UpdatePolicyHolder.mutationLabel",
+                        this.titleParams(policyHolder)
+                    ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
+                );
+                if (response.payload.data) {
+                    this.setState({ snackbar: true });
+                }
+            } else {
+                const response = await createPolicyHolder(
+                    policyHolder,
+                    formatMessageWithValues(
+                        intl,
+                        "policyHolder",
+                        "CreatePolicyHolder.mutationLabel",
+                        this.titleParams(policyHolder)
+                    ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
+                )
+                if (response.payload.data) {
+                    this.setState({ snackbar: true });
+                }
+            }
+        } catch (error) {
+            console.log('error', error);
         }
     }
-
+    handleClose = () => {
+        this.setState({ snackbar: false });
+    }
     titleParams = policyHolder => {
         var params = { label: null };
         if (!!policyHolder.code && !!policyHolder.tradeName) {
@@ -74,9 +91,12 @@ class PolicyHolderPage extends Component {
                         save={this.save}
                         titleParams={this.titleParams}
                         rights={rights}
+                        snackbar={this.state.snackbar}
+                        handleClose={this.handleClose}
                     />
                 </div>
             )
+
         )
     }
 }
