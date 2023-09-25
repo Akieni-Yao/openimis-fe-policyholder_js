@@ -41,6 +41,7 @@ class PolicyHolderPage extends Component {
                         this.titleParams(policyHolder)
                     ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
                 );
+                console.log("response update policyholder", response);
                 if (response.payload.data) {
                     this.setState({ snackbar: true });
                 }
@@ -54,7 +55,8 @@ class PolicyHolderPage extends Component {
                         this.titleParams(policyHolder)
                     ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
                 )
-                if (response.payload.data) {
+                if (!response.error) {
+                    console.log("Got code", response?.policyHolder[0]?.policyholder?.code);
                     this.setState({ snackbar: true });
                 }
             }

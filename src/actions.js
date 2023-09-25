@@ -1,5 +1,6 @@
 import {
   graphql,
+  graphqlMutationLegacy,
   formatPageQuery,
   formatPageQueryWithCount,
   formatMutation,
@@ -384,7 +385,7 @@ export function createPolicyHolder(policyHolder, clientMutationLabel) {
     clientMutationLabel
   );
   var requestedDateTime = new Date();
-  return graphql(
+  return graphqlMutationLegacy(
     mutation.payload,
     [
       "POLICYHOLDER_MUTATION_REQ",
@@ -395,7 +396,9 @@ export function createPolicyHolder(policyHolder, clientMutationLabel) {
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,
-    }
+    },
+      true,
+      "policyHolder { policyholder { id code }}",
   );
 }
 
@@ -406,7 +409,7 @@ export function updatePolicyHolder(policyHolder, clientMutationLabel) {
     clientMutationLabel
   );
   var requestedDateTime = new Date();
-  return graphql(
+  return graphqlMutationLegacy(
     mutation.payload,
     [
       "POLICYHOLDER_MUTATION_REQ",
@@ -417,7 +420,9 @@ export function updatePolicyHolder(policyHolder, clientMutationLabel) {
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,
-    }
+    },
+      true,
+      "policyHolder { policyholder { id code }}",
   );
 }
 
@@ -445,7 +450,7 @@ export function deletePolicyHolder(
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,
-    }
+    },
   );
 }
 
