@@ -148,6 +148,8 @@ class PolicyHolderForm extends Component {
     !this.props.rights.includes(RIGHT_POLICYHOLDER_CREATE) &&
     !this.props.rights.includes(RIGHT_POLICYHOLDER_UPDATE);
 
+
+
   render() {
     const { intl, rights, back, save } = this.props;
     return (
@@ -184,14 +186,19 @@ class PolicyHolderForm extends Component {
           openDirty={save}
         />
         {this.props.snackbar &&
-          <Snackbar open={this.props.snackbar} autoHideDuration={2000} anchorOrigin={{ horizontal: 'center', vertical: 'top' }} onClose={this.props.handleClose}>
+          <Snackbar open={this.props.snackbar} autoHideDuration={4000} anchorOrigin={{ horizontal: 'center', vertical: 'top' }} onClose={this.props.handleClose}>
 
             < Alert variant="filled" severity="success" >
-
-              <FormattedMessage
+            {formatMessageWithValues(
+            intl,
+            "policyHolder",
+            "policyHolder.CreatePolicyHolder.snackbar",
+           {label: this.props.resCode}
+          )}
+              {/* <FormattedMessage
                 module="policyHolder"
                 id="policyHolder.CreatePolicyHolder.snackbar"
-              />
+              /> */}
             </Alert >
           </Snackbar>
         }

@@ -13,7 +13,6 @@ import {
     RIGHT_POLICYHOLDER_UPDATE,
     RIGHT_PORTALPOLICYHOLDER_SEARCH
 } from "../constants";
-import Alert from '@material-ui/lab/Alert';
 
 const styles = theme => ({
     page: theme.page,
@@ -22,7 +21,7 @@ const styles = theme => ({
 class PolicyHolderPage extends Component {
     constructor(props) {
         super(props);
-        this.state = { snackbar: false };
+        this.state = { snackbar: false ,resCode:""};
     }
     back = () => {
         historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
@@ -41,9 +40,11 @@ class PolicyHolderPage extends Component {
                         this.titleParams(policyHolder)
                     ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
                 );
-                console.log("response update policyholder", response);
-                if (response.payload.data) {
+                console.log('respoupd',response);
+                if (!response.error) {
+                    console.log("Got code", response?.policyHolder[0]?.policyholder?.code);
                     this.setState({ snackbar: true });
+                    this.setState({ resCode: response?.policyHolder[0]?.policyholder?.code });
                 }
             } else {
                 const response = await createPolicyHolder(
@@ -58,6 +59,7 @@ class PolicyHolderPage extends Component {
                 if (!response.error) {
                     console.log("Got code", response?.policyHolder[0]?.policyholder?.code);
                     this.setState({ snackbar: true });
+                    this.setState({ resCode: response?.policyHolder[0]?.policyholder?.code });
                 }
             }
         } catch (error) {
@@ -94,6 +96,7 @@ class PolicyHolderPage extends Component {
                         titleParams={this.titleParams}
                         rights={rights}
                         snackbar={this.state.snackbar}
+                        resCode={this.state.resCode}
                         handleClose={this.handleClose}
                     />
                 </div>

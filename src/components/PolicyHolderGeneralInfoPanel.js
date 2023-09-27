@@ -329,7 +329,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="niu"
-              required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.niu : ""}
               onChange={(v) => this.updateAttributes({ jsonExt: { niu: v } })}
@@ -340,7 +339,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="rccm"
-              required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.rccm : ""}
               onChange={(v) => this.updateAttributes({ jsonExt: { rccm: v } })}
