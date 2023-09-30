@@ -16,7 +16,10 @@ const styles = theme => ({
         padding: 0
     },
     selectedTab: {
-        borderBottom: "4px solid white"
+        borderBottom: "4px solid white",
+        fontWeight:600,
+        backgroundColor:"#ffffff",
+        marginTop:"10px"
     },
     unselectedTab: {
         borderBottom: "4px solid transparent"
