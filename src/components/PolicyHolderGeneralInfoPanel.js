@@ -31,6 +31,7 @@ import {
   MAX_TRADENAME_LENGTH,
 } from "../constants";
 import _ from "lodash";
+import moment from "moment";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -192,6 +193,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
   };
 
   updateAttributes = (updates) => {
+    console.log('update',updates);
     const findCodeByValue = () => {
       const { dataArray } = this.state;
       for (let i = 0; i < this.state.dataArray.length; i++) {
@@ -204,11 +206,15 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     }
     const activityCode = findCodeByValue();
     let data = _.merge({}, this.state.data, updates, { jsonExt: { "activityCode": activityCode } });
+    if (!data.dateValidFrom) {
+      data.dateValidFrom = new Date().toISOString().slice(0, 10);
+      }
     this.props.onEditedChanged(data);
   };
 
 
   render() {
+    
     const {
       intl,
       classes,
@@ -368,13 +374,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               maxDate={!!edited && !!edited.dateValidTo && edited.dateValidTo}
               value={
-                !!edited && !!edited.dateValidFrom ? edited.dateValidFrom : null
+                !!edited && !!edited.dateValidFrom ? edited.dateValidFrom : moment().format("YYYY-MM-DD ")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          {/* <Grid item xs={2} className={classes.item}>
             <PublishedComponent
               pubRef="core.DatePicker"
               module="policyHolder"
@@ -388,9 +394,20 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidTo", v)}
               readOnly={isPolicyHolderPortalUser}
             />
+          </Grid> */}
+
+          <Grid item xs={2} className={classes.item}>
+            <PublishedComponent
+              pubRef="location.RegionPicker"
+              withNull
+              label={(formatMessage(intl, "policyHolder", "policyHolder.createdAt"))}
+              filterLabels={false}
+              value={!!edited&& !!edited.jsonExt ? edited.jsonExt.createdAt : null}
+              onChange={(v) => this.updateAttributes({ jsonExt: { createdAt: v } })}
+              // onChange={(v) => this.updateAttribute("createdAt", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
           </Grid>
-
-
           <Grid item xs={8}>
             <PublishedComponent
               pubRef="location.DetailedLocation"

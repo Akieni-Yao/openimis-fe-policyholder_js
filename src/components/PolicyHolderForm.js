@@ -103,7 +103,7 @@ class PolicyHolderForm extends Component {
       // !!policyHolder.code &&
       !!policyHolder.tradeName &&
       !!policyHolder.locations &&
-      !!policyHolder.dateValidFrom &&
+      // !!policyHolder.dateValidFrom &&
       !!policyHolder.activityCode
     ) {
       return false;

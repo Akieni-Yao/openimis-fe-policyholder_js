@@ -10,7 +10,7 @@
     "policyHolder.location": "Location",
     "policyHolder.legalForm": "Legal Form",
     "policyHolder.activityCode": "Activity Code",
-    "policyHolder.dateValidFrom": "Date Valid From",
+    "policyHolder.dateValidFrom": "Created From",
     "policyHolder.dateValidTo": "Date Valid To",
     "policyHolder.isDeleted": "Show deleted",
     "policyHolder.policyHolders.searcher.results.title": "{policyHoldersTotalCount} Policy Holders Found",
@@ -101,5 +101,6 @@
     "policyHolder.DeletePolicyHolderUser.mutationLabel": "{user} is removed from {policyHolder}",
     "policyHolder.policyHolderUser.dialog.replace.title": "Add new version of Policy Holder User",
     "policyHolder.ReplacePolicyHolderUser.mutationLabel": "{newUser} is replacing {oldUser} on {policyHolder}",
-    "policyHolder.CreatePolicyHolder.snackbar": "The registration has been successfully completed {label}"
+    "policyHolder.CreatePolicyHolder.snackbar": "The registration has been successfully completed {label}",
+    "policyHolder.createdAt": "Created At"
 }
