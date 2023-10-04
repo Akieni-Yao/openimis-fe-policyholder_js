@@ -372,7 +372,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="dateValidFrom"
               required
-              maxDate={!!edited && !!edited.dateValidTo && edited.dateValidTo}
               value={
                 !!edited && !!edited.dateValidFrom ? edited.dateValidFrom : moment().format("YYYY-MM-DD ")
               }
@@ -385,9 +384,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               pubRef="core.DatePicker"
               module="policyHolder"
               label="dateValidTo"
-              minDate={
-                !!edited && !!edited.dateValidFrom && edited.dateValidFrom
-              }
               value={
                 !!edited && !!edited.dateValidTo ? edited.dateValidTo : null
               }
