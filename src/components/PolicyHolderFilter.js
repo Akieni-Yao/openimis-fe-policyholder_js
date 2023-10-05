@@ -122,6 +122,7 @@ class PolicyHolderFilter extends Component {
                 <Grid item xs={2} className={classes.item}>
                     <FormControlLabel
                         control={<Checkbox
+                            color="primary"
                             checked={!!this._filterValue('isDeleted')}
                             onChange={event => this._onChangeFilter('isDeleted', event.target.checked)}
                             name="isDeleted"

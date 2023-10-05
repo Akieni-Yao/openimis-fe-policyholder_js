@@ -81,6 +81,7 @@ class PolicyHolderContributionPlanBundleFilter extends Component {
                     <FormControlLabel
                         control={<Checkbox 
                             checked={!!this._filterValue('isDeleted')}
+                            color="primary"
                             onChange={event => this._onChangeFilter('isDeleted', event.target.checked)}
                             name="isDeleted" 
                         />}
