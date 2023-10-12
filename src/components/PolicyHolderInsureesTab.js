@@ -69,7 +69,7 @@ class PolicyHolderInsureesTabPanel extends Component {
             alert(`Error ${response.status}: ${payload}`);
             return;
           }
-          alert("Success");
+          alert(`Success: ${payload}`);
         } catch (error) {
             alert(
               error?.message ??
