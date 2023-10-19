@@ -25,7 +25,8 @@ import {
   MAX_ADDRESS_LENGTH,
   MAX_CODE_LENGTH,
   MAX_EMAIL_LENGTH,
-  MAX_FAX_LENGTH, MAX_MAIN_ACTIVITY_LENGTH,
+  MAX_FAX_LENGTH,
+  MAX_MAIN_ACTIVITY_LENGTH,
   MAX_PAYMENTREFERENCE_LENGTH,
   MAX_PHONE_LENGTH,
   MAX_TRADENAME_LENGTH,
@@ -137,24 +138,24 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     );
     this.state = {
       dataArray: [
-        { "val": "1", "code": "AEP" },
-        { "val": "2", "code": "BAM" },
-        { "val": "3", "code": "BTP" },
-        { "val": "4", "code": "COM" },
-        { "val": "5", "code": "ENV" },
-        { "val": "6", "code": "EXF" },
-        { "val": "7", "code": "HER" },
-        { "val": "8", "code": "IND" },
-        { "val": "9", "code": "JEL" },
-        { "val": "10", "code": "MIS" },
-        { "val": "11", "code": "PET" },
-        { "val": "12", "code": "PPT" },
-        { "val": "13", "code": "PRJ" },
-        { "val": "14", "code": "SEM" },
-        { "val": "15", "code": "SER" },
-        { "val": "16", "code": "TEL" },
-        { "val": "17", "code": "TEN" },
-        { "val": "18", "code": "AUT" },
+        { val: "1", code: "AEP" },
+        { val: "2", code: "BAM" },
+        { val: "3", code: "BTP" },
+        { val: "4", code: "COM" },
+        { val: "5", code: "ENV" },
+        { val: "6", code: "EXF" },
+        { val: "7", code: "HER" },
+        { val: "8", code: "IND" },
+        { val: "9", code: "JEL" },
+        { val: "10", code: "MIS" },
+        { val: "11", code: "PET" },
+        { val: "12", code: "PPT" },
+        { val: "13", code: "PRJ" },
+        { val: "14", code: "SEM" },
+        { val: "15", code: "SER" },
+        { val: "16", code: "TEL" },
+        { val: "17", code: "TEN" },
+        { val: "18", code: "AUT" },
       ],
     };
   }
@@ -193,7 +194,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
   };
 
   updateAttributes = (updates) => {
-    console.log('update',updates);
     const findCodeByValue = () => {
       const { dataArray } = this.state;
       for (let i = 0; i < this.state.dataArray.length; i++) {
@@ -202,19 +202,18 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         }
       }
       return undefined;
-
-    }
+    };
     const activityCode = findCodeByValue();
-    let data = _.merge({}, this.state.data, updates, { jsonExt: { "activityCode": activityCode } });
+    let data = _.merge({}, this.state.data, updates, {
+      jsonExt: { activityCode: activityCode },
+    });
     if (!data.dateValidFrom) {
       data.dateValidFrom = new Date().toISOString().slice(0, 10);
-      }
+    }
     this.props.onEditedChanged(data);
   };
 
-
   render() {
-    
     const {
       intl,
       classes,
@@ -224,7 +223,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       isCodeValid,
       isCodeValidating,
       validationError,
-      policyHolderId
+      policyHolderId,
     } = this.props;
 
     return (
@@ -306,8 +305,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               label="mainActivity"
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
-              value={!!edited && !!edited.jsonExt ? edited.jsonExt.mainActivity : ""}
-              onChange={(v) => this.updateAttributes({ jsonExt: { mainActivity: v } })}
+              value={
+                !!edited && !!edited.jsonExt ? edited.jsonExt.mainActivity : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ jsonExt: { mainActivity: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -326,8 +329,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               label="shortName"
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
-              value={!!edited && !!edited.jsonExt ? edited.jsonExt.shortName : ""}
-              onChange={(v) => this.updateAttributes({ jsonExt: { shortName: v } })}
+              value={
+                !!edited && !!edited.jsonExt ? edited.jsonExt.shortName : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ jsonExt: { shortName: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -359,12 +366,15 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               type="number"
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
-              value={!!edited && !!edited.jsonExt ? edited.jsonExt.nbEmployees : ""}
-              onChange={(v) => this.updateAttributes({ jsonExt: { nbEmployees: v } })}
+              value={
+                !!edited && !!edited.jsonExt ? edited.jsonExt.nbEmployees : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ jsonExt: { nbEmployees: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
-
 
           <Grid item xs={2} className={classes.item}>
             <PublishedComponent
@@ -373,7 +383,11 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               label="dateValidFrom"
               required
               value={
-                !!edited && !!edited.dateValidFrom ? edited.dateValidFrom : moment().format("YYYY-MM-DD ")
+                !!edited && !!edited.dateValidFrom
+                  ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
+                      "YYYY-MM-DD"
+                    )
+                  : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
@@ -396,10 +410,18 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <PublishedComponent
               pubRef="location.RegionPicker"
               withNull
-              label={(formatMessage(intl, "policyHolder", "policyHolder.createdAt"))}
+              label={formatMessage(
+                intl,
+                "policyHolder",
+                "policyHolder.createdAt"
+              )}
               filterLabels={false}
-              value={!!edited&& !!edited.jsonExt ? edited.jsonExt.createdAt : null}
-              onChange={(v) => this.updateAttributes({ jsonExt: { createdAt: v } })}
+              value={
+                !!edited && !!edited.jsonExt ? edited.jsonExt.createdAt : null
+              }
+              onChange={(v) =>
+                this.updateAttributes({ jsonExt: { createdAt: v } })
+              }
               // onChange={(v) => this.updateAttribute("createdAt", v)}
               readOnly={isPolicyHolderPortalUser}
             />
@@ -469,8 +491,11 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
               value={!!edited.activityCode ? edited.activityCode : ""}
               onChange={(v) => this.updateAttribute("activityCode", v)}
-              readOnly={!!policyHolderId && !!edited.activityCode ? true : isPolicyHolderPortalUser}
-
+              readOnly={
+                !!policyHolderId && !!edited.activityCode
+                  ? true
+                  : isPolicyHolderPortalUser
+              }
             />
           </Grid>
           <Grid item xs={2} className={classes.item}>
@@ -492,13 +517,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             />
           </Grid>
 
-
           <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="bank"
-              value={!!edited && !!edited.bankAccount ? edited.bankAccount.bank : ""}
-              onChange={(v) => this.updateAttributes({ bankAccount: { bank: v } })}
+              value={
+                !!edited && !!edited.bankAccount ? edited.bankAccount.bank : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ bankAccount: { bank: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -506,8 +534,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="bankCode"
-              value={!!edited && !!edited.bankAccount ? edited.bankAccount.bankCode : ""}
-              onChange={(v) => this.updateAttributes({ bankAccount: { bankCode: v } })}
+              value={
+                !!edited && !!edited.bankAccount
+                  ? edited.bankAccount.bankCode
+                  : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ bankAccount: { bankCode: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -515,8 +549,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="bankLockerCode"
-              value={!!edited && !!edited.bankAccount ? edited.bankAccount.lockerCode : ""}
-              onChange={(v) => this.updateAttributes({ bankAccount: { lockerCode: v } })}
+              value={
+                !!edited && !!edited.bankAccount
+                  ? edited.bankAccount.lockerCode
+                  : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ bankAccount: { lockerCode: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -524,8 +564,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="bankAccountNb"
-              value={!!edited && !!edited.bankAccount ? edited.bankAccount.accountNb : ""}
-              onChange={(v) => this.updateAttributes({ bankAccount: { accountNb: v } })}
+              value={
+                !!edited && !!edited.bankAccount
+                  ? edited.bankAccount.accountNb
+                  : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ bankAccount: { accountNb: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -533,14 +579,17 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="bankKey"
-              value={!!edited && !!edited.bankAccount ? edited.bankAccount.bankKey : ""}
-              onChange={(v) => this.updateAttributes({ bankAccount: { bankKey: v } })}
+              value={
+                !!edited && !!edited.bankAccount
+                  ? edited.bankAccount.bankKey
+                  : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ bankAccount: { bankKey: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
-
-
-
 
           <Grid item xs={2} className={classes.item}>
             <TextInput
