@@ -383,11 +383,9 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               label="dateValidFrom"
               required
               value={
-                !!edited && !!edited.dateValidFrom
-                  ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
-                      "YYYY-MM-DD"
-                    )
-                  : moment().format("YYYY-MM-DD")
+                !!edited && !!edited?.dateValidFrom
+                  ? edited.dateValidFrom
+                  : new Date().toISOString().slice(0, 10) // Set the default value to today's date
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
