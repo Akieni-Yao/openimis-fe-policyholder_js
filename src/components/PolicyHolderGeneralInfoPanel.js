@@ -23,12 +23,15 @@ import {
 import {
   MAX_ACCOUNTANCYACCOUNT_LENGTH,
   MAX_ADDRESS_LENGTH,
+  MAX_BANK_CODE_LENGTH,
+  MAX_BANK_NUMBER_LENGTH,
   MAX_CODE_LENGTH,
   MAX_EMAIL_LENGTH,
   MAX_FAX_LENGTH,
   MAX_MAIN_ACTIVITY_LENGTH,
   MAX_PAYMENTREFERENCE_LENGTH,
   MAX_PHONE_LENGTH,
+  MAX_RIB_LENGTH,
   MAX_TRADENAME_LENGTH,
 } from "../constants";
 import _ from "lodash";
@@ -60,6 +63,215 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             props.intl,
             "policyHolder",
             "phoneValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.tradeNameValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.tradeNameValidation",
+      {
+        regex: /^[a-zA-Z0-9.]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "tradeNameValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "tradeNameValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.mainActivityValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.mainActivityValidation",
+      {
+        regex: /^[a-zA-Z0-9.]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "mainActivityValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "mainActivityValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.contactNameValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.contactNameValidation",
+      {
+        regex: /^[a-zA-Z0-9.]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "contactNameValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "contactNameValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.shortNameValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.shortNameValidation",
+      {
+        regex: /^[a-zA-Z0-9.]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "shortNameValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "shortNameValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.niuValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.niuValidation",
+      {
+        regex: /^[a-zA-Z0-9.]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "niuValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "niuValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.rccmValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.rccmValidation",
+      {
+        regex: /^[a-zA-Z0-9.]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "rccmValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "rccmValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.addressValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.addressValidation",
+      {
+        regex: /^[a-zA-Z0-9\s,'-]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "addressValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "addressValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.bankValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.bankValidation",
+      {
+        regex: /^[a-zA-Z0-9.]*$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "bankValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "bankValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.bankAccountNbValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.bankAccountNbValidation",
+      {
+        regex: /^[0-9]+$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "bankAccountNbValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "bankAccountNbValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.bankCodeValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.bankCodeValidation",
+      {
+        regex: /^[0-9]+$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "bankCodeValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "bankCodeValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
+    this.rbiValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.rbiValidation",
+      {
+        regex: /^[0-9]+$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "rbiValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "rbiValidation.regexMsg.fr"
           ),
         },
       }
@@ -166,7 +378,18 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     if (prevProps.edited !== edited) {
       let isFormValid = true;
       if (
-        !!this.regexError("phone", edited.phone) ||
+        !!this.regexError("phone", edited?.phone) ||
+        !!this.regexError("tradeName", edited?.tradeName) ||
+        !!this.regexError("mainActivity", edited?.jsonExt?.mainActivity) ||
+        !!this.regexError("contactName", edited?.contactName) ||
+        !!this.regexError("shortName", edited?.jsonExt?.shortName) ||
+        !!this.regexError("niu", edited?.jsonExt?.niu) ||
+        !!this.regexError("rccm", edited?.jsonExt?.rccm) ||
+        !!this.regexError("address", edited?.address) ||
+        !!this.regexError("bank", edited?.bankAccount?.bank) ||
+        !!this.regexError("bankKey", edited?.bankAccount?.bankKey) ||
+        !!this.regexError("bankAccountNb", edited?.bankAccount?.bankAccountNb) ||
+        !!this.regexError("bankAccountNb", edited?.bankAccount?.bankCode) ||
         !!this.regexError("fax", edited.fax) ||
         !!this.regexError("email", edited.email) ||
         !!this.regexError("accountancyAccount", edited.accountancyAccount) ||
@@ -296,6 +519,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={!!edited && !!edited.tradeName ? edited.tradeName : ""}
               onChange={(v) => this.updateAttribute("tradeName", v)}
+              error={this.regexError("tradeName", edited.tradeName)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -304,13 +528,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="mainActivity"
               required
-              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={
                 !!edited && !!edited.jsonExt ? edited.jsonExt.mainActivity : ""
               }
               onChange={(v) =>
                 this.updateAttributes({ jsonExt: { mainActivity: v } })
               }
+              error={this.regexError("mainActivity", edited?.jsonExt?.mainActivity)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -318,7 +543,9 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="contactName"
+              inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={!!edited && !!edited.contactName ? edited.contactName : ""}
+              error={this.regexError("contactName", edited?.contactName)}
               onChange={(v) => this.updateAttribute("contactName", v)}
               readOnly={isPolicyHolderPortalUser}
             />
@@ -328,10 +555,11 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="shortName"
               required
-              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={
                 !!edited && !!edited.jsonExt ? edited.jsonExt.shortName : ""
               }
+              error={this.regexError("shortName", edited?.jsonExt?.shortName)}
               onChange={(v) =>
                 this.updateAttributes({ jsonExt: { shortName: v } })
               }
@@ -342,9 +570,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="NIU"
-              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.niu : ""}
               onChange={(v) => this.updateAttributes({ jsonExt: { niu: v } })}
+              error={this.regexError("niu", edited?.jsonExt?.niu)}
+
+
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -352,9 +583,10 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="RCCM"
-              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
-              value={!!edited && !!edited.jsonExt ? edited.jsonExt.rccm : ""}
+              inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
+              value={!!edited && !!edited.jsonExt ? edited?.jsonExt?.rccm : ""}
               onChange={(v) => this.updateAttributes({ jsonExt: { rccm: v } })}
+              error={this.regexError("rccm", edited?.jsonExt?.rccm)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -363,7 +595,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="nbEmployees"
-              type="number"
+              type="text"
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={
@@ -442,6 +674,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               inputProps={{ maxLength: MAX_ADDRESS_LENGTH }}
               value={!!edited && !!edited.address ? edited.address : ""}
               onChange={(v) => this.updateAttribute("address", v)}
+              error={this.regexError("address", edited?.address)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -496,7 +729,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               }
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          {/* <Grid item xs={2} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="accountancyAccount"
@@ -513,7 +746,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("accountancyAccount", v)}
               readOnly={isPolicyHolderPortalUser}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={3} className={classes.item}>
             <TextInput
@@ -522,6 +755,11 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.bankAccount ? edited.bankAccount.bank : ""
               }
+              inputProps={{ maxLength: MAX_ADDRESS_LENGTH }}
+              error={this.regexError(
+                "bank",
+                edited?.bankAccount?.bank
+              )}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bank: v } })
               }
@@ -532,11 +770,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="bankCode"
+              inputProps={{ maxLength: MAX_BANK_CODE_LENGTH }}
               value={
                 !!edited && !!edited.bankAccount
                   ? edited.bankAccount.bankCode
                   : ""
               }
+              error={this.regexError(
+                "bankCode",
+                edited?.bankAccount?.bankCode
+              )}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bankCode: v } })
               }
@@ -562,11 +805,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="bankAccountNb"
+              inputProps={{ maxLength:MAX_BANK_NUMBER_LENGTH }}
               value={
                 !!edited && !!edited.bankAccount
                   ? edited.bankAccount.accountNb
                   : ""
               }
+              error={this.regexError(
+                "bankAccountNb",
+                edited?.bankAccount?.accountNb
+              )}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { accountNb: v } })
               }
@@ -582,6 +830,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                   ? edited.bankAccount.bankKey
                   : ""
               }
+              type="text"
+              inputProps={{ maxLength: MAX_RIB_LENGTH }}
+              error={this.regexError(
+                "bankKey",
+                edited?.bankAccount?.bankKey
+              )}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bankKey: v } })
               }
@@ -589,7 +843,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             />
           </Grid>
 
-          <Grid item xs={2} className={classes.item}>
+          {/* <Grid item xs={2} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="paymentReference"
@@ -606,7 +860,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("paymentReference", v)}
               readOnly={isPolicyHolderPortalUser}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Fragment>
     );

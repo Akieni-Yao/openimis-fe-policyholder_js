@@ -7,6 +7,7 @@ import PolicyHoldersPage from "./pages/PolicyHoldersPage";
 import PolicyHolderPage from "./pages/PolicyHolderPage";
 import LegalFormPicker from "./pickers/LegalFormPicker";
 import ActivityCodePicker from "./pickers/ActivityCodePicker";
+import PolicyHolderMenu from "./menus/PolicyHolderMenu";
 import reducer from "./reducer";
 import {
     RIGHT_POLICYHOLDERUSER_SEARCH,
@@ -104,7 +105,8 @@ const DEFAULT_CONFIG = {
                     RIGHT_POLICYHOLDERUSER_SEARCH,
                     RIGHT_PORTALPOLICYHOLDERUSER_SEARCH
                 ].some(right => rights.includes(right))
-        }
+        },
+        
     ],
     "policyHolder.TabPanel.label": [
         PolicyHolderInsureesTabLabel,
@@ -124,7 +126,8 @@ const DEFAULT_CONFIG = {
             picker: PolicyHolderPicker,
             pickerProjection: POLICYHOLDER_PICKER_PROJECTION
         },
-    ]
+    ],
+    "core.MainMenu": [PolicyHolderMenu],
 };
 
 export const PolicyHolderModule = (cfg) => {
