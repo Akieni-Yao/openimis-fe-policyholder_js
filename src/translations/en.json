@@ -101,6 +101,7 @@
     "policyHolder.DeletePolicyHolderUser.mutationLabel": "{user} is removed from {policyHolder}",
     "policyHolder.policyHolderUser.dialog.replace.title": "Add new version of Policy Holder User",
     "policyHolder.ReplacePolicyHolderUser.mutationLabel": "{newUser} is replacing {oldUser} on {policyHolder}",
+    "policyHolder.mainmenu":"Policy Holder",
     "policyHolder.CreatePolicyHolder.snackbar": "The registration has been successfully completed {label}",
     "policyHolder.createdAt": "Created At",
     "policyHolder.policyHolderInsuree.import": "Import from Excel"
