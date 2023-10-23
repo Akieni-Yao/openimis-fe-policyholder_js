@@ -400,7 +400,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       this.props.onValidation(isFormValid);
     }
   }
-// console
   regexError = (field, value) => {
     if (!!value) {
       let validation = this[`${field}Validation`];
