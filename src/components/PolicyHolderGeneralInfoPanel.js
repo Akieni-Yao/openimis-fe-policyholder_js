@@ -516,12 +516,23 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
           </Grid>
 
           <Grid item xs={3} className={classes.item}>
-            <TextInput
+            {/* <TextInput
               module="policyHolder"
               label="bank"
               value={
                 !!edited && !!edited.bankAccount ? edited.bankAccount.bank : ""
               }
+              onChange={(v) =>
+                this.updateAttributes({ bankAccount: { bank: v } })
+              }
+              readOnly={isPolicyHolderPortalUser}
+            /> */}
+            <PublishedComponent
+              pubRef="policyHolder.BankPicker"
+              module="policyHolder"
+              label="bank"
+              nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+              value={!!edited.bankAccount ? edited.bankAccount.bank : ""}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bank: v } })
               }

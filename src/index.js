@@ -34,6 +34,7 @@ import {
 import PolicyHolderUsersPage from "./pages/PolicyHolderUsersPage";
 import { PolicyHolderUsersTabLabel, PolicyHolderUsersTabPanel } from "./components/PolicyHolderUsersTab";
 import { POLICYHOLDER_PICKER_PROJECTION } from "./actions";
+import BankPicker from "./pickers/BankPicker";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
@@ -45,6 +46,7 @@ const DEFAULT_CONFIG = {
     "refs": [
         { key: "policyHolder.LegalFormPicker", ref: LegalFormPicker },
         { key: "policyHolder.ActivityCodePicker", ref: ActivityCodePicker },
+        { key: "policyHolder.BankPicker", ref: BankPicker },
         { key: "policyHolder.ConfigBasedPicker", ref: ConfigBasedPicker },
         { key: "policyHolder.TabPanel", ref: TabPanel },
         { key: "policyHolder.PolicyHolderPicker", ref: PolicyHolderPicker },
