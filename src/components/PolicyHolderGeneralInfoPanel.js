@@ -90,7 +90,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.mainActivityValidation",
       {
-        regex: /^[a-zA-Z0-9.]*$/,
+        regex: /^[a-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -109,7 +109,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.contactNameValidation",
       {
-        regex: /^[a-zA-Z0-9.]*$/,
+        regex: /^[a-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -128,7 +128,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.shortNameValidation",
       {
-        regex: /^[a-zA-Z0-9.]*$/,
+        regex: /^[a-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -147,7 +147,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.niuValidation",
       {
-        regex: /^[a-zA-Z0-9.]*$/,
+        regex: /^[a-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -166,7 +166,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.rccmValidation",
       {
-        regex: /^[a-zA-Z0-9.]*$/,
+        regex: /^[a-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -204,7 +204,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.bankValidation",
       {
-        regex: /^[a-zA-Z0-9.]*$/,
+        regex: /^[a-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -389,7 +389,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         !!this.regexError("bank", edited?.bankAccount?.bank) ||
         !!this.regexError("bankKey", edited?.bankAccount?.bankKey) ||
         !!this.regexError("bankAccountNb", edited?.bankAccount?.bankAccountNb) ||
-        !!this.regexError("bankAccountNb", edited?.bankAccount?.bankCode) ||
+        !!this.regexError("bankCode", edited?.bankAccount?.bankCode) ||
         !!this.regexError("fax", edited.fax) ||
         !!this.regexError("email", edited.email) ||
         !!this.regexError("accountancyAccount", edited.accountancyAccount) ||
