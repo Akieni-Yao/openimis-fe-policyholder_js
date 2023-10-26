@@ -71,7 +71,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.tradeNameValidation",
       {
-        regex: /^[a-zA-Z0-9.]*$/,
+        regex: /^[a-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,

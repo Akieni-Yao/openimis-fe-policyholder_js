@@ -103,6 +103,7 @@ class PolicyHolderForm extends Component {
       // !!policyHolder.code &&
       !!policyHolder.tradeName &&
       !!policyHolder.locations &&
+      !!policyHolder.jsonExt.mainActivity &&
       // !!policyHolder.dateValidFrom &&
       !!policyHolder.activityCode
     ) {
@@ -189,12 +190,12 @@ class PolicyHolderForm extends Component {
           <Snackbar open={this.props.snackbar} autoHideDuration={4000} anchorOrigin={{ horizontal: 'center', vertical: 'top' }} onClose={this.props.handleClose}>
 
             < Alert variant="filled" severity="success" >
-            {formatMessageWithValues(
-            intl,
-            "policyHolder",
-            "policyHolder.CreatePolicyHolder.snackbar",
-           {label: this.props.resCode}
-          )}
+              {formatMessageWithValues(
+                intl,
+                "policyHolder",
+                "policyHolder.CreatePolicyHolder.snackbar",
+                { label: this.props.resCode }
+              )}
               {/* <FormattedMessage
                 module="policyHolder"
                 id="policyHolder.CreatePolicyHolder.snackbar"

@@ -104,5 +104,16 @@
     "policyHolder.mainmenu":"Policy Holder",
     "policyHolder.CreatePolicyHolder.snackbar": "The registration has been successfully completed {label}",
     "policyHolder.createdAt": "Created At",
-    "policyHolder.policyHolderInsuree.import": "Import from Excel"
+    "policyHolder.policyHolderInsuree.import": "Import from Excel",
+    "policyHolder.tradeNameValidation.regexMsg.en": "Invalid Trade Name",
+    "policyHolder.mainActivityValidation.regexMsg.en": "Invalid Main Activity",
+    "policyHolder.contactNameValidation.regexMsg.en": "Invalid Contact Name",
+    "policyHolder.shortNameValidation.regexMsg.en": "Invalid ShortName",
+    "policyHolder.niuValidation.regexMsg.en": "Invalid NIU",
+    "policyHolder.rccmValidation.regexMsg.en": "Invalid RCCM",
+    "policyHolder.addressValidation.regexMsg.en": "Invalid Address",
+    "policyHolder.bankValidation.regexMsg.en": "Invalid Bank",
+    "policyHolder.rbiValidation.regexMsg.en": "Invalid RBI",
+    "policyHolder.bankAccountNbValidation.regexMsg.en": "Invalid Bank Account Number",
+    "policyHolder.bankCodeValidation.regexMsg.en": "Invalid Bank Code"
 }
