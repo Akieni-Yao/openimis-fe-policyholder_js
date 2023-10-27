@@ -388,7 +388,10 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         !!this.regexError("address", edited?.address) ||
         !!this.regexError("bank", edited?.bankAccount?.bank) ||
         !!this.regexError("bankKey", edited?.bankAccount?.bankKey) ||
-        !!this.regexError("bankAccountNb", edited?.bankAccount?.bankAccountNb) ||
+        !!this.regexError(
+          "bankAccountNb",
+          edited?.bankAccount?.bankAccountNb
+        ) ||
         !!this.regexError("bankCode", edited?.bankAccount?.bankCode) ||
         !!this.regexError("fax", edited.fax) ||
         !!this.regexError("email", edited.email) ||
@@ -534,7 +537,10 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               onChange={(v) =>
                 this.updateAttributes({ jsonExt: { mainActivity: v } })
               }
-              error={this.regexError("mainActivity", edited?.jsonExt?.mainActivity)}
+              error={this.regexError(
+                "mainActivity",
+                edited?.jsonExt?.mainActivity
+              )}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -573,8 +579,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={!!edited && !!edited.jsonExt ? edited.jsonExt.niu : ""}
               onChange={(v) => this.updateAttributes({ jsonExt: { niu: v } })}
               error={this.regexError("niu", edited?.jsonExt?.niu)}
-
-
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -615,11 +619,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               value={
                 !!edited && !!edited.dateValidFrom
-                  ? moment(edited.dateValidFrom, "YYYY-MM-DD").format("YYYY-MM-DD")
+                  ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
+                      "YYYY-MM-DD"
+                    )
                   : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
-              readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+              readOnly={true}
+              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
           {/* <Grid item xs={2} className={classes.item}>
@@ -786,10 +793,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                   ? edited.bankAccount.bankCode
                   : ""
               }
-              error={this.regexError(
-                "bankCode",
-                edited?.bankAccount?.bankCode
-              )}
+              error={this.regexError("bankCode", edited?.bankAccount?.bankCode)}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bankCode: v } })
               }
@@ -815,7 +819,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="bankAccountNb"
-              inputProps={{ maxLength:MAX_BANK_NUMBER_LENGTH }}
+              inputProps={{ maxLength: MAX_BANK_NUMBER_LENGTH }}
               value={
                 !!edited && !!edited.bankAccount
                   ? edited.bankAccount.accountNb
@@ -842,10 +846,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               }
               type="text"
               inputProps={{ maxLength: MAX_RIB_LENGTH }}
-              error={this.regexError(
-                "bankKey",
-                edited?.bankAccount?.bankKey
-              )}
+              error={this.regexError("bankKey", edited?.bankAccount?.bankKey)}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bankKey: v } })
               }
