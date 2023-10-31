@@ -16,7 +16,7 @@ import {
   Helmet,
   FormattedMessage,
 } from "@openimis/fe-core";
-import { fetchPolicyHolder, clearPolicyHolder } from "../actions";
+import { fetchPolicyHolder, clearPolicyHolder, sendEmail } from "../actions";
 import {
   RIGHT_PORTALPOLICYHOLDER_SEARCH,
   RIGHT_POLICYHOLDER_CREATE,
@@ -113,6 +113,11 @@ class PolicyHolderForm extends Component {
     return true;
   };
 
+  emailButton = (edited) => {
+    console.log(edited,"edited")
+    this.props.sendEmail(this.props.modulesManager, edited)
+  }
+
   doesPolicyHolderChange = () => {
     const { policyHolder } = this.props;
     if (_.isEqual(policyHolder, this.state.policyHolder)) {
@@ -150,7 +155,7 @@ class PolicyHolderForm extends Component {
     !this.props.rights.includes(RIGHT_POLICYHOLDER_UPDATE);
 
   render() {
-    const { intl, rights, back, save } = this.props;
+    const { intl, rights, back, save, policyHolderId } = this.props;
     return (
       <Fragment>
         <Helmet
@@ -184,6 +189,8 @@ class PolicyHolderForm extends Component {
           rights={rights}
           isPolicyHolderPortalUser={this.isPolicyHolderPortalUser()}
           openDirty={save}
+          emailButton={this.emailButton}
+          email={policyHolderId}
         />
         <CommonSnackbar
           open={this.props.snackbar}
@@ -216,7 +223,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchPolicyHolder, clearPolicyHolder, journalize },
+    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail },
     dispatch
   );
 };

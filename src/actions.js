@@ -95,6 +95,18 @@ function dateTimeToDate(date) {
   return date.split("T")[0];
 }
 
+function formatMail(edited) {
+  console.log(edited, "format")
+  let reportName=""
+  // if(edited?.camuNumber!=null)
+  // {
+  //   reportName="enrollment_receipt"
+  // }else{
+  //   reportName="pre_enrollment_receipt"
+  // }
+  const formatMail = `uuid: "${decodeId(edited?.id)}",  isEmail: ${true},reportName: "${reportName}"`
+  return formatMail;
+}
 export function fetchPolicyHolders(modulesManager, params) {
   const payload = formatPageQueryWithCount(
     "policyHolder",
@@ -791,3 +803,16 @@ export const policyHolderCodeClear = () => {
     dispatch({ type: "POLICYHOLDER_CODE_FIELDS_VALIDATION_CLEAR" });
   };
 };
+
+export function sendEmail(mm, edited) {
+  let mutation = `mutation SendNotification{
+    sentNotification(${formatMail(edited)}) {
+    success
+    message
+  }}`;
+  return graphql(
+    mutation,
+    ["INSUREE_MUTATION_REQ", "INSUREE_SEND_EMAIL_RESP", "INSUREE_MUTATION_ERR"],
+    "success message responses",
+  );
+}

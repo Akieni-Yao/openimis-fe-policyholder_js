@@ -18,7 +18,7 @@ const styles = theme => ({
     selectedTab: {
         borderBottom: "4px solid white",
         fontWeight:600,
-        backgroundColor:"#ffffff",
+        backgroundColor:"#FFFFFF",
         marginTop:"10px"
     },
     unselectedTab: {

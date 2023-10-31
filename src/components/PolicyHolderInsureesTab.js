@@ -126,18 +126,18 @@ class PolicyHolderInsureesTabPanel extends Component {
                                         </Button>
                                     </label>
                                     <Grid item>
+                                        <CreatePolicyHolderInsureeDialog
+                                            policyHolder={policyHolder}
+                                            onSave={this.onSave}
+                                        />
+                                    </Grid>
+                                    <Grid item>
                                         <Typography>
                                             <FormattedMessage
                                                 module="policyHolder"
                                                 id="policyHolderInsuree.createPolicyHolderInsuree"
                                             />
                                         </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <CreatePolicyHolderInsureeDialog
-                                            policyHolder={policyHolder}
-                                            onSave={this.onSave}
-                                        />
                                     </Grid>
                                 </Grid>
                             )}
