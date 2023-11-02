@@ -107,6 +107,20 @@ function formatMail(edited) {
   const formatMail = `uuid: "${decodeId(edited?.id)}",  isEmail: ${true},reportName: "${reportName}"`
   return formatMail;
 }
+
+function formatPrint(edited) {
+  console.log(edited, "format")
+  let reportName=""
+  if(edited?.camuNumber!=null)
+  {
+    reportName="enrollment_receipt"
+  }else{
+    reportName="pre_enrollment_receipt"
+  }
+  const formatPrint = `uuid: "${edited?.uuid}",  isEmail: ${false},reportName: "${reportName}"`
+  return formatPrint;
+}
+
 export function fetchPolicyHolders(modulesManager, params) {
   const payload = formatPageQueryWithCount(
     "policyHolder",
@@ -814,5 +828,19 @@ export function sendEmail(mm, edited) {
     mutation,
     ["INSUREE_MUTATION_REQ", "INSUREE_SEND_EMAIL_RESP", "INSUREE_MUTATION_ERR"],
     "success message responses",
+  );
+}
+
+export function printReport(mm, edited) {
+  let mutation = `mutation SendNotification{
+    sentNotification(${formatPrint(edited)}) {
+    success
+    message
+    data
+  }}`;
+  return graphql(
+    mutation,
+    ["INSUREE_MUTATION_REQ", "INSUREE_REPORT_RESP", "INSUREE_MUTATION_ERR"],
+    "success message",
   );
 }

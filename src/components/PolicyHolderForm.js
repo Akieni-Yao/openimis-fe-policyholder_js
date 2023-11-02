@@ -16,7 +16,7 @@ import {
   Helmet,
   FormattedMessage,
 } from "@openimis/fe-core";
-import { fetchPolicyHolder, clearPolicyHolder, sendEmail } from "../actions";
+import { fetchPolicyHolder, clearPolicyHolder, sendEmail,printReport } from "../actions";
 import {
   RIGHT_PORTALPOLICYHOLDER_SEARCH,
   RIGHT_POLICYHOLDER_CREATE,
@@ -118,6 +118,16 @@ class PolicyHolderForm extends Component {
     this.props.sendEmail(this.props.modulesManager, edited)
   }
 
+  printReport = async (edited) => {
+    console.log(edited, "edited")
+    const data = await this.props.printReport(this.props.modulesManager, edited)
+    console.log(data,"base64Data")
+    const base64Data = data?.payload?.data?.sentNotification?.data;
+    const contentType = 'pdf';
+    if (base64Data) {
+      this.displayPrintWindow(base64Data, contentType)
+    }
+  }
   doesPolicyHolderChange = () => {
     const { policyHolder } = this.props;
     if (_.isEqual(policyHolder, this.state.policyHolder)) {
@@ -189,8 +199,9 @@ class PolicyHolderForm extends Component {
           rights={rights}
           isPolicyHolderPortalUser={this.isPolicyHolderPortalUser()}
           openDirty={save}
-          emailButton={this.emailButton}
-          email={policyHolderId}
+          // emailButton={this.emailButton}
+          // email={policyHolderId}
+          // printButton={this.printReport}
         />
         <CommonSnackbar
           open={this.props.snackbar}
@@ -223,7 +234,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail },
+    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail,printReport },
     dispatch
   );
 };
