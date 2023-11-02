@@ -257,6 +257,25 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         },
       }
     );
+    this.nbEmployeesValidation = props.modulesManager.getConf(
+      "policyHolder",
+      "policyHolderForm.nbEmployeesValidation",
+      {
+        regex: /^[0-9]+$/,
+        regexMsg: {
+          en: formatMessage(
+            props.intl,
+            "policyHolder",
+            "nbEmployeesValidation.regexMsg.en"
+          ),
+          fr: formatMessage(
+            props.intl,
+            "policyHolder",
+            "nbEmployeesValidation.regexMsg.fr"
+          ),
+        },
+      }
+    );
     this.rbiValidation = props.modulesManager.getConf(
       "policyHolder",
       "policyHolderForm.rbiValidation",
@@ -388,6 +407,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         !!this.regexError("address", edited?.address) ||
         !!this.regexError("bank", edited?.bankAccount?.bank) ||
         !!this.regexError("bankKey", edited?.bankAccount?.bankKey) ||
+        !!this.regexError("nbEmployees", edited?.jsonExt?.nbEmployees) ||
         !!this.regexError(
           "bankAccountNb",
           edited?.bankAccount?.bankAccountNb
@@ -602,11 +622,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={
-                !!edited && !!edited.jsonExt ? edited.jsonExt.nbEmployees : ""
+                !!edited && !!edited.jsonExt ? edited?.jsonExt?.nbEmployees : ""
               }
               onChange={(v) =>
                 this.updateAttributes({ jsonExt: { nbEmployees: v } })
               }
+              error={this.regexError("nbEmployees", edited?.jsonExt?.nbEmployees)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -620,13 +641,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.dateValidFrom
                   ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
-                      "YYYY-MM-DD"
-                    )
+                    "YYYY-MM-DD"
+                  )
                   : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={true}
-              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+            // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
           {/* <Grid item xs={2} className={classes.item}>
