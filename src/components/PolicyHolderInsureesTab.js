@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Grid, Typography, Input, Button } from "@material-ui/core";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import { formatMessage, PublishedComponent, FormattedMessage, baseApiUrl, apiHeaders } from "@openimis/fe-core";
 import {
     RIGHT_POLICYHOLDERINSUREE_CREATE,
@@ -55,31 +56,65 @@ class PolicyHolderInsureesTabPanel extends Component {
         let url_import = `${baseApiUrl}/policyholder/imports/${encodedCode}/policyholderinsurees`;
 
         try {
-          const response = await fetch(url_import, {
-            headers: apiHeaders,
-            body: formData,
-            method: "POST",
-            credentials: "same-origin",
-          });
+            const response = await fetch(url_import, {
+                headers: apiHeaders,
+                body: formData,
+                method: "POST",
+                credentials: "same-origin",
+            });
 
-          const payload = await response.text();
+            const payload = await response.text();
 
-          if (response.status >= 400) {
-            // alert(`Error ${response.status}: ${payload.error}`);
-            alert(`Error ${response.status}: ${payload}`);
-            return;
-          }
-          alert(`Success: ${payload}`);
+            if (response.status >= 400) {
+                // alert(`Error ${response.status}: ${payload.error}`);
+                alert(`Error ${response.status}: ${payload}`);
+                return;
+            }
+            alert(`Success: ${payload}`);
         } catch (error) {
             alert(
-              error?.message ??
-              formatMessage(
-                `An error occurred. Please contact your administrator. ${error?.message}`
-              )
+                error?.message ??
+                formatMessage(
+                    `An error occurred. Please contact your administrator. ${error?.message}`
+                )
             );
         }
     };
+    handleDownload = () => {
+        const data = [
+            [
+                "Type d'enrôlement",
+                "Prénom",
+                "Nom",
+                "ID",
+                "Date de naissance",
+                "Lieu de naissance",
+                "Sexe",
+                "Civilité",
+                "Téléphone",
+                "Adresse",
+                "Village",
+                "IDFamille",
+                "Plan",
+                "Salaire",
+            ],
+            ["Type1", "Alice", "Smith", "123", "1990-01-15", "Paris", "F", "Mme", "123-456-7890", "123 Main St", "Village A", "1", "Plan A", "50000"],
+            ["Type2", "Bob", "Johnson", "124", "1985-03-20", "New York", "M", "M.", "987-654-3210", "456 Elm St", "Village B", "2", "Plan B", "60000"],
+            // Add more data as needed
+        ];
 
+        // Create a CSV content
+        const csvContent = data.map((row) => row.join("\t")).join("\n");
+
+        // Create a Blob object containing the CSV data
+        const blob = new Blob([csvContent], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+        // Create a download link
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "data.xlsx"; // Change the filename if needed
+        link.click();
+    };
     render() {
         const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
         return (
@@ -95,52 +130,73 @@ class PolicyHolderInsureesTabPanel extends Component {
                         <Fragment>
                             {(rights.includes(RIGHT_POLICYHOLDERINSUREE_CREATE) ||
                                 rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_CREATE)) && (
-                                <Grid
-                                    container
-                                    justifyContent="flex-start"
-                                    alignItems="center"
-                                    spacing={1}
-                                >
-                                    <Input
-                                        required
-                                        id="import-button"
-                                        style={{ display: 'none' }}
-                                        inputProps={{
-                                          accept:
-                                            ".xls, application/vnd.ms-excel, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                        }}
-                                        type="file"
-                                        onChange={this.onUpload}
-                                    />
-                                    <label htmlFor="import-button">
-                                        <Button
-                                            variant="contained"
-                                            component="span"
-                                            color="primary"
-                                            startIcon={<CloudUploadIcon />}
-                                        >
-                                            <FormattedMessage
-                                                module="policyHolder"
-                                                id="policyHolderInsuree.import"
-                                            />
-                                        </Button>
-                                    </label>
-                                    <Grid item>
-                                        <CreatePolicyHolderInsureeDialog
-                                            policyHolder={policyHolder}
-                                            onSave={this.onSave}
+                                    <Grid
+                                        container
+                                        justifyContent="flex-start"
+                                        alignItems="center"
+                                        spacing={1}
+                                    >
+                                        <label>
+                                            <Button
+                                                onClick={this.handleDownload}
+                                                variant="contained"
+                                                component="span"
+                                                color="primary"
+                                                startIcon={<GetAppIcon />}
+                                                style={{marginRight:"5px"}}
+                                            >
+                                                <FormattedMessage module="policyHolder" id="policyHolderInsuree.downloadsample" />
+                                            </Button>
+                                        </label>
+                                        <Input
+                                            required
+                                            id="import-button"
+                                            style={{ display: 'none' }}
+                                            inputProps={{
+                                                accept:
+                                                    ".xls, application/vnd.ms-excel, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                            }}
+                                            type="file"
+                                            onChange={this.onUpload}
                                         />
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography>
-                                            <FormattedMessage
-                                                module="policyHolder"
-                                                id="policyHolderInsuree.createPolicyHolderInsuree"
+                                        <label htmlFor="import-button">
+                                            <Button
+                                                variant="contained"
+                                                component="span"
+                                                color="primary"
+                                                startIcon={<CloudUploadIcon />}
+                                            >
+                                                <FormattedMessage
+                                                    module="policyHolder"
+                                                    id="policyHolderInsuree.import"
+                                                />
+                                            </Button>
+                                        </label>
+                                        <Grid item>
+                                            <Typography>
+                                                <FormattedMessage
+                                                    module="policyHolder"
+                                                    id="policyHolderInsuree.createPolicyHolderInsuree"
+                                                />
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <CreatePolicyHolderInsureeDialog
+                                                policyHolder={policyHolder}
+                                                onSave={this.onSave}
                                             />
-                                        </Typography>
+                                        </Grid>
+                                        {/* <Grid item>
+                                            <Button onClick={this.handleDownload} style={{ marginLeft: "50px", display: "flex", justifyContent: "end" }} variant="contained"
+                                                component="span"
+                                                color="primary">
+                                                <GetAppIcon />
+                                                <FormattedMessage module="core" id="download sample" />
+                                                
+                                            </Button>
+                                        </Grid> */}
                                     </Grid>
-                                </Grid>
-                            )}
+                                )}
                             <PolicyHolderInsureeSearcher
                                 policyHolder={policyHolder}
                                 rights={rights}
