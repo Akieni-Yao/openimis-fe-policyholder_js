@@ -115,5 +115,6 @@
     "policyHolder.bankValidation.regexMsg.en": "Invalid Bank",
     "policyHolder.rbiValidation.regexMsg.en": "Invalid RBI",
     "policyHolder.bankAccountNbValidation.regexMsg.en": "Invalid Bank Account Number",
-    "policyHolder.bankCodeValidation.regexMsg.en": "Invalid Bank Code"
+    "policyHolder.bankCodeValidation.regexMsg.en": "Invalid Bank Code",
+    "policyHolder.policyHolderInsuree.downloadsample": "Download Sample"
 }
