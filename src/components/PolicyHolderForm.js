@@ -114,14 +114,25 @@ class PolicyHolderForm extends Component {
   };
 
   emailButton = (edited) => {
-    console.log(edited,"edited")
     this.props.sendEmail(this.props.modulesManager, edited)
   }
+  displayPrintWindow = (base64Data, contentType) => {
+    const printWindow = window.open('', 'Print Window', 'width=600, height=400');
+    printWindow.document.open();
 
+    if (contentType === 'pdf') {
+      // printWindow.print(`<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`);
+      printWindow.document.write(`<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`);
+    } else {
+      printWindow.document.write(`<img src="data:image/png;base64,${base64Data}" />`);
+    }
+
+    printWindow.document.close();
+    // printWindow.print();
+  }
   printReport = async (edited) => {
-    console.log(edited, "edited")
     const data = await this.props.printReport(this.props.modulesManager, edited)
-    console.log(data,"base64Data")
+   
     const base64Data = data?.payload?.data?.sentNotification?.data;
     const contentType = 'pdf';
     if (base64Data) {
@@ -199,9 +210,9 @@ class PolicyHolderForm extends Component {
           rights={rights}
           isPolicyHolderPortalUser={this.isPolicyHolderPortalUser()}
           openDirty={save}
-          // emailButton={this.emailButton}
-          // email={policyHolderId}
-          // printButton={this.printReport}
+          emailButton={this.emailButton}
+          email={policyHolderId}
+          printButton={this.printReport}
         />
         <CommonSnackbar
           open={this.props.snackbar}

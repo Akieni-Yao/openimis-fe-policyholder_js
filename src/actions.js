@@ -96,8 +96,8 @@ function dateTimeToDate(date) {
 }
 
 function formatMail(edited) {
-  console.log(edited, "format")
-  let reportName=""
+  // console.log(edited, "format")
+  let reportName="registration_application"
   // if(edited?.camuNumber!=null)
   // {
   //   reportName="enrollment_receipt"
@@ -110,14 +110,14 @@ function formatMail(edited) {
 
 function formatPrint(edited) {
   console.log(edited, "format")
-  let reportName=""
-  if(edited?.camuNumber!=null)
-  {
-    reportName="enrollment_receipt"
-  }else{
-    reportName="pre_enrollment_receipt"
-  }
-  const formatPrint = `uuid: "${edited?.uuid}",  isEmail: ${false},reportName: "${reportName}"`
+  let reportName="registration_application"
+  // if(edited?.camuNumber!=null)
+  // {
+  //   reportName="enrollment_receipt"
+  // }else{
+  //   reportName="pre_enrollment_receipt"
+  // }
+  const formatPrint = `uuid: "${decodeId(edited?.id)}",  isEmail: ${false},reportName: "${reportName}"`
   return formatPrint;
 }
 

@@ -166,7 +166,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.rccmValidation",
       {
-        regex: /^[a-zA-Z0-9. ]*$/,
+        regex: /^[a-zA-Z0-9. -]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -605,7 +605,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
           <Grid item xs={2} className={classes.item}>
             <TextInput
               module="policyHolder"
-              label="RCCM"
+              label="No. RCCM"
               inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={!!edited && !!edited.jsonExt ? edited?.jsonExt?.rccm : ""}
               onChange={(v) => this.updateAttributes({ jsonExt: { rccm: v } })}
@@ -650,6 +650,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
+
           {/* <Grid item xs={2} className={classes.item}>
             <PublishedComponent
               pubRef="core.DatePicker"
@@ -680,6 +681,22 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                 this.updateAttributes({ jsonExt: { createdAt: v } })
               }
               // onChange={(v) => this.updateAttribute("createdAt", v)}
+              readOnly={isPolicyHolderPortalUser}
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="nbEmployees"
+              type="text"
+              required
+              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
+              value={
+                !!edited && !!edited.jsonExt ? edited.jsonExt.nbEmployees : ""
+              }
+              onChange={(v) =>
+                this.updateAttributes({ jsonExt: { nbEmployees: v } })
+              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
