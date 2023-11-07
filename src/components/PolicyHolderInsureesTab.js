@@ -12,7 +12,7 @@ import {
 import PolicyHolderInsureeSearcher from "./PolicyHolderInsureeSearcher";
 import { POLICYHOLDERINSUREE_TAB_VALUE } from "../constants"
 import CreatePolicyHolderInsureeDialog from "../dialogs/CreatePolicyHolderInsureeDialog";
-
+import * as XLSX from "xlsx";
 class PolicyHolderInsureesTabLabel extends Component {
     render() {
         const { intl, rights, onChange, disabled, tabStyle, isSelected } = this.props;
@@ -80,6 +80,7 @@ class PolicyHolderInsureesTabPanel extends Component {
             );
         }
     };
+
     handleDownload = () => {
         const data = [
             [
@@ -94,26 +95,31 @@ class PolicyHolderInsureesTabPanel extends Component {
                 "Téléphone",
                 "Adresse",
                 "Village",
-                "IDFamille",
+                "ID Famille",
                 "Plan",
                 "Salaire",
             ],
-            ["Type1", "Alice", "Smith", "123", "1990-01-15", "Paris", "F", "Mme", "123-456-7890", "123 Main St", "Village A", "1", "Plan A", "50000"],
-            ["Type2", "Bob", "Johnson", "124", "1985-03-20", "New York", "M", "M.", "987-654-3210", "456 Elm St", "Village B", "2", "Plan B", "60000"],
-            // Add more data as needed
+            ["Salariés du privé", "Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "PSC01", "50000"]
         ];
 
-        // Create a CSV content
-        const csvContent = data.map((row) => row.join("\t")).join("\n");
+        // Create a worksheet
+        const ws = XLSX.utils.aoa_to_sheet(data);
 
-        // Create a Blob object containing the CSV data
-        const blob = new Blob([csvContent], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        // Create a workbook and add the worksheet
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+        // Generate a data URI containing the Excel data
+        const dataURI = XLSX.write(wb, { bookType: "xlsx", type: "base64" });
 
         // Create a download link
         const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
+        link.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + dataURI;
         link.download = "data.xlsx"; // Change the filename if needed
+        link.style.display = "none";
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
     };
     render() {
         const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
@@ -143,7 +149,7 @@ class PolicyHolderInsureesTabPanel extends Component {
                                                 component="span"
                                                 color="primary"
                                                 startIcon={<GetAppIcon />}
-                                                style={{marginRight:"5px"}}
+                                                style={{ marginRight: "5px" }}
                                             >
                                                 <FormattedMessage module="policyHolder" id="policyHolderInsuree.downloadsample" />
                                             </Button>
