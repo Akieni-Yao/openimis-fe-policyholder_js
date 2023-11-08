@@ -16,7 +16,7 @@ import {
   Helmet,
   FormattedMessage,
 } from "@openimis/fe-core";
-import { fetchPolicyHolder, clearPolicyHolder, sendEmail,printReport } from "../actions";
+import { fetchPolicyHolder, clearPolicyHolder, sendEmail, printReport } from "../actions";
 import {
   RIGHT_PORTALPOLICYHOLDER_SEARCH,
   RIGHT_POLICYHOLDER_CREATE,
@@ -42,6 +42,8 @@ class PolicyHolderForm extends Component {
     this.state = {
       policyHolder: {},
       isFormValid: true,
+      success: false,
+      successMessage: ""
     };
   }
   wrapJSONFields = (policyHolder) => {
@@ -97,29 +99,101 @@ class PolicyHolderForm extends Component {
   componentWillUnmount() {
     this.props.clearPolicyHolder();
   }
-
   isMandatoryFieldsEmpty = () => {
     const { policyHolder } = this.state;
-    if (
-      // !!policyHolder.code &&
-      !!policyHolder.tradeName &&
-      !!policyHolder.locations &&
-      !!policyHolder.jsonExt.mainActivity &&
-      // !!policyHolder.dateValidFrom &&
-      !!policyHolder.activityCode &&
-      !!policyHolder.contactName &&
-      !!policyHolder.address &&
-      !!policyHolder.phone &&
-      !!policyHolder.legalForm && 
-      !!policyHolder.jsonExt.createdAt
-    ) {
-      return false;
-    }
-    return true;
-  };
+//  console.log("this.state",this.state)
+    // Check if rccm has a value
+    const rccmHasValue = !!policyHolder?.jsonExt?.rccm;
 
-  emailButton = (edited) => {
-    this.props.sendEmail(this.props.modulesManager, edited)
+    // Define the list of mandatory fields based on the value of rccm
+    const mandatoryFields = rccmHasValue
+      ? [
+        'tradeName',
+        'locations',
+        'jsonExt.mainActivity',
+        'activityCode',
+        'contactName',
+        'address',
+        'phone',
+        'legalForm',
+        'jsonExt.rccm',
+        'jsonExt.nbEmployees',
+        'jsonExt.createdAt',
+        'dateValidFrom'
+      ]
+      : [
+        'tradeName',
+        'locations',
+        'jsonExt.mainActivity',
+        'activityCode',
+        'contactName',
+        'address',
+        'phone',
+        'legalForm',
+      ];
+
+    // Check if any mandatory field is undefined or empty
+    const isEmpty = mandatoryFields.some(fieldPath => {
+      // Split the property path and traverse the object
+      const fieldKeys = fieldPath.split('.');
+      let fieldValue = policyHolder;
+
+      for (const key of fieldKeys) {
+        if (fieldValue && fieldValue[key] !== undefined) {
+          fieldValue = fieldValue[key];
+        } else {
+          return true; // Field is undefined or empty
+        }
+      }
+
+      return !fieldValue; // Field is undefined or empty
+    });
+
+    return isEmpty; // Returns true if any mandatory field is undefined or empty, otherwise returns false
+  };
+  // isMandatoryFieldsEmpty = () => {
+  //   const { policyHolder } = this.state;
+  //   console.log("this.state", this.state)
+  //   if (
+  //     // !!policyHolder.code &&
+  //     !!policyHolder.tradeName &&
+  //     !!policyHolder.locations &&
+  //     !!policyHolder.jsonExt.mainActivity &&
+  //     // !!policyHolder.dateValidFrom &&
+  //     !!policyHolder.activityCode &&
+  //     !!policyHolder.contactName &&
+  //     !!policyHolder.address &&
+  //     !!policyHolder.phone &&
+  //     !!policyHolder.legalForm
+  //     // && 
+  //     // !!policyHolder.jsonExt.createdAt
+  //   ) {
+  //     return false;
+  //   }
+  //   if (!!policyHolder?.jsonExt?.rccm && !!policyHolder?.jsonExt?.nbEmployees &&
+  //     !!policyHolder?.jsonExt?.createdAt &&
+  //     !!policyHolder?.dateValidFrom) {
+  //     return false
+  //   }
+  //   return true;
+  // };
+
+  emailButton = async (edited) => {
+    const message = await this.props.sendEmail(this.props.modulesManager, edited)
+    if (message?.payload?.data?.sentNotification?.message) {
+      // If the email was sent successfully, update the success state and message
+      this.setState({
+        success: true,
+        successMessage: 'Email sent successfully',
+      });
+    } else {
+      // If the email send was not successful, you can also set success to false here
+      // and provide an appropriate error message.
+      this.setState({
+        success: false,
+        successMessage: 'Email sending failed',
+      });
+    }
   }
   displayPrintWindow = (base64Data, contentType) => {
     const printWindow = window.open('', 'Print Window', 'width=600, height=400');
@@ -137,7 +211,7 @@ class PolicyHolderForm extends Component {
   }
   printReport = async (edited) => {
     const data = await this.props.printReport(this.props.modulesManager, edited)
-   
+
     const base64Data = data?.payload?.data?.sentNotification?.data;
     const contentType = 'pdf';
     if (base64Data) {
@@ -206,8 +280,7 @@ class PolicyHolderForm extends Component {
           saveTooltip={formatMessage(
             intl,
             "policyHolder",
-            `savePolicyHolderButton.tooltip.${
-              this.canSave() ? "enabled" : "disabled"
+            `savePolicyHolderButton.tooltip.${this.canSave() ? "enabled" : "disabled"
             }`
           )}
           onValidation={this.onValidation}
@@ -232,6 +305,21 @@ class PolicyHolderForm extends Component {
           copyText={this.props.resCode && this.props.resCode}
           backgroundColor="#00913E"
         />
+        {this.state.success && (
+          <Snackbar
+            open={this.state.success}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            style={{ marginRight: "50px", color: "white" }}
+            onClose={this.onHandlerClose}
+          >
+            <Alert variant="filled" severity="success">
+              {this.state.successMessage}
+            </Alert>
+          </Snackbar>
+        )}
       </Fragment>
     );
   }
@@ -250,7 +338,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail,printReport },
+    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail, printReport },
     dispatch
   );
 };

@@ -620,7 +620,8 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="nbEmployees"
               type="text"
-              required
+              required={!!edited?.jsonExt?.rccm  ? true : false}
+
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={
                 !!edited && !!edited.jsonExt ? edited?.jsonExt?.nbEmployees : ""
@@ -638,7 +639,9 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               pubRef="core.DatePicker"
               module="policyHolder"
               label="dateValidFrom"
-              required
+              // required
+              // required={edited?.jsonExt?.rccm != "" ? true : false}
+              required={!!edited?.jsonExt?.rccm  ? true : false}
               value={
                 !!edited && !!edited.dateValidFrom
                   ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
@@ -674,7 +677,10 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                 "policyHolder",
                 "policyHolder.createdAt"
               )}
-              required
+              // required={edited?.jsonExt?.rccm != "" ? true : false}
+              required={!!edited?.jsonExt?.rccm  ? true : false}
+
+              // required
               filterLabels={false}
               value={
                 !!edited && !!edited.jsonExt ? edited.jsonExt.createdAt : null
@@ -683,22 +689,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                 this.updateAttributes({ jsonExt: { createdAt: v } })
               }
               // onChange={(v) => this.updateAttribute("createdAt", v)}
-              readOnly={isPolicyHolderPortalUser}
-            />
-          </Grid>
-          <Grid item xs={2} className={classes.item}>
-            <TextInput
-              module="policyHolder"
-              label="nbEmployees"
-              type="text"
-              required
-              inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
-              value={
-                !!edited && !!edited.jsonExt ? edited.jsonExt.nbEmployees : ""
-              }
-              onChange={(v) =>
-                this.updateAttributes({ jsonExt: { nbEmployees: v } })
-              }
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
