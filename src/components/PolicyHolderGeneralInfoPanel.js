@@ -568,6 +568,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="contactName"
+              required
               inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={!!edited && !!edited.contactName ? edited.contactName : ""}
               error={this.regexError("contactName", edited?.contactName)}
@@ -673,6 +674,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                 "policyHolder",
                 "policyHolder.createdAt"
               )}
+              required
               filterLabels={false}
               value={
                 !!edited && !!edited.jsonExt ? edited.jsonExt.createdAt : null
@@ -715,6 +717,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextAreaInput
               module="policyHolder"
               label="address"
+              required
               inputProps={{ maxLength: MAX_ADDRESS_LENGTH }}
               value={!!edited && !!edited.address ? edited.address : ""}
               onChange={(v) => this.updateAttribute("address", v)}
@@ -726,6 +729,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="phone"
+              required
               inputProps={{ maxLength: MAX_PHONE_LENGTH }}
               value={!!edited && !!edited.phone ? edited.phone : ""}
               error={this.regexError("phone", edited.phone)}
@@ -750,6 +754,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               pubRef="policyHolder.LegalFormPicker"
               module="policyHolder"
               label="legalForm"
+              required
               withNull
               nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
               value={!!edited ? edited.legalForm : null}

@@ -106,7 +106,12 @@ class PolicyHolderForm extends Component {
       !!policyHolder.locations &&
       !!policyHolder.jsonExt.mainActivity &&
       // !!policyHolder.dateValidFrom &&
-      !!policyHolder.activityCode
+      !!policyHolder.activityCode &&
+      !!policyHolder.contactName &&
+      !!policyHolder.address &&
+      !!policyHolder.phone &&
+      !!policyHolder.legalForm && 
+      !!policyHolder.jsonExt.createdAt
     ) {
       return false;
     }
