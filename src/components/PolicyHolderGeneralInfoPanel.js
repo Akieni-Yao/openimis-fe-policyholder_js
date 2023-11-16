@@ -71,7 +71,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       "policyHolder",
       "policyHolderForm.tradeNameValidation",
       {
-        regex: /^[a-zA-Z0-9. ]*$/,
+        regex: /^[[éàèùçâêîôûëïüaa-zA-Z0-9. ]*$/,
         regexMsg: {
           en: formatMessage(
             props.intl,
@@ -457,7 +457,50 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     }
     this.props.onEditedChanged(data);
   };
+  bankCode = (bankValue) => {
+    console.log("bankval", bankValue);
+    let bankcodeVal;
 
+    switch (bankValue) {
+      case 30005:
+        bankcodeVal = 30005;
+        break;
+      case 30008:
+        bankcodeVal = 30008;
+        break;
+      case 30011:
+        bankcodeVal = 30011;
+        break;
+      case 30012:
+        bankcodeVal = 30012;
+        break;
+      case 30013:
+        bankcodeVal = 30013;
+        break;
+      case 30014:
+        bankcodeVal = 30014;
+        break;
+      case 30015:
+        bankcodeVal = 30015;
+        break;
+      case 30016:
+        bankcodeVal = 30016;
+        break;
+      case 30018:
+        bankcodeVal = 30018;
+        break;
+      case 30019:
+        bankcodeVal = 30019;
+        break;
+      case 30020:
+        bankcodeVal = 30020;
+        break;
+      default:
+        bankcodeVal = null;
+        break;
+    }
+    return bankcodeVal;
+  };
   render() {
     const {
       intl,
@@ -470,7 +513,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
     } = this.props;
-
+    console.log("this.state", this.bankCode(this.state?.data?.bankAccount?.bank),'this.state',this.state);
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -620,8 +663,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="nbEmployees"
               type="text"
-              required={!!edited?.jsonExt?.rccm  ? true : false}
-
+              required={!!edited?.jsonExt?.rccm ? true : false}
               inputProps={{ maxLength: MAX_MAIN_ACTIVITY_LENGTH }}
               value={
                 !!edited && !!edited.jsonExt ? edited?.jsonExt?.nbEmployees : ""
@@ -629,7 +671,10 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               onChange={(v) =>
                 this.updateAttributes({ jsonExt: { nbEmployees: v } })
               }
-              error={this.regexError("nbEmployees", edited?.jsonExt?.nbEmployees)}
+              error={this.regexError(
+                "nbEmployees",
+                edited?.jsonExt?.nbEmployees
+              )}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
@@ -641,17 +686,17 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               label="dateValidFrom"
               // required
               // required={edited?.jsonExt?.rccm != "" ? true : false}
-              required={!!edited?.jsonExt?.rccm  ? true : false}
+              required={!!edited?.jsonExt?.rccm ? true : false}
               value={
                 !!edited && !!edited.dateValidFrom
                   ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
-                    "YYYY-MM-DD"
-                  )
+                      "YYYY-MM-DD"
+                    )
                   : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={true}
-            // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
 
@@ -678,8 +723,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                 "policyHolder.createdAt"
               )}
               // required={edited?.jsonExt?.rccm != "" ? true : false}
-              required={!!edited?.jsonExt?.rccm  ? true : false}
-
+              required={!!edited?.jsonExt?.rccm ? true : false}
               // required
               filterLabels={false}
               value={
@@ -824,7 +868,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.bankAccount
                   ? edited.bankAccount.bankCode
-                  : ""
+                  : this.bankCode( this.state?.data?.bankAccount?.bank)
               }
               error={this.regexError("bankCode", edited?.bankAccount?.bankCode)}
               onChange={(v) =>
