@@ -513,7 +513,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
     } = this.props;
-    console.log("this.state", this.bankCode(this.state?.data?.bankAccount?.bank),'this.state',this.state);
+   
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -866,9 +866,9 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               label="bankCode"
               inputProps={{ maxLength: MAX_BANK_CODE_LENGTH }}
               value={
-                !!edited && !!edited.bankAccount
+                !!edited && !!edited.bankAccount?.bankCode
                   ? edited.bankAccount.bankCode
-                  : this.bankCode( this.state?.data?.bankAccount?.bank)
+                  : this.bankCode(this.state?.data?.bankAccount?.bank)
               }
               error={this.regexError("bankCode", edited?.bankAccount?.bankCode)}
               onChange={(v) =>
