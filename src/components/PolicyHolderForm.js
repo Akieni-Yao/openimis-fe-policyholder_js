@@ -17,6 +17,8 @@ import {
   FormattedMessage,
 } from "@openimis/fe-core";
 import { fetchPolicyHolder, clearPolicyHolder, sendEmail, printReport } from "../actions";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@material-ui/core";
+
 import {
   RIGHT_PORTALPOLICYHOLDER_SEARCH,
   RIGHT_POLICYHOLDER_CREATE,
@@ -32,6 +34,46 @@ const styles = (theme) => ({
   paperHeader: theme.paper.header,
   paperHeaderAction: theme.paper.action,
   item: theme.paper.item,
+  dialogBg: {
+    backgroundColor: "#FFFFFF",
+    width: 300,
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingBootom: 10
+  },
+  dialogText: {
+    color: "#000000",
+    fontWeight: "Bold"
+  },
+  primaryHeading: {
+    font: 'normal normal medium 20px/22px Roboto',
+    color: '#333333'
+  },
+  primaryButton: {
+    backgroundColor: "#FFFFFF 0% 0% no-repeat padding-box",
+    border: '1px solid #999999',
+    color: "#999999",
+    borderRadius: '4px',
+    // fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: '#FF0000',
+      border: '1px solid #FF0000',
+      color: '#FFFFFF'
+    },
+  },//theme.dialog.primaryButton,
+  secondaryButton: {
+    backgroundColor: "#FFFFFF 0% 0% no-repeat padding-box",
+    border: '1px solid #999999',
+    color: "#999999",
+    borderRadius: '4px',
+    // fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: '#FF0000',
+      border: '1px solid #FF0000',
+      color: '#FFFFFF'
+    },
+  }
 });
 
 const jsonFields = ["address", "contactName", "bankAccount", "jsonExt"];
@@ -101,7 +143,7 @@ class PolicyHolderForm extends Component {
   }
   isMandatoryFieldsEmpty = () => {
     const { policyHolder } = this.state;
-//  console.log("this.state",this.state)
+    //  console.log("this.state",this.state)
     // Check if rccm has a value
     const rccmHasValue = !!policyHolder?.jsonExt?.rccm;
 
@@ -218,6 +260,11 @@ class PolicyHolderForm extends Component {
       this.displayPrintWindow(base64Data, contentType)
     }
   }
+  cancel = () => {
+    this.setState({
+      success: false,
+    });
+  }
   doesPolicyHolderChange = () => {
     const { policyHolder } = this.props;
     if (_.isEqual(policyHolder, this.state.policyHolder)) {
@@ -255,7 +302,7 @@ class PolicyHolderForm extends Component {
     !this.props.rights.includes(RIGHT_POLICYHOLDER_UPDATE);
 
   render() {
-    const { intl, rights, back, save, policyHolderId } = this.props;
+    const { intl, rights, back, save, policyHolderId, classes } = this.props;
     return (
       <Fragment>
         <Helmet
@@ -291,6 +338,8 @@ class PolicyHolderForm extends Component {
           emailButton={this.emailButton}
           email={policyHolderId}
           printButton={this.printReport}
+          success={this.state.success}
+
         />
         <CommonSnackbar
           open={this.props.snackbar}
@@ -306,6 +355,24 @@ class PolicyHolderForm extends Component {
           backgroundColor="#00913E"
         />
         {this.state.success && (
+          <Dialog open={this.state.success} onClose={this.cancel} maxWidth="md">
+            <DialogContent className={classes.dialogBg}>
+              <DialogContentText className={classes.primaryHeading}>
+                <FormattedMessage
+                  module="insuree"
+                  id="success"
+                // values={this.state.successMessage}
+                />
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions className={classes.dialogBg}>
+              <Button onClick={this.cancel} className={classes.secondaryButton}>
+                <FormattedMessage module="core" id="cancel" />
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        {/* {this.state.success && (
           <Snackbar
             open={this.state.success}
             anchorOrigin={{
@@ -319,7 +386,7 @@ class PolicyHolderForm extends Component {
               {this.state.successMessage}
             </Alert>
           </Snackbar>
-        )}
+        )} */}
       </Fragment>
     );
   }
