@@ -695,8 +695,8 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                   : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
-              readOnly={true}
-              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+              readOnly={false}
+            // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
 

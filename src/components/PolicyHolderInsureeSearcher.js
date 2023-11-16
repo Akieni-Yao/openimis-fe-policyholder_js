@@ -99,19 +99,19 @@ class PolicyHolderInsureeSearcher extends Component {
             rights.includes(RIGHT_POLICYHOLDERINSUREE_REPLACE) ||
             rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_REPLACE)
         ) {
-            result.push("policyHolder.emptyLabel");
+            result.push("policyHolder.replace");
         }
         if (
             rights.includes(RIGHT_POLICYHOLDERINSUREE_UPDATE) ||
             rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_UPDATE)
         ) {
-            result.push("policyHolder.emptyLabel");
+            result.push("policyHolder.edit");
         }
         if (
             rights.includes(RIGHT_POLICYHOLDERINSUREE_DELETE) ||
             rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_DELETE)
         ) {
-            result.push("policyHolder.emptyLabel");
+            result.push("policyHolder.delete");
         }
         return result;
     }
