@@ -388,6 +388,85 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         { val: "17", code: "TEN" },
         { val: "18", code: "AUT" },
       ],
+      legalFormVal: [
+        {
+          value: "1",
+          label: {
+            en: "Association/ Syndicat",
+            fr: "Association/ Syndicat physique",
+          },
+        },
+        {
+          value: "2",
+          label: {
+            en: "SA/ SAU/ SAS",
+            fr: "SA/ SAU/ SAS",
+          },
+        },
+        {
+          value: "3",
+          label: {
+            en: "Confession religieuse",
+            fr: "Confession religieuse",
+          },
+        },
+        {
+          value: "4",
+          label: {
+            en: "Collectivité publique",
+            fr: "Collectivité publique",
+          },
+        },
+        {
+          value: "5",
+          label: {
+            en: "Coopérative/ Société mutualiste/ GIE",
+            fr: "Coopérative/ Société mutualiste/ GIE",
+          },
+        },
+        {
+          value: "6",
+          label: {
+            en: "Établissement individuel/ EURL",
+            fr: "Établissement individuel/ EURL",
+          },
+        },
+        {
+          value: "7",
+          label: {
+            en: "Établissement public",
+            fr: "Établissement public",
+          },
+        },
+        {
+          value: "8",
+          label: {
+            en: "Fondation/ ONG",
+            fr: "Fondation/ ONG",
+          },
+        },
+        {
+          value: "9",
+          label: {
+            en: "Organisation Internationale/ Représentation diplo",
+            fr: "Organisation Internationale/ Représentation diplo",
+          },
+        },
+        {
+          value: "10",
+          label: {
+            en: "SARL/ SARLU",
+            fr: "SARL/ SARLU",
+          },
+        },
+        {
+          value: "11",
+          label: {
+            en: "Autre",
+            fr: "Autre à risque limité",
+          },
+        },
+      ],
     };
   }
 
@@ -439,6 +518,20 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
   };
 
   updateAttributes = (updates) => {
+    // const selectedOption = this.state.legalFormVal.find(
+    //   (option) => option.value === updates.legalForm
+    // );
+
+    // const labelValue = !!selectedOption ? selectedOption.label.en : null;
+    const legalNameByVal = () => {
+      const { legalFormVal } = this.state;
+      for (let i = 0; i < legalFormVal.length; i++) {
+        if (legalFormVal[i].value == updates.legalForm) {
+          return legalFormVal[i].label.fr;
+        }
+      }
+      return undefined;
+    };
     const findCodeByValue = () => {
       const { dataArray } = this.state;
       for (let i = 0; i < this.state.dataArray.length; i++) {
@@ -448,9 +541,10 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       }
       return undefined;
     };
+    console.log("updates", updates, "state", legalNameByVal());
     const activityCode = findCodeByValue();
     let data = _.merge({}, this.state.data, updates, {
-      jsonExt: { activityCode: activityCode },
+      jsonExt: { activityCode: activityCode, legalForm: legalNameByVal() },
     });
     if (!data.dateValidFrom) {
       data.dateValidFrom = new Date().toISOString().slice(0, 10);
@@ -458,7 +552,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     this.props.onEditedChanged(data);
   };
   bankCode = (bankValue) => {
-    console.log("bankval", bankValue);
     let bankcodeVal;
 
     switch (bankValue) {
@@ -513,7 +606,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
     } = this.props;
-   
+    console.log("legalform");
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -696,7 +789,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={false}
-            // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
 
@@ -792,7 +885,9 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               withNull
               nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
               value={!!edited ? edited.legalForm : null}
-              onChange={(v) => this.updateAttribute("legalForm", v)}
+              onChange={(v) => {
+                this.updateAttribute("legalForm", v);
+              }}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
