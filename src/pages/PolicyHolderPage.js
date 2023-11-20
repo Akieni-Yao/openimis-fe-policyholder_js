@@ -21,7 +21,7 @@ const styles = theme => ({
 class PolicyHolderPage extends Component {
     constructor(props) {
         super(props);
-        this.state = { snackbar: false ,resCode:""};
+        this.state = { snackbar: false, resCode: "" };
     }
     back = () => {
         historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
@@ -40,11 +40,14 @@ class PolicyHolderPage extends Component {
                         this.titleParams(policyHolder)
                     ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
                 );
-                console.log('respoupd',response);
+                console.log('respoupd', response);
                 if (!response.error) {
                     console.log("Got code", response?.policyHolder[0]?.policyholder?.code);
                     this.setState({ snackbar: true });
                     this.setState({ resCode: response?.policyHolder[0]?.policyholder?.code });
+                    setTimeout(() => {
+                        historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
+                    }, 5000)
                 }
             } else {
                 const response = await createPolicyHolder(
@@ -60,6 +63,9 @@ class PolicyHolderPage extends Component {
                     console.log("Got code", response?.policyHolder[0]?.policyholder?.code);
                     this.setState({ snackbar: true });
                     this.setState({ resCode: response?.policyHolder[0]?.policyholder?.code });
+                    setTimeout(() => {
+                        historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
+                    }, 5000)
                 }
             }
         } catch (error) {

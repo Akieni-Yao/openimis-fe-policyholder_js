@@ -48,6 +48,7 @@ class PolicyHolderInsureesTabPanel extends Component {
     super(props);
     this.state = {
       reset: 0,
+            insureeCheck: false,
     };
   }
 
@@ -81,7 +82,10 @@ class PolicyHolderInsureesTabPanel extends Component {
         alert(`Error ${response.status}: ${payload}`);
         return;
       }
-      alert(`Success: ${payload}`);
+      // alert(`Success: ${payload}`);
+            console.log(`Success: ${payload}`);
+
+            this.setState({ insureeCheck: true })
     } catch (error) {
       alert(
         error?.message ??
@@ -92,41 +96,28 @@ class PolicyHolderInsureesTabPanel extends Component {
     }
   };
 
-  handleDownload = () => {
-    const data = [
-      [
-        "Type d'enrôlement",
-        "Prénom",
-        "Nom",
-        "ID",
-        "Date de naissance",
-        "Lieu de naissance",
-        "Sexe",
-        "Civilité",
-        "Téléphone",
-        "Adresse",
-        "Village",
-        "ID Famille",
-        "Plan",
-        "Salaire",
-      ],
-      [
-        "Salariés du privé",
-        "Test",
-        "Test",
-        "",
-        "03/15/2007",
-        "Brazzaville",
-        "M",
-        "Célibataire",
-        "242060000000",
-        "Address",
-        "CG105",
-        "",
-        "PSC01",
-        "50000",
-      ],
-    ];
+    handleDownload = () => {
+        const data = [
+            [
+                "Type d'enrôlement",
+                "Prénom",
+                "Nom",
+                "ID",
+                "Date de naissance",
+                "Lieu de naissance",
+                "Sexe",
+                "Civilité",
+                "Téléphone",
+                "Adresse",
+                "Village",
+                "ID Famille",
+                "Email",
+                "Matricule",
+                "Plan",
+                "Salaire",
+            ],
+            ["Salariés du privé", "Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "", "", "PSC01", "50000"]
+        ];
 
     // Create a worksheet
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -232,25 +223,26 @@ class PolicyHolderInsureesTabPanel extends Component {
                                                 
                                             </Button>
                                         </Grid> */}
-                </Grid>
-              )}
-              <PolicyHolderInsureeSearcher
-                policyHolder={policyHolder}
-                rights={rights}
-                reset={this.state.reset}
-                onSave={this.onSave}
-              />
-            </Fragment>
-          ) : (
-            <FormattedMessage
-              module="policyHolder"
-              id="policyHolderInsuree.tabDisabledError"
-            />
-          )}
-        </PublishedComponent>
-      )
-    );
-  }
+                                    </Grid>
+                                )}
+                            <PolicyHolderInsureeSearcher
+                                policyHolder={policyHolder}
+                                rights={rights}
+                                reset={this.state.reset}
+                                onSave={this.onSave}
+                                insureeCheck={this.state.insureeCheck}
+                            />
+                        </Fragment>
+                    ) : (
+                        <FormattedMessage
+                            module="policyHolder"
+                            id="policyHolderInsuree.tabDisabledError"
+                        />
+                    )}
+                </PublishedComponent>
+            )
+        );
+    }
 }
 
 export { PolicyHolderInsureesTabLabel, PolicyHolderInsureesTabPanel };

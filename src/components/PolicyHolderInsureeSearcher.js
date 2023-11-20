@@ -47,7 +47,14 @@ class PolicyHolderInsureeSearcher extends Component {
         }
     }
 
+
+
     componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("this.props.insureeCheck", this.props.insureeCheck)
+        if (this.props.insureeCheck && prevProps.insureeCheck !== this.props.insureeCheck) {
+            this.props.fetchPolicyHolderInsurees(this.props.modulesManager, this.state.queryParams);
+        }
+
         if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
             this.state.confirmedAction();
         } else if (prevState.toDelete !== this.state.toDelete) {
@@ -55,8 +62,8 @@ class PolicyHolderInsureeSearcher extends Component {
         } else if (prevState.deleted !== this.state.deleted || prevProps.reset !== this.props.reset) {
             this.refetch();
         }
-    }
 
+    }
     fetch = params => this.props.fetchPolicyHolderInsurees(this.props.modulesManager, params);
 
     refetch = () => this.fetch(this.state.queryParams);
@@ -124,14 +131,14 @@ class PolicyHolderInsureeSearcher extends Component {
                     value={policyHolderInsuree.insuree}
                     withLabel={false}
                     policyHolderId={decodeId(policyHolder.id)}
-                    readOnly/>
+                    readOnly />
                 : "",
             policyHolderInsuree => !!policyHolderInsuree.contributionPlanBundle
                 ? <PolicyHolderContributionPlanBundlePicker
                     value={policyHolderInsuree.contributionPlanBundle}
                     withLabel={false}
                     policyHolderId={decodeId(policyHolder.id)}
-                    readOnly/>
+                    readOnly />
                 : "",
             policyHolderInsuree => {
                 /**
@@ -148,7 +155,7 @@ class PolicyHolderInsureeSearcher extends Component {
                         className={POLICYHOLDERINSUREE_CLASSNAME}
                         entity={{ policy, ...others }}
                         value={policyHolderInsuree.jsonExt}
-                        readOnly/>
+                        readOnly />
                     : ""
             },
             policyHolderInsuree => !!policyHolderInsuree.dateValidFrom
@@ -267,7 +274,7 @@ class PolicyHolderInsureeSearcher extends Component {
     }
 
     render() {
-        const { intl, fetchingPolicyHolderInsurees, fetchedPolicyHolderInsurees, errorPolicyHolderInsurees, 
+        const { intl, fetchingPolicyHolderInsurees, fetchedPolicyHolderInsurees, errorPolicyHolderInsurees,
             policyHolderInsurees, policyHolderInsureesPageInfo, policyHolderInsureesTotalCount } = this.props;
         return (
             <Fragment>
