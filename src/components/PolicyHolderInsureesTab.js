@@ -48,7 +48,7 @@ class PolicyHolderInsureesTabPanel extends Component {
     super(props);
     this.state = {
       reset: 0,
-            insureeCheck: false,
+            // insureeCheck: false,
     };
   }
 
@@ -83,9 +83,9 @@ class PolicyHolderInsureesTabPanel extends Component {
         return;
       }
       // alert(`Success: ${payload}`);
-            console.log(`Success: ${payload}`);
+            // console.log(`Success: ${payload}`);
 
-            this.setState({ insureeCheck: true })
+            // this.setState({ insureeCheck: true })
     } catch (error) {
       alert(
         error?.message ??
@@ -111,12 +111,10 @@ class PolicyHolderInsureesTabPanel extends Component {
                 "Adresse",
                 "Village",
                 "ID Famille",
-                "Email",
-                "Matricule",
                 "Plan",
                 "Salaire",
             ],
-            ["Salariés du privé", "Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "", "", "PSC01", "50000"]
+            ["Salariés du privé", "Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "PSC01", "50000"]
         ];
 
     // Create a worksheet
@@ -230,7 +228,7 @@ class PolicyHolderInsureesTabPanel extends Component {
                                 rights={rights}
                                 reset={this.state.reset}
                                 onSave={this.onSave}
-                                insureeCheck={this.state.insureeCheck}
+                                // insureeCheck={this.state.insureeCheck}
                             />
                         </Fragment>
                     ) : (

@@ -45,9 +45,9 @@ class PolicyHolderPage extends Component {
                     console.log("Got code", response?.policyHolder[0]?.policyholder?.code);
                     this.setState({ snackbar: true });
                     this.setState({ resCode: response?.policyHolder[0]?.policyholder?.code });
-                    setTimeout(() => {
-                        historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
-                    }, 5000)
+                    // setTimeout(() => {
+                    //     historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
+                    // }, 5000)
                 }
             } else {
                 const response = await createPolicyHolder(
@@ -63,9 +63,9 @@ class PolicyHolderPage extends Component {
                     console.log("Got code", response?.policyHolder[0]?.policyholder?.code);
                     this.setState({ snackbar: true });
                     this.setState({ resCode: response?.policyHolder[0]?.policyholder?.code });
-                    setTimeout(() => {
-                        historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
-                    }, 5000)
+                    // setTimeout(() => {
+                    //     historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyHolders")
+                    // }, 5000)    
                 }
             }
         } catch (error) {

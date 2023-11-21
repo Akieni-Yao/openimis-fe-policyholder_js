@@ -45,9 +45,9 @@ class PolicyHolderContributionPlanBundleSearcher extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        setTimeout(() => {
-            this.props.fetchPickerPolicyHolderContributionPlanBundles(this.props.modulesManager, [`policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`]);
-        }, 2000);
+        // setTimeout(() => {
+        //     this.props.fetchPickerPolicyHolderContributionPlanBundles(this.props.modulesManager, [`policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`]);
+        // }, 2000);
         if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
             this.state.confirmedAction();
         } else if (prevState.toDelete !== this.state.toDelete) {
