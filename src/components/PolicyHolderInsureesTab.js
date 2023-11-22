@@ -99,7 +99,6 @@ class PolicyHolderInsureesTabPanel extends Component {
     handleDownload = () => {
         const data = [
             [
-                "Type d'enrôlement",
                 "Prénom",
                 "Nom",
                 "ID",
@@ -113,7 +112,6 @@ class PolicyHolderInsureesTabPanel extends Component {
                 "ID Famille",
                 "Email",
                 "Matricule",
-                "Plan",
                 "Salaire",
             ],
             ["Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "", "", "50000"]
