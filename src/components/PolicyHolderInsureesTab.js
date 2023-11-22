@@ -116,7 +116,7 @@ class PolicyHolderInsureesTabPanel extends Component {
                 "Plan",
                 "Salaire",
             ],
-            ["Salariés du privé", "Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "", "", "PSC01", "50000"]
+            ["Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "", "", "50000"]
         ];
 
     // Create a worksheet
