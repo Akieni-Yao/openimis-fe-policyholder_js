@@ -82,7 +82,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         alert(`Error ${response.status}: ${payload}`);
         return;
       }
-      // alert(`Success: ${payload}`);
+      alert(`Success: ${payload}`);
             console.log(`Success: ${payload}`);
 
             this.setState({ insureeCheck: true })
