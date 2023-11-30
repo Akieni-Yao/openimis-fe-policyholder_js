@@ -82,8 +82,8 @@ class PolicyHolderInsureesTabPanel extends Component {
         alert(`Error ${response.status}: ${payload}`);
         return;
       }
-      // alert(`Success: ${payload}`);
-            // console.log(`Success: ${payload}`);
+      alert(`Success: ${payload}`);
+            console.log(`Success: ${payload}`);
 
             // this.setState({ insureeCheck: true })
     } catch (error) {
@@ -99,7 +99,6 @@ class PolicyHolderInsureesTabPanel extends Component {
     handleDownload = () => {
         const data = [
             [
-                "Type d'enrôlement",
                 "Prénom",
                 "Nom",
                 "ID",
@@ -111,10 +110,11 @@ class PolicyHolderInsureesTabPanel extends Component {
                 "Adresse",
                 "Village",
                 "ID Famille",
-                "Plan",
+                "Email",
+                "Matricule",
                 "Salaire",
             ],
-            ["Salariés du privé", "Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "PSC01", "50000"]
+            ["Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "", "", "50000"]
         ];
 
     // Create a worksheet
