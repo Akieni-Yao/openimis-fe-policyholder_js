@@ -690,9 +690,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.jsonExt ? edited.jsonExt.mainActivity : ""
               }
-              onChange={(v) =>
-                this.updateAttributes({ jsonExt: { mainActivity: v } })
-              }
+              onChange={(v) =>{
+                const capitalizedValue = v
+                  .split(' ')
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' ');
+          
+                this.updateAttributes({ jsonExt: { mainActivity: capitalizedValue } });
+              }}
               error={this.regexError(
                 "mainActivity",
                 edited?.jsonExt?.mainActivity
