@@ -37,6 +37,7 @@ const POLICYHOLDERINSUREE_FULL_PROJECTION = (modulesManager) => [
   "id",
   "dateValidFrom",
   "dateValidTo",
+  "employerNumber",
   "jsonExt",
   "lastPolicy{id}",
   "policyHolder{id}",
@@ -97,7 +98,7 @@ function dateTimeToDate(date) {
 
 function formatMail(edited) {
   // console.log(edited, "format")
-  let reportName="registration_application"
+  let reportName = "registration_application"
   // if(edited?.camuNumber!=null)
   // {
   //   reportName="enrollment_receipt"
@@ -110,7 +111,7 @@ function formatMail(edited) {
 
 function formatPrint(edited) {
   console.log(edited, "format")
-  let reportName="registration_application"
+  let reportName = "registration_application"
   // if(edited?.camuNumber!=null)
   // {
   //   reportName="enrollment_receipt"
@@ -291,6 +292,7 @@ function formatPolicyHolderInsureeGQL(
   policyHolderInsuree,
   isReplaceMutation = false
 ) {
+  console.log("employerNumber",policyHolderInsuree)
   return `
         ${!!policyHolderInsuree.id
       ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
@@ -316,6 +318,11 @@ function formatPolicyHolderInsureeGQL(
     }
         ${!!policyHolderInsuree.jsonExt
       ? `jsonExt: ${JSON.stringify(policyHolderInsuree.jsonExt)}`
+      : ""
+    }
+    ${!!policyHolderInsuree.employerNumber
+      ? `employerNumber: "${policyHolderInsuree.employerNumber
+      }"`
       : ""
     }
         ${!!policyHolderInsuree.dateValidFrom
@@ -423,8 +430,8 @@ export function createPolicyHolder(policyHolder, clientMutationLabel) {
       clientMutationLabel,
       requestedDateTime,
     },
-      true,
-      "policyHolder { policyholder { id code }}",
+    true,
+    "policyHolder { policyholder { id code }}",
   );
 }
 
@@ -447,8 +454,8 @@ export function updatePolicyHolder(policyHolder, clientMutationLabel) {
       clientMutationLabel,
       requestedDateTime,
     },
-      true,
-      "policyHolder { policyholder { id code }}",
+    true,
+    "policyHolder { policyholder { id code }}",
   );
 }
 
@@ -490,7 +497,7 @@ export function createPolicyHolderInsuree(
     clientMutationLabel
   );
   var requestedDateTime = new Date();
-  return graphql(
+  return  graphql(
     mutation.payload,
     [
       "POLICYHOLDER_MUTATION_REQ",
