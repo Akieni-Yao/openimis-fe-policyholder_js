@@ -541,7 +541,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       }
       return undefined;
     };
-    console.log("updates", updates, "state", legalNameByVal());
     const activityCode = findCodeByValue();
     let data = _.merge({}, this.state.data, updates, {
       jsonExt: { activityCode: activityCode, legalForm: legalNameByVal() },
@@ -606,7 +605,22 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
     } = this.props;
-    console.log("legalform");
+    const capitalizeWords = (inputString) => {
+      let result = "";
+    
+      let capitalizeNext = true; // Flag to indicate if the next character should be capitalized
+    
+      for (const char of inputString) {
+        if (char === ' ' || char === '\t') {
+          capitalizeNext = true; // Capitalize the next character if the current one is a space or tab
+          result += char; // Include the space or tab in the result
+        } else {
+          result += capitalizeNext ? char.toUpperCase() : char.toLowerCase();
+          capitalizeNext = false;
+        }
+      }    
+      return result;
+    };
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -688,20 +702,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               required
               inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
               value={
-                !!edited && !!edited.jsonExt ? edited.jsonExt.mainActivity : ""
+                !!edited && !!edited.jsonExt ? capitalizeWords(edited.jsonExt.mainActivity) : ""
               }
-              onChange={(v) =>{
-                const capitalizedValue = v
-                  .split(' ')
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(' ');
-          
+              onChange={(v) => {
+                const capitalizedValue = capitalizeWords(v);
                 this.updateAttributes({ jsonExt: { mainActivity: capitalizedValue } });
               }}
-              error={this.regexError(
-                "mainActivity",
-                edited?.jsonExt?.mainActivity
-              )}
+              error={this.regexError("mainActivity", edited?.jsonExt?.mainActivity)}
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>

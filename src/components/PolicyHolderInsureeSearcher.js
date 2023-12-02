@@ -50,7 +50,6 @@ class PolicyHolderInsureeSearcher extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("this.props.insureeCheck", this.props.insureeCheck)
         if (this.props.insureeCheck && prevProps.insureeCheck !== this.props.insureeCheck) {
             this.props.fetchPolicyHolderInsurees(this.props.modulesManager, this.state.queryParams);
         }
