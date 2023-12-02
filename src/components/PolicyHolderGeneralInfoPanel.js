@@ -608,12 +608,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     const capitalizeWords = (inputString) => {
       let result = "";
     
-      let capitalizeNext = true; // Flag to indicate if the next character should be capitalized
+      let capitalizeNext = true;
     
       for (const char of inputString) {
         if (char === ' ' || char === '\t') {
-          capitalizeNext = true; // Capitalize the next character if the current one is a space or tab
-          result += char; // Include the space or tab in the result
+          capitalizeNext = true;
+          result += char;
         } else {
           result += capitalizeNext ? char.toUpperCase() : char.toLowerCase();
           capitalizeNext = false;
