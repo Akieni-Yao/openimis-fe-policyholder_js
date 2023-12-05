@@ -117,7 +117,6 @@ class UpdatePolicyHolderInsureeDialog extends Component {
     render() {
         const { intl, classes, disabled, isReplacing = false } = this.props;
         const { open, policyHolderInsuree } = this.state;
-        console.log("policyHolderInsuree", policyHolderInsuree)
         return (
             <Fragment>
                 {isReplacing ? (
