@@ -116,6 +116,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         "Email",
         "Matricule",
         "Salaire",
+        "Delete"
       ],
       [
         "",
@@ -133,6 +134,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         "",
         "",
         "50000",
+        ""
       ],
     ];
 
