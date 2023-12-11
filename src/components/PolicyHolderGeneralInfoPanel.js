@@ -686,18 +686,18 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="mainActivity"
               required
-              inputProps={{ maxLength: MAX_TRADENAME_LENGTH }}
+              inputProps={{
+                maxLength: MAX_TRADENAME_LENGTH,
+              }}
               value={
                 !!edited && !!edited.jsonExt ? edited.jsonExt.mainActivity : ""
               }
-              onChange={(v) =>{
-                const capitalizedValue = v
-                  .split(' ')
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(' ');
-          
-                this.updateAttributes({ jsonExt: { mainActivity: capitalizedValue } });
+              onChange={(v) => {
+                this.updateAttributes({
+                  jsonExt: { mainActivity: v },
+                });
               }}
+              capitalize
               error={this.regexError(
                 "mainActivity",
                 edited?.jsonExt?.mainActivity
