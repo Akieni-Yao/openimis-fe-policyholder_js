@@ -10,7 +10,8 @@ import {
     formatMessageWithValues,
     PublishedComponent,
     decodeId,
-    Contributions
+    Contributions,
+    TextInput
 } from "@openimis/fe-core";
 import { Fab, Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -134,6 +135,19 @@ class CreatePolicyHolderInsureeDialog extends Component {
                                 gridItemStyle={classes.item}
                                 setJsonExtValid={this.setJsonExtValid}
                             />
+                            <Grid item className={classes.item}>
+                                <TextInput
+                                    module="insuree"
+                                    label="Insuree.employee_number"
+                                    required={false}
+                                    // readOnly={readOnly}
+                                    value={!!policyHolderInsuree && !!policyHolderInsuree?.employerNumber ? policyHolderInsuree?.employerNumber : ""}
+                                    // // onChange={(v) => {
+                                    //   this.updateExts("employee_number", v);
+                                    // }}
+                                    onChange={(v) => this.updateAttribute("employerNumber", v)}
+                                />
+                            </Grid>
                             <Grid item className={classes.item}>
                                 <PublishedComponent
                                     pubRef="core.DatePicker"

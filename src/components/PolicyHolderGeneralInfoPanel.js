@@ -541,7 +541,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       }
       return undefined;
     };
-    console.log("updates", updates, "state", legalNameByVal());
     const activityCode = findCodeByValue();
     let data = _.merge({}, this.state.data, updates, {
       jsonExt: { activityCode: activityCode, legalForm: legalNameByVal() },
@@ -606,7 +605,22 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
     } = this.props;
-    console.log("legalform");
+    // const capitalizeWords = (inputString) => {
+    //   let result = "";
+    
+    //   let capitalizeNext = true;
+    
+    //   for (const char of inputString) {
+    //     if (char === ' ' || char === '\t') {
+    //       capitalizeNext = true;
+    //       result += char;
+    //     } else {
+    //       result += capitalizeNext ? char.toUpperCase() : char.toLowerCase();
+    //       capitalizeNext = false;
+    //     }
+    //   }    
+    //   return result;
+    // };
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
