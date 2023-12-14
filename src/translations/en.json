@@ -9,6 +9,7 @@
     "policyHolder.displayName": "Display name",
     "policyHolder.location": "Location",
     "policyHolder.legalForm": "Legal Form",
+    "policyHolder.employerName": "Employer Name",
     "policyHolder.activityCode": "Activity Code",
     "policyHolder.dateValidFrom": "Created From",
     "policyHolder.dateValidTo": "Date Valid To",
