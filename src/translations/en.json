@@ -120,5 +120,6 @@
     "policyHolder.bankAccountNbValidation.regexMsg.en": "Invalid Bank Account Number",
     "policyHolder.bankCodeValidation.regexMsg.en": "Invalid Bank Code",
     "policyHolder.nbEmployeesValidation.regexMsg.en": "Please Fill Numeric Value",
-    "policyHolder.policyHolderInsuree.downloadsample": "Download Sample"
+    "policyHolder.policyHolderInsuree.downloadsample": "Download Sample",
+    "policyHolder.policyHolderInsuree.downloadInsuree": "Download Insuree"
 }

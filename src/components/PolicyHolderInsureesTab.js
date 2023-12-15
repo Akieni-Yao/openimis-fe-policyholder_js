@@ -48,7 +48,8 @@ class PolicyHolderInsureesTabPanel extends Component {
     super(props);
     this.state = {
       reset: 0,
-            // insureeCheck: false,
+      insureeCheck: false,
+      downloadError:null
     };
   }
 
@@ -83,9 +84,9 @@ class PolicyHolderInsureesTabPanel extends Component {
         return;
       }
       alert(`Success: ${payload}`);
-            console.log(`Success: ${payload}`);
+      console.log(`Success: ${payload}`);
 
-            // this.setState({ insureeCheck: true })
+      this.setState({ insureeCheck: true });
     } catch (error) {
       alert(
         error?.message ??
@@ -93,29 +94,49 @@ class PolicyHolderInsureesTabPanel extends Component {
             `An error occurred. Please contact your administrator. ${error?.message}`
           )
       );
+      this.setState({downloadError:error})
     }
   };
 
-    handleDownload = () => {
-        const data = [
-            [
-                "Prénom",
-                "Nom",
-                "ID",
-                "Date de naissance",
-                "Lieu de naissance",
-                "Sexe",
-                "Civilité",
-                "Téléphone",
-                "Adresse",
-                "Village",
-                "ID Famille",
-                "Email",
-                "Matricule",
-                "Salaire",
-            ],
-            ["Test", "Test", "", "03/15/2007", "Brazzaville", "M", "Célibataire", "242060000000", "Address", "CG105", "", "", "", "50000"]
-        ];
+  handleDownload = () => {
+    const data = [
+      [
+        "CAMU Number",
+        "Prénom",
+        "Nom",
+        "Tempoprary CAMU Number",
+        "Date de naissance",
+        "Lieu de naissance",
+        "Sexe",
+        "Civilité",
+        "Téléphone",
+        "Adresse",
+        "Village",
+        "ID Famille",
+        "Email",
+        "Matricule",
+        "Salaire",
+        "Delete"
+      ],
+      [
+        "",
+        "Test",
+        "Test",
+        "",
+        "03/15/2007",
+        "Brazzaville",
+        "M",
+        "Célibataire",
+        "242060000000",
+        "Address",
+        "CG105",
+        "",
+        "",
+        "",
+        "50000",
+        ""
+      ],
+    ];
 
     // Create a worksheet
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -138,6 +159,82 @@ class PolicyHolderInsureesTabPanel extends Component {
     link.click();
     document.body.removeChild(link);
   };
+  handleInsureeDownload = async () => {
+    const { policyHolder } = this.props;
+    // const file = event.target.files[0];
+    // let formData = new FormData();
+    // formData.append("file", file);
+
+    let encodedCode = encodeURIComponent(policyHolder.code);
+    let url_import = `${baseApiUrl}/policyholder/export/${encodedCode}/policyholderinsurees`;
+
+    try {
+      const response = await fetch(url_import, {
+        headers: apiHeaders,
+        // body: formData,
+        method: "GET",
+        credentials: "same-origin",
+      });
+
+      // const payload = await response.text();
+
+      if (response.status >= 400) {
+        // alert(`Error ${response.status}: ${payload.error}`);
+        // alert(`Error ${response.status}: ${payload}`);
+
+        return;
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "policyholder_insurees.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // alert(`Success: ${payload}`);
+      // console.log(`Success: ${payload}`);
+
+      this.setState({ insureeCheck: true });
+    } catch (error) {
+      alert(
+        error?.message ??
+          formatMessage(
+            `An error occurred. Please contact your administrator. ${error?.message}`
+          )
+      );
+    }
+  };
+  // handleInsureeDownload = async () => {
+  //   const policyholderId = "CAMUAEP0911022023008";
+  //   const headers = {
+  //     "Authorization": `Bearer ${token}`,
+  //     "Content-Type": "application/json",
+  //   };
+  //   try {
+  //     const response = await fetch(
+  //       `https://camu.bluesquare.org/api/policyholder/export/${policyholderId}/policyholderinsurees`,
+  //       {
+  //         method: "POST",
+  //         headers: headers,
+  //       });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = "policyholder_insurees.xlsx";
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     document.body.removeChild(a);
+  //   } catch (error) {
+  //     console.error("Error downloading file:", error);
+  //   }
+  // };
+
   render() {
     const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
     return (
@@ -212,6 +309,38 @@ class PolicyHolderInsureesTabPanel extends Component {
                       onSave={this.onSave}
                     />
                   </Grid>
+                  <Grid item>
+                    {/* <Input
+                    required
+                    id="download-button"
+                    style={{ display: "none" }}
+                    inputProps={{
+                      accept:
+                        ".xls, application/vnd.ms-excel, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    }}
+                    type="file"
+                    onChange={this.onUpload}
+                  /> */}
+                    <label htmlFor="download-button">
+                      <Button
+                        onClick={this.handleInsureeDownload}
+                        variant="contained"
+                        component="span"
+                        color="primary"
+                        style={{
+                          marginLeft: "50px",
+                          display: "flex",
+                          justifyContent: "end",
+                        }}
+                        startIcon={<GetAppIcon />}
+                      >
+                        <FormattedMessage
+                          module="policyHolder"
+                          id="policyHolderInsuree.downloadInsuree"
+                        />
+                      </Button>
+                    </label>
+                  </Grid>
                   {/* <Grid item>
                                             <Button onClick={this.handleDownload} style={{ marginLeft: "50px", display: "flex", justifyContent: "end" }} variant="contained"
                                                 component="span"
@@ -221,26 +350,32 @@ class PolicyHolderInsureesTabPanel extends Component {
                                                 
                                             </Button>
                                         </Grid> */}
-                                    </Grid>
-                                )}
-                            <PolicyHolderInsureeSearcher
-                                policyHolder={policyHolder}
-                                rights={rights}
-                                reset={this.state.reset}
-                                onSave={this.onSave}
-                                // insureeCheck={this.state.insureeCheck}
-                            />
-                        </Fragment>
-                    ) : (
-                        <FormattedMessage
-                            module="policyHolder"
-                            id="policyHolderInsuree.tabDisabledError"
-                        />
-                    )}
-                </PublishedComponent>
-            )
-        );
-    }
+                </Grid>
+              )}
+              <PolicyHolderInsureeSearcher
+                policyHolder={policyHolder}
+                rights={rights}
+                reset={this.state.reset}
+                onSave={this.onSave}
+                insureeCheck={this.state.insureeCheck}
+              />
+            </Fragment>
+          ) : (
+            <FormattedMessage
+              module="policyHolder"
+              id="policyHolderInsuree.tabDisabledError"
+            />
+          )}
+            {/* {(fetching || error) && (
+          <Grid className={classes.loader} container justifyContent="center" alignItems="center">
+            <ProgressOrError progress={this.state.insureeCheck} error={downloadError} />{" "}
+            {/* We do not want to display the spinner with the empty table */}
+          {/* </Grid>
+        )}  */}
+        </PublishedComponent>
+      )
+    );
+  }
 }
 
 export { PolicyHolderInsureesTabLabel, PolicyHolderInsureesTabPanel };
