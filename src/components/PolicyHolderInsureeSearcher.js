@@ -98,6 +98,7 @@ class PolicyHolderInsureeSearcher extends Component {
             "policyHolder.name",
             "policyHolder.contributionPlanBundle",
             "policyHolder.calculation",
+            "Insuree.employee_number",
             "policyHolder.dateValidFrom",
             "policyHolder.dateValidTo"
         ];
@@ -157,6 +158,9 @@ class PolicyHolderInsureeSearcher extends Component {
                         readOnly />
                     : ""
             },
+            policyHolderInsuree => policyHolderInsuree?.employerNumber
+            ? policyHolderInsuree?.employerNumber
+            : "",
             policyHolderInsuree => !!policyHolderInsuree.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, policyHolderInsuree.dateValidFrom)
                 : "",
