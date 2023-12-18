@@ -126,19 +126,24 @@ class PolicyHolderInsureeSearcher extends Component {
     itemFormatters = () => {
         const { intl, modulesManager, rights, policyHolder, onSave } = this.props;
         let result = [
-            policyHolderInsuree => !!policyHolderInsuree.insuree
-                ? <PolicyHolderInsureePicker
-                    value={policyHolderInsuree.insuree}
-                    withLabel={false}
-                    policyHolderId={decodeId(policyHolder.id)}
-                    readOnly />
+            policyHolderInsuree => !!policyHolderInsuree.insuree ?
+                `${policyHolderInsuree.insuree.lastName}-${policyHolderInsuree.insuree.otherNames}`
+                // policyHolderInsuree.insuree.lastName + "-" + policyHolderInsuree.insuree.otherNames
+                // Comment for perform issue
+                // ? <PolicyHolderInsureePicker
+                //     value={policyHolderInsuree.insuree}
+                //     withLabel={false}
+                //     policyHolderId={decodeId(policyHolder.id)}
+                //     readOnly />
                 : "",
             policyHolderInsuree => !!policyHolderInsuree.contributionPlanBundle
-                ? <PolicyHolderContributionPlanBundlePicker
-                    value={policyHolderInsuree.contributionPlanBundle}
-                    withLabel={false}
-                    policyHolderId={decodeId(policyHolder.id)}
-                    readOnly />
+                ? `${policyHolderInsuree.contributionPlanBundle?.code} - ${policyHolderInsuree.contributionPlanBundle?.name}`
+                // Comment for perform issue
+                //  <PolicyHolderContributionPlanBundlePicker
+                //     value={policyHolderInsuree.contributionPlanBundle}
+                //     withLabel={false}
+                //     policyHolderId={decodeId(policyHolder.id)}
+                //     readOnly />
                 : "",
             policyHolderInsuree => {
                 /**
@@ -148,19 +153,23 @@ class PolicyHolderInsureeSearcher extends Component {
                  */
                 const { lastPolicy, ...others } = policyHolderInsuree;
                 const policy = !!lastPolicy ? lastPolicy : {};
+                const jsonData = JSON.parse(policyHolderInsuree.jsonExt);
+                const income = jsonData?.calculation_rule?.income;
                 return !!policyHolderInsuree.jsonExt
-                    ? <Contributions
-                        contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
-                        intl={this.props.intl}
-                        className={POLICYHOLDERINSUREE_CLASSNAME}
-                        entity={{ policy, ...others }}
-                        value={policyHolderInsuree.jsonExt}
-                        readOnly />
+                    ? income
+                    // Comment for perform issue
+                    //  <Contributions
+                    //     contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
+                    //     intl={this.props.intl}
+                    //     className={POLICYHOLDERINSUREE_CLASSNAME}
+                    //     entity={{ policy, ...others }}
+                    //     value={policyHolderInsuree.jsonExt}
+                    //     readOnly />
                     : ""
             },
             policyHolderInsuree => policyHolderInsuree?.employerNumber
-            ? policyHolderInsuree?.employerNumber
-            : "",
+                ? policyHolderInsuree?.employerNumber
+                : "",
             policyHolderInsuree => !!policyHolderInsuree.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, policyHolderInsuree.dateValidFrom)
                 : "",
