@@ -336,7 +336,7 @@ class PolicyHolderForm extends Component {
           isPolicyHolderPortalUser={this.isPolicyHolderPortalUser()}
           openDirty={save}
           emailButton={this.emailButton}
-          email={policyHolderId}
+          // email={policyHolderId}
           // print={policyHolderId}
           printButton={this.printReport}
           success={this.state.success}
