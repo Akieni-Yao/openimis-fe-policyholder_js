@@ -368,7 +368,7 @@ class PolicyHolderForm extends Component {
             </DialogContent>
             <DialogActions className={classes.dialogBg}>
               <Button onClick={this.cancel} className={classes.secondaryButton}>
-                <FormattedMessage module="core" id="cancel" />
+                <FormattedMessage module="core" id="ok" />
               </Button>
             </DialogActions>
           </Dialog>
