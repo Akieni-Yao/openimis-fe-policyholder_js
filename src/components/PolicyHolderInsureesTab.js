@@ -49,7 +49,7 @@ class PolicyHolderInsureesTabPanel extends Component {
     this.state = {
       reset: 0,
       insureeCheck: false,
-      downloadError:null
+      downloadError: null,
     };
   }
 
@@ -76,15 +76,23 @@ class PolicyHolderInsureesTabPanel extends Component {
         credentials: "same-origin",
       });
 
-      const payload = await response.text();
+      // const payload = await response.text();
 
       if (response.status >= 400) {
         // alert(`Error ${response.status}: ${payload.error}`);
-        alert(`Error ${response.status}: ${payload}`);
+        alert(`Error ${response.status}`);
         return;
       }
-      alert(`Success: ${payload}`);
-      console.log(`Success: ${payload}`);
+      // alert(`Success: ${payload}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "policyholder_insurees.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // console.log(`Success: ${payload}`);
 
       this.setState({ insureeCheck: true });
     } catch (error) {
@@ -94,7 +102,7 @@ class PolicyHolderInsureesTabPanel extends Component {
             `An error occurred. Please contact your administrator. ${error?.message}`
           )
       );
-      this.setState({downloadError:error})
+      this.setState({ downloadError: error });
     }
   };
 
@@ -115,15 +123,20 @@ class PolicyHolderInsureesTabPanel extends Component {
         "ID Famille",
         "Email",
         "Matricule",
-        "Salaire",
-        "Delete"
+        "Salaire Brut",
+        "Part Patronale %",
+        "Part Patronale",
+        "Part Salariale %",
+        "Part Salariale",
+        "Cotisation total",
+        "Delete",
       ],
       [
         "",
         "Test",
         "Test",
         "",
-        "03/15/2007",
+        "03/03/2007",
         "Brazzaville",
         "M",
         "Célibataire",
@@ -133,8 +146,13 @@ class PolicyHolderInsureesTabPanel extends Component {
         "",
         "",
         "",
-        "50000",
-        ""
+        "70000",
+        "7.33%",
+        "51310",
+        "4.22%",
+        "29540",
+        "80850",
+        "",
       ],
     ];
 
@@ -366,7 +384,7 @@ class PolicyHolderInsureesTabPanel extends Component {
               id="policyHolderInsuree.tabDisabledError"
             />
           )}
-            {/* {(fetching || error) && (
+          {/* {(fetching || error) && (
           <Grid className={classes.loader} container justifyContent="center" alignItems="center">
             <ProgressOrError progress={this.state.insureeCheck} error={downloadError} />{" "}
             {/* We do not want to display the spinner with the empty table */}
