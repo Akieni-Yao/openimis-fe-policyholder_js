@@ -49,7 +49,7 @@ class DeclarationSearcherFilter extends Component {
       return {
         id: "region",
         value: v,
-        filter: `locations_Uuid: "${v.uuid}"`,
+        filter: `locations_Parent_Parent_Parent_Uuid: "${v.uuid}"`,
       };
     } else {
       return { id: "region", value: null, filter: null };
@@ -59,7 +59,11 @@ class DeclarationSearcherFilter extends Component {
   _filterValue = (k) => {
     const { filters } = this.props;
     const { filterState } = this.state;
-    return !!filterState[k] ? filterState[k].value : null;
+    return !!filterState[k]
+      ? filterState[k].value
+      : !!filters[k]
+      ? filters[k].value
+      : null;
     // return !!filters[k] ? filters[k].value : null;
   };
 
@@ -78,10 +82,10 @@ class DeclarationSearcherFilter extends Component {
   //     reset: state.reset + 1,
   //   }));
   // };
- 
+
   _onChangeRegion = (v, s) => {
     const regionFilter = this._regionFilter(v);
-  
+
     this.setState((prev) => ({
       ...prev,
       filterState: {
@@ -91,7 +95,6 @@ class DeclarationSearcherFilter extends Component {
       reset: prev.reset + 1,
     }));
   };
-  
 
   _onChangeFilter = (k, v) => {
     const updatedFilters = [
@@ -139,9 +142,10 @@ class DeclarationSearcherFilter extends Component {
         [k]: {
           id: k,
           value: v,
-        filter: `${k}_${lookup}: "${v}${DATE_TO_DATETIME_SUFFIX}"`,
+          filter: `${k}_${lookup}: "${v}${DATE_TO_DATETIME_SUFFIX}"`,
+        },
       },
-    }}));
+    }));
   };
 
   onClickSearch = () => {
@@ -154,11 +158,11 @@ class DeclarationSearcherFilter extends Component {
     this.setState({
       filterState: {},
     });
-    this.props.onChangeFilters([]);
+    this.props.reset();
   };
   render() {
     const { intl, classes, onChangeFilters, filters } = this.props;
-    console.log("checkstate", this.state.filterState);
+    console.log("checkstate", this.props);
     return (
       <Grid container className={classes.form}>
         <Grid item xs={3} className={classes.item}>
