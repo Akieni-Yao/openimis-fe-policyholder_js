@@ -62,28 +62,36 @@ class DeclarationSearcherFilter extends Component {
     return !!filterState[k] ? filterState[k].value : null;
     // return !!filters[k] ? filters[k].value : null;
   };
+
   _filterValueDeclared = (k) => {
     const { filters } = this.props;
     return !!filters[k] ? filters[k].value : null;
     // return !!filters[k] ? filters[k].value : null;
   };
-  _onChangeRegion = (v, s) => {
-    this.setState({ filterState: [this._regionFilter(v)] });
-    // this.props.onChangeFilters([this._regionFilter(v)]);
-    this.setState((state) => ({
-      reset: state.reset + 1,
-    }));
-    // this.props.selectRegion(v);
-  };
-  // _onChangeFilter = (k, v) => {
-  //   this.props.onChangeFilters([
-  //     {
-  //       id: k,
-  //       value: v,
-  //       filter: `${k}: ${v}`,
-  //     },
-  //   ]);
+
+  // _onChangeRegion = (v, s) => {
+  //   this.setState((prev) => ({
+  //     ...prev,
+  //     filterState: [this._regionFilter(v)],
+  //   }));
+  //   this.setState((state) => ({
+  //     reset: state.reset + 1,
+  //   }));
   // };
+ 
+  _onChangeRegion = (v, s) => {
+    const regionFilter = this._regionFilter(v);
+  
+    this.setState((prev) => ({
+      ...prev,
+      filterState: {
+        ...prev.filterState,
+        [regionFilter.id]: regionFilter,
+      },
+      reset: prev.reset + 1,
+    }));
+  };
+  
 
   _onChangeFilter = (k, v) => {
     const updatedFilters = [
@@ -104,20 +112,17 @@ class DeclarationSearcherFilter extends Component {
   };
 
   _onChangeStringFilter = (k, v, lookup) => {
-    // this.props.onChangeFilters([
-    //   {
-    //     id: k,
-    //     value: v,
-    //     filter: `${k}: "${v}"`,
-    //   },
-    // ]);
-    this.setState({
+    this.setState((prev) => ({
+      ...prev,
       filterState: {
-        id: k,
-        value: v,
-        filter: `${k}_${lookup}: "${v}"`,
+        ...prev.filterState,
+        [k]: {
+          id: k,
+          value: v,
+          filter: `${k}_${lookup}: "${v}"`,
+        },
       },
-    });
+    }));
   };
 
   _onChangeDateFilter = (k, v, lookup) => {
@@ -128,17 +133,21 @@ class DeclarationSearcherFilter extends Component {
     //     filter: `${k}_${lookup}: "${v}${DATE_TO_DATETIME_SUFFIX}"`,
     //   },
     // ]);
-    this.setState({
+    this.setState((prev) => ({
       filterState: {
-        id: k,
-        value: v,
+        ...prev.filterState,
+        [k]: {
+          id: k,
+          value: v,
         filter: `${k}_${lookup}: "${v}${DATE_TO_DATETIME_SUFFIX}"`,
       },
-    });
+    }}));
   };
 
   onClickSearch = () => {
-    this.props.onChangeFilters([this.state.filterState]);
+    const filterStateValues = Object.values(this.state.filterState);
+    this.props.onChangeFilters(filterStateValues);
+    // this.props.onChangeFilters([this.state.filterState]);
   };
 
   onClickClear = () => {
