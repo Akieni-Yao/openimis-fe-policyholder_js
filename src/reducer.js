@@ -52,6 +52,12 @@ function reducer(
     policyHolderUsers: [],
     policyHolderUsersPageInfo: {},
     policyHolderUsersTotalCount: 0,
+    fetchingDeclarationReport: false,
+    fetchedDeclarationReport: false,
+    declarationReport: [],
+    declarationReportPageInfo: {},
+    declarationReportTotalCount: 0,
+    errorDeclarationReport: null,
   },
   action
 ) {
@@ -285,6 +291,36 @@ function reducer(
         ...state,
         fetchingPolicyHolderUsers: false,
         errorPolicyHolderUsers: formatServerError(action.payload),
+      };
+    case "DECLARATION_REPORT_REQ":
+      return {
+        ...state,
+        fetchingDeclarationReport: true,
+        fetchedDeclarationReport: false,
+        declarationReport: [],
+        declarationReportPageInfo: {},
+        declarationReportTotalCount: 0,
+        errorDeclarationReport: null,
+      };
+    case "DECLARATION_REPORT_RESP":
+      return {
+        ...state,
+        fetchingDeclarationReport: false,
+        fetchedDeclarationReport: true,
+        declarationReport: parseData(action.payload.data.notDeclaredPolicyHolder),
+        declarationReportPageInfo: pageInfo(
+          action.payload.data.notDeclaredPolicyHolder
+        ),
+        declarationReportTotalCount: !!action.payload.data.notDeclaredPolicyHolder
+          ? action.payload.data.notDeclaredPolicyHolder.totalCount
+          : null,
+        errorDeclarationReport: formatGraphQLError(action.payload),
+      };
+    case "DECLARATION_REPORT_ERR":
+      return {
+        ...state,
+        fetchingDeclarationReport: false,
+        errorDeclarationReport: formatServerError(action.payload),
       };
     case "POLICYHOLDER_CODE_FIELDS_VALIDATION_REQ":
       return {

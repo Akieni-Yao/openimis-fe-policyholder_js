@@ -10,9 +10,11 @@ import {
 } from "@openimis/fe-core";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "../constants";
+import { ListAlt } from "@material-ui/icons";
 
 const INSUREE_MAIN_MENU_CONTRIBUTION_KEY = "insuree.MainMenu";
 const ROUTE_CONTRACTS = "contracts";
+const ROUTE_DECLARATION = "declaration";
 const ROUTE_CONTRACT = "contracts/contract";
 class PolicyHolderMenu extends Component {
   render() {
@@ -29,6 +31,13 @@ class PolicyHolderMenu extends Component {
         text: <FormattedMessage module="contract" id="menu.contracts" />,
         icon: <ReceiptIcon />,
         route: "/" + ROUTE_CONTRACTS,
+      });
+    }
+    if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)) {
+      entries.push({
+        text: <FormattedMessage module="policyHolder" id="menu.declaration" />,
+        icon: <ListAlt />,
+        route: "/" + ROUTE_DECLARATION,
       });
     }
     if (!entries.length) return null;

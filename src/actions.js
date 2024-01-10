@@ -912,3 +912,31 @@ export function printReportInsuree(mm, edited) {
     "success message"
   );
 }
+
+const DECLARATION_FULL_PROJECTION = (modulesManager) => [
+  "id",
+  "code",
+  "tradeName",
+  "phone",
+  "email",
+  "contactName",
+  "locations" +
+    modulesManager.getProjection("location.Location.FlatProjection"),
+
+  ,
+];
+
+export function fetchDeclarationReport(modulesManager, params) {
+  const payload = formatPageQueryWithCount(
+    "notDeclaredPolicyHolder",
+    params,
+    DECLARATION_FULL_PROJECTION(modulesManager)
+  );
+  return graphql(payload, "DECLARATION_REPORT");
+}
+
+export function selectRegion(region) {
+  return (dispatch) => {
+    dispatch({ type: "CLAIM_CLAIM_REGION_SELECTED", payload: region });
+  };
+}

@@ -39,10 +39,12 @@ import {
 } from "./components/PolicyHolderUsersTab";
 import { POLICYHOLDER_PICKER_PROJECTION } from "./actions";
 import BankPicker from "./pickers/BankPicker";
+import DeclarationPage from "./pages/DeclarationPage";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
 const ROUTE_POLICY_HOLDER_USERS = "policyHolderUsers";
+const ROUTE_DECLARATION = "declaration";
 
 const DEFAULT_CONFIG = {
   translations: [{ key: "en", messages: messages_en }],
@@ -88,6 +90,7 @@ const DEFAULT_CONFIG = {
       component: PolicyHolderPage,
     },
     { path: ROUTE_POLICY_HOLDER_USERS, component: PolicyHolderUsersPage },
+    { path: ROUTE_DECLARATION, component: DeclarationPage },
   ],
   "insuree.MainMenu": [
     {
