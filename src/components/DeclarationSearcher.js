@@ -292,11 +292,11 @@ class DeclarartionSearcher extends Component {
 
   sorts = () => {
     const { predefinedPolicyHolderId = null } = this.props;
-    const result = [["id", true]];
-    if (predefinedPolicyHolderId === null) {
-      result.push(["policyHolder", true]);
-    }
-    result.push(["dateValidFrom", true], ["dateValidTo", true]);
+    const result = [["code", true]];
+    // if (predefinedPolicyHolderId === null) {
+    result.push(["tradeName", true]);
+    // }
+    result.push(["contactName", true], ["phone", true], ["email", true]);
     return result;
   };
 
@@ -342,7 +342,7 @@ class DeclarartionSearcher extends Component {
       errorPolicyHolderUsers,
       policyHolderUsers,
       policyHolderUsersPageInfo,
-      policyHolderUsersTotalCount,
+      policyHoldersTotalCount,
       predefinedPolicyHolderId,
       declaration,
     } = this.props;
@@ -359,8 +359,8 @@ class DeclarartionSearcher extends Component {
         tableTitle={formatMessageWithValues(
           intl,
           "policyHolder",
-          "policyHolderUser.searcher.results.title",
-          { policyHolderUsersTotalCount }
+          "policyHolders.searcher.results.title",
+          { policyHoldersTotalCount }
         )}
         filtersToQueryParams={this.filtersToQueryParams}
         headers={this.headers}
@@ -392,7 +392,7 @@ const mapStateToProps = (state) => ({
     })
   ),
   policyHolderUsersPageInfo: state.policyHolder.declarationReportPageInfo,
-  policyHolderUsersTotalCount: state.policyHolder.declarationReportTotalCount,
+  policyHoldersTotalCount: state.policyHolder.declarationReportTotalCount,
   submittingMutation: state.policyHolder.submittingMutation,
   mutation: state.policyHolder.mutation,
   confirmed: state.core.confirmed,

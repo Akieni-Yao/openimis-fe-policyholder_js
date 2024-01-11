@@ -197,14 +197,14 @@ class DeclarationSearcherFilter extends Component {
             pubRef="core.DatePicker"
             module="policyHolder"
             label="declarationFilter.toMonth"
-            value={this._filterValue("dateContractTo_Lte")}
+            value={this._filterValue("dateContractTo")}
             format={"MMMM-YYYY"}
             monthtrue
             onChange={(v) =>
               this._onChangeDateFilter(
-                "dateContractTo_Lte",
+                "dateContractTo",
                 v,
-                GREATER_OR_EQUAL_LOOKUP
+                LESS_OR_EQUAL_LOOKUP
               )
             }
           />

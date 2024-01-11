@@ -151,7 +151,7 @@ class DeclarationPage extends Component {
             formatMessage(
               this.props.intl,
               "policyHolder",
-              "createButton.tooltip"
+              "declarationDownload.tooltip"
             )
           )}
         </div>
