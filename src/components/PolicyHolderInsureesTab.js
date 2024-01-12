@@ -123,7 +123,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         "Test",
         "Test",
         "",
-        "03/15/2007",
+        "03/03/2007",
         "Brazzaville",
         "M",
         "Célibataire",

@@ -9,6 +9,7 @@
     "policyHolder.displayName": "Display name",
     "policyHolder.location": "Location",
     "policyHolder.legalForm": "Legal Form",
+    "policyHolder.employerName": "Employer Name",
     "policyHolder.activityCode": "Activity Code",
     "policyHolder.dateValidFrom": "Created From",
     "policyHolder.dateValidTo": "Date Valid To",
@@ -119,7 +120,8 @@
     "policyHolder.rbiValidation.regexMsg.en": "Invalid RBI",
     "policyHolder.bankAccountNbValidation.regexMsg.en": "Invalid Bank Account Number",
     "policyHolder.bankCodeValidation.regexMsg.en": "Invalid Bank Code",
-    "policyHolder.nbEmployeesValidation.regexMsg.en": "Please Fill Numeric Value",
+    "policyHolder.nbEmployeesValidation.regexMsg.en": "Pleae Fill Numeric Value",
     "policyHolder.policyHolderInsuree.downloadsample": "Download Sample",
-    "policyHolder.policyHolderInsuree.downloadInsuree": "Download Insuree"
+    "policyHolder.policyHolderInsuree.downloadInsuree": "Download Insuree",
+    "policyHolder.print": "Print"
 }

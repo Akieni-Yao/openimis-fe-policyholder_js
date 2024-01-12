@@ -336,8 +336,8 @@ class PolicyHolderForm extends Component {
           isPolicyHolderPortalUser={this.isPolicyHolderPortalUser()}
           openDirty={save}
           emailButton={this.emailButton}
-          // email={policyHolderId}
-          // print={policyHolderId}
+          email={policyHolderId}
+          print={policyHolderId}
           printButton={this.printReport}
           success={this.state.success}
 
@@ -368,7 +368,7 @@ class PolicyHolderForm extends Component {
             </DialogContent>
             <DialogActions className={classes.dialogBg}>
               <Button onClick={this.cancel} className={classes.secondaryButton}>
-                <FormattedMessage module="core" id="cancel" />
+                <FormattedMessage module="core" id="ok" />
               </Button>
             </DialogActions>
           </Dialog>
