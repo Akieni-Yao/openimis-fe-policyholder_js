@@ -162,7 +162,6 @@ class DeclarationSearcherFilter extends Component {
   };
   render() {
     const { intl, classes, onChangeFilters, filters } = this.props;
-    console.log("checkstate", this.props);
     return (
       <Grid container className={classes.form}>
         <Grid item xs={3} className={classes.item}>

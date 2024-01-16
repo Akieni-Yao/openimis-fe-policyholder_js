@@ -77,9 +77,10 @@ class DeclarartionSearcher extends Component {
     }
   }
 
-  fetch = (params) =>
+  fetch = (params) =>{
     this.props.fetchDeclarationReport(this.props.modulesManager, params);
-
+    this.props.handleFilters(params)
+}
   refetch = () => this.fetch(this.state.queryParams);
 
   filtersToQueryParams = (state) => {
@@ -101,6 +102,7 @@ class DeclarartionSearcher extends Component {
       params.push(`orderBy: ["${state.orderBy}"]`);
     }
     this.setState({ queryParams: params });
+   
     return params;
   };
 
@@ -141,7 +143,6 @@ class DeclarartionSearcher extends Component {
   };
 
   parentLocation = (location, level) => {
-    console.log("location", location);
     if (!location) return "";
     let loc = location;
     for (var i = 1; i < this.locationLevels - level; i++) {

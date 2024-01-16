@@ -5,6 +5,8 @@ import {
   Helmet,
   clearCurrentPaginationPage,
   withTooltip,
+  baseApiUrl,
+  apiHeaders,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -29,6 +31,7 @@ const styles = (theme) => ({
 class DeclarationPage extends Component {
   state = {
     reset: 0,
+    filterData: null,
   };
 
   onSave = () =>
@@ -51,6 +54,9 @@ class DeclarationPage extends Component {
     if (!pathname.includes(urlPath)) this.props.clearCurrentPaginationPage();
   };
 
+  handleFilters = (data) => {
+    this.setState({ filterData: data });
+  };
   _downloadExcel = () => {
     const { declaration } = this.props;
 
@@ -122,7 +128,79 @@ class DeclarationPage extends Component {
     document.body.removeChild(a);
     // URL.revokeObjectURL(url);
   };
+  handleInsureeDownload = async () => {
+    // const { policyHolder } = this.props;
+    // const file = event.target.files[0];
+    // let formData = new FormData();
+    // formData.append("file", file);
+    const extractedValues = {};
+    function isValidDate(dateString) {
+      const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+      return (
+        dateString.match(regex) &&
+        new Date(dateString) !== "Invalid Date" &&
+        !isNaN(new Date(dateString))
+      );
+    }
+    this.state.filterData.forEach((item) => {
+      const [key, value] = item.split(":").map((part) => part.trim());
 
+      // Handle cases where the value is enclosed in double quotes
+      const cleanedValue =
+        value.startsWith('"') && value.endsWith('"')
+          ? value.slice(1, -1)
+          : value;
+
+      // Check if the cleaned value is a boolean or a number
+      extractedValues[key] =
+        cleanedValue.toLowerCase() === "true"
+          ? true
+          : cleanedValue.toLowerCase() === "false"
+          ? false
+          : !isNaN(cleanedValue)
+          ? Number(cleanedValue)
+          : cleanedValue;
+    });
+
+    let url_import = `${baseApiUrl}/policyholder/export/notdeclaredpolicyholder?declared=${extractedValues.declared}`;
+
+    try {
+      const response = await fetch(url_import, {
+        headers: apiHeaders,
+        // body: formData,
+        method: "GET",
+        credentials: "same-origin",
+      });
+
+      // const payload = await response.text();
+
+      if (response.status >= 400) {
+        // alert(`Error ${response.status}: ${payload.error}`);
+        // alert(`Error ${response.status}: ${payload}`);
+
+        return;
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "policyholder_insurees.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // alert(`Success: ${payload}`);
+      // console.log(`Success: ${payload}`);
+
+      this.setState({ insureeCheck: true });
+    } catch (error) {
+      alert(
+        error?.message ??
+          formatMessage(
+            `An error occurred. Please contact your administrator. ${error?.message}`
+          )
+      );
+    }
+  };
   render() {
     const { classes, rights } = this.props;
     return (
@@ -141,10 +219,11 @@ class DeclarationPage extends Component {
             rights={rights}
             reset={this.state.reset}
             onSave={this.onSave}
+            handleFilters={this.handleFilters}
           />
           {withTooltip(
             <div className={classes.fab}>
-              <Fab color="primary" onClick={this._downloadExcel}>
+              <Fab color="primary" onClick={this.handleInsureeDownload}>
                 <SystemUpdateAltIcon />
               </Fab>
             </div>,
