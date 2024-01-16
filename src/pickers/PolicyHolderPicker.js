@@ -25,6 +25,7 @@ class PolicyHolderPicker extends Component {
                 label: nullLabel || <FormattedMessage module="policyHolder" id="policyHolder.emptyLabel" />
             })
         }
+        console.log('valueofopotion',value);
         return (
             <SelectInput
                 module="policyHolder"

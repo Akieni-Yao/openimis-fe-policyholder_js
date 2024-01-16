@@ -40,11 +40,14 @@ import {
 import { POLICYHOLDER_PICKER_PROJECTION } from "./actions";
 import BankPicker from "./pickers/BankPicker";
 import DeclarationPage from "./pages/DeclarationPage";
+import PaymentForApproval from "./pages/PaymentForApproval";
+// import RightsGeneralInfoPanel from "./components/RightsGeneralInfoPanel";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
 const ROUTE_POLICY_HOLDER_USERS = "policyHolderUsers";
 const ROUTE_DECLARATION = "declaration";
+const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
 
 const DEFAULT_CONFIG = {
   translations: [{ key: "en", messages: messages_en }],
@@ -91,6 +94,7 @@ const DEFAULT_CONFIG = {
     },
     { path: ROUTE_POLICY_HOLDER_USERS, component: PolicyHolderUsersPage },
     { path: ROUTE_DECLARATION, component: DeclarationPage },
+    { path: ROUTE_PAYMENT_FOR_APPROVAL, component: PaymentForApproval },
   ],
   "insuree.MainMenu": [
     {
@@ -137,6 +141,7 @@ const DEFAULT_CONFIG = {
       pickerProjection: POLICYHOLDER_PICKER_PROJECTION,
     },
   ],
+  // "policyholder.rightsGeneralInfo":[RightsGeneralInfoPanel]
 };
 
 export const PolicyHolderModule = (cfg) => {

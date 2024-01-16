@@ -58,6 +58,11 @@ function reducer(
     declarationReportPageInfo: {},
     declarationReportTotalCount: 0,
     errorDeclarationReport: null,
+    fetchingPayments: false,
+    fetchedPayment: false,
+    errorPayments: null,
+    payment: null,
+    paymentsPageInfo: { totalCount: 0 },
   },
   action
 ) {
@@ -307,11 +312,14 @@ function reducer(
         ...state,
         fetchingDeclarationReport: false,
         fetchedDeclarationReport: true,
-        declarationReport: parseData(action.payload.data.notDeclaredPolicyHolder),
+        declarationReport: parseData(
+          action.payload.data.notDeclaredPolicyHolder
+        ),
         declarationReportPageInfo: pageInfo(
           action.payload.data.notDeclaredPolicyHolder
         ),
-        declarationReportTotalCount: !!action.payload.data.notDeclaredPolicyHolder
+        declarationReportTotalCount: !!action.payload.data
+          .notDeclaredPolicyHolder
           ? action.payload.data.notDeclaredPolicyHolder.totalCount
           : null,
         errorDeclarationReport: formatGraphQLError(action.payload),
@@ -382,6 +390,32 @@ function reducer(
           },
         },
       };
+    case "PAYMENT_OVERVIEW_REQ":
+      return {
+        ...state,
+        fetchingPayment: true,
+        fetchedPayment: false,
+        payment: null,
+        errorPayment: null,
+        paymentsPageInfo: { totalCount: 0 },
+      };
+    case "PAYMENT_OVERVIEW_RESP":
+      var payments = parseData(action.payload.data.payments);
+      return {
+        ...state,
+        fetchingPayment: false,
+        fetchedPayment: true,
+        payment: payments,
+        errorPayment: formatGraphQLError(action.payload),
+        paymentsPageInfo: pageInfo(action.payload.data.payments)
+      };
+    case "PAYMENT_OVERVIEW_ERR":
+      return {
+        ...state,
+        fetchingPayment: false,
+        errorPayment: formatServerError(action.payload),
+      };
+
     case "POLICYHOLDER_MUTATION_REQ":
       return dispatchMutationReq(state, action);
     case "POLICYHOLDER_MUTATION_ERR":

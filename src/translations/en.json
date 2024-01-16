@@ -132,5 +132,7 @@
     "policyHolder.declarationFilter.camuCode": "CAMU Code",
     "policyHolder.declarationFilter.search": "Search",
     "policyHolder.declarationFilter.clear": "Clear",
-    "policyHolder.declarationDownload.tooltip":"Download Declaration Report"
+    "policyHolder.declarationDownload.tooltip":"Download Declaration Report",
+    "policyHolder.menu.paymentForApproval":"Payments for Approval",
+    "policyHolder.rights.exception.title": "Exception Configuration"
 }
