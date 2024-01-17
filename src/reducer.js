@@ -63,6 +63,10 @@ function reducer(
     errorPayments: null,
     payment: null,
     paymentsPageInfo: { totalCount: 0 },
+    fetchingapprover: false,
+    fetchedapprover: false,
+    approverData: null,
+    errorapprover: null,
   },
   action
 ) {
@@ -415,7 +419,14 @@ function reducer(
         fetchingPayment: false,
         errorPayment: formatServerError(action.payload),
       };
-
+      case "HAVING_APPROVER_RESP":
+        return {
+          ...state,
+          fetchingapprover: false,
+          fetchedapprover: true,
+          approverData: action.payload.data.havingPaymentApproveRight,
+          errorapprover: formatGraphQLError(action.payload),
+        };
     case "POLICYHOLDER_MUTATION_REQ":
       return dispatchMutationReq(state, action);
     case "POLICYHOLDER_MUTATION_ERR":

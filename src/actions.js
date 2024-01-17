@@ -7,6 +7,7 @@ import {
   graphqlWithVariables,
   decodeId,
   formatGQLString,
+  formatQuery
 } from "@openimis/fe-core";
 
 const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
@@ -984,3 +985,8 @@ export function fetchPayment(mm) {
   );
   return graphql(payload, "PAYMENT_OVERVIEW");
 }
+
+export const havingPAymentApprove = (uuid) => {
+  const payload = formatQuery("havingPaymentApproveRight", [`uuid:"${uuid}"`]);
+  return graphql(payload, "HAVING_APPROVER");
+};

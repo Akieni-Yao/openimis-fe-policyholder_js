@@ -14,6 +14,7 @@ import {
   TextAreaInput,
   FormattedMessage,
   PublishedComponent,
+  Contributions,
 } from "@openimis/fe-core";
 import {
   policyHolderCodeClear,
@@ -45,6 +46,7 @@ const styles = (theme) => ({
   },
 });
 
+const POLICYHOLDER_RIGHTS_PANEL = "policyholder.rightsGeneralInfo";
 class PolicyHolderGeneralInfoPanel extends FormPanel {
   constructor(props) {
     super(props);
@@ -550,6 +552,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     }
     this.props.onEditedChanged(data);
   };
+
   bankCode = (bankValue) => {
     let bankcodeVal;
 
@@ -604,12 +607,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       isCodeValidating,
       validationError,
       policyHolderId,
+      approverData,
     } = this.props;
     // const capitalizeWords = (inputString) => {
     //   let result = "";
-    
+
     //   let capitalizeNext = true;
-    
+
     //   for (const char of inputString) {
     //     if (char === ' ' || char === '\t') {
     //       capitalizeNext = true;
@@ -618,7 +622,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     //       result += capitalizeNext ? char.toUpperCase() : char.toLowerCase();
     //       capitalizeNext = false;
     //     }
-    //   }    
+    //   }
     //   return result;
     // };
     return (
@@ -1064,6 +1068,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             />
           </Grid> */}
         </Grid>
+        {!!edited && !!edited?.code && !!approverData ? (
+          <Contributions
+            {...this.props}
+            edited={edited}
+            updateAttribute={this.updateAttribute}
+            contributionKey={POLICYHOLDER_RIGHTS_PANEL}
+          />
+        ) : null}
       </Fragment>
     );
   }
@@ -1077,6 +1089,7 @@ const mapStateToProps = (store, props) => ({
   validationError:
     store.policyHolder?.validationFields?.policyHolderCode?.validationError,
   savedPolicyHolderCode: store.policyHolder?.policyHolder?.code,
+  approverData: store.policyHolder.approverData,
 });
 
 export default withModulesManager(

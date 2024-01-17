@@ -16,7 +16,7 @@ import {
   Helmet,
   FormattedMessage,
 } from "@openimis/fe-core";
-import { fetchPolicyHolder, clearPolicyHolder, sendEmail, printReport } from "../actions";
+import { fetchPolicyHolder, clearPolicyHolder, sendEmail, printReport,havingPAymentApprove } from "../actions";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@material-ui/core";
 
 import {
@@ -120,6 +120,8 @@ class PolicyHolderForm extends Component {
           )
       );
     }
+    const userid = localStorage.getItem("userId");
+    this.props.havingPAymentApprove(userid.trim());
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -406,7 +408,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail, printReport },
+    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail, printReport,havingPAymentApprove },
     dispatch
   );
 };

@@ -134,5 +134,6 @@
     "policyHolder.declarationFilter.clear": "Clear",
     "policyHolder.declarationDownload.tooltip":"Download Declaration Report",
     "policyHolder.menu.paymentForApproval":"Payments for Approval",
-    "policyHolder.rights.exception.title": "Exception Configuration"
+    "policyHolder.rights.exception.title": "Exception Configuration",
+    "policyHolder.rights.exception.applyException": "Apply Exception"
 }
