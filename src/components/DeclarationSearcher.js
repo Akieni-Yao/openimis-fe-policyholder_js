@@ -77,10 +77,10 @@ class DeclarartionSearcher extends Component {
     }
   }
 
-  fetch = (params) =>{
+  fetch = (params) => {
     this.props.fetchDeclarationReport(this.props.modulesManager, params);
-    this.props.handleFilters(params)
-}
+    this.props.handleFilters(params);
+  };
   refetch = () => this.fetch(this.state.queryParams);
 
   filtersToQueryParams = (state) => {
@@ -102,7 +102,7 @@ class DeclarartionSearcher extends Component {
       params.push(`orderBy: ["${state.orderBy}"]`);
     }
     this.setState({ queryParams: params });
-   
+
     return params;
   };
 

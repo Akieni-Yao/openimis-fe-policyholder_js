@@ -7,6 +7,7 @@ import {
   withTooltip,
   baseApiUrl,
   apiHeaders,
+  formatDateFromISO,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -128,68 +129,84 @@ class DeclarationPage extends Component {
     document.body.removeChild(a);
     // URL.revokeObjectURL(url);
   };
+
   handleInsureeDownload = async () => {
-    // const { policyHolder } = this.props;
-    // const file = event.target.files[0];
-    // let formData = new FormData();
-    // formData.append("file", file);
-    const extractedValues = {};
-    function isValidDate(dateString) {
-      const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
-      return (
-        dateString.match(regex) &&
-        new Date(dateString) !== "Invalid Date" &&
-        !isNaN(new Date(dateString))
-      );
-    }
+    const resultObject = {};
     this.state.filterData.forEach((item) => {
-      const [key, value] = item.split(":").map((part) => part.trim());
-
-      // Handle cases where the value is enclosed in double quotes
-      const cleanedValue =
-        value.startsWith('"') && value.endsWith('"')
-          ? value.slice(1, -1)
-          : value;
-
-      // Check if the cleaned value is a boolean or a number
-      extractedValues[key] =
-        cleanedValue.toLowerCase() === "true"
-          ? true
-          : cleanedValue.toLowerCase() === "false"
-          ? false
-          : !isNaN(cleanedValue)
-          ? Number(cleanedValue)
-          : cleanedValue;
+      const [key, ...valueParts] = item.split(/:\s*/);
+      const value = valueParts.join(":").trim();
+      resultObject[key] = parseValue(value);
     });
 
-    let url_import = `${baseApiUrl}/policyholder/export/notdeclaredpolicyholder?declared=${extractedValues.declared}`;
+    function parseValue(value) {
+      // Check if the value is enclosed in double quotes
+      if (/^".*"$/.test(value)) {
+        // Remove the quotes and handle escaped quotes
+        return value.slice(1, -1).replace(/\\"/g, '"');
+      } else if (value === "true" || value === "false") {
+        return value === "true";
+      } else if (/^\d+$/.test(value)) {
+        return parseInt(value, 10);
+      } else {
+        return value;
+      }
+    }
+
+    let url_import =
+      `${baseApiUrl}/policyholder/export/notdeclaredpolicyholder?declared=${resultObject.declared}` +
+      `${
+        resultObject.dateContractFrom_Gte
+          ? `&from_date=${resultObject.dateContractFrom_Gte
+              .trim()
+              .substring(0, 10)}`
+          : ""
+      }` +
+      `${
+        resultObject.dateContractTo_Lte
+          ? `&to_date=${resultObject.dateContractTo_Lte.substring(0, 10)}`
+          : ""
+      }` +
+      `${
+        resultObject.code_Istartswith
+          ? `&camu_code=${encodeURIComponent(resultObject.code_Istartswith)}`
+          : ""
+      }` +
+      `${
+        resultObject.tradeName_Istartswith
+          ? `&trade_name=${encodeURIComponent(
+              resultObject.tradeName_Istartswith
+            )}`
+          : ""
+      }` +
+      `${
+        resultObject.department
+          ? `&department=${encodeURIComponent(resultObject.department)}`
+          : ""
+      }`;
 
     try {
       const response = await fetch(url_import, {
         headers: apiHeaders,
-        // body: formData,
         method: "GET",
         credentials: "same-origin",
       });
 
-      // const payload = await response.text();
-
       if (response.status >= 400) {
-        // alert(`Error ${response.status}: ${payload.error}`);
-        // alert(`Error ${response.status}: ${payload}`);
-
         return;
       }
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "policyholder_insurees.xlsx";
+      a.download = `${
+        !!resultObject.declared
+          ? "declared_policyholder.xlsx"
+          : "notdeclared_policyholder.xlsx"
+      }`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      // alert(`Success: ${payload}`);
-      // console.log(`Success: ${payload}`);
 
       this.setState({ insureeCheck: true });
     } catch (error) {
@@ -201,6 +218,7 @@ class DeclarationPage extends Component {
       );
     }
   };
+
   render() {
     const { classes, rights } = this.props;
     return (
