@@ -199,12 +199,21 @@ class DeclarationSearcherFilter extends Component {
             value={this._filterValue("dateContractTo")}
             format={"MMMM-YYYY"}
             monthtrue
-            onChange={(v) =>
+            onChange={(v) =>{
+              const parsedStartDate = new Date(v);
+
+              // Set the date to the last day of the month
+              parsedStartDate.setMonth(parsedStartDate.getMonth() + 1);
+              parsedStartDate.setDate(0);
+
+              const formattedEndDate = parsedStartDate
+                .toISOString()
+                .split("T")[0];
               this._onChangeDateFilter(
                 "dateContractTo",
-                v,
+                formattedEndDate,
                 LESS_OR_EQUAL_LOOKUP
-              )
+              )}
             }
           />
         </Grid>
