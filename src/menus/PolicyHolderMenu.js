@@ -10,10 +10,14 @@ import {
 } from "@openimis/fe-core";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "../constants";
+import { ListAlt } from "@material-ui/icons";
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 
 const INSUREE_MAIN_MENU_CONTRIBUTION_KEY = "insuree.MainMenu";
 const ROUTE_CONTRACTS = "contracts";
+const ROUTE_DECLARATION = "declaration";
 const ROUTE_CONTRACT = "contracts/contract";
+const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
 class PolicyHolderMenu extends Component {
   render() {
     const { modulesManager, rights } = this.props;
@@ -24,6 +28,13 @@ class PolicyHolderMenu extends Component {
         .getContribs(INSUREE_MAIN_MENU_CONTRIBUTION_KEY)
         .filter((c) => !c.filter || c.filter(rights))
     );
+    entries.push({
+      text: (
+        <FormattedMessage module="policyHolder" id="menu.paymentForApproval" />
+      ),
+      icon: <PlaylistAddCheckIcon />,
+      route: "/" + ROUTE_PAYMENT_FOR_APPROVAL,
+    });
     if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)) {
       entries.push({
         text: <FormattedMessage module="contract" id="menu.contracts" />,
@@ -31,6 +42,14 @@ class PolicyHolderMenu extends Component {
         route: "/" + ROUTE_CONTRACTS,
       });
     }
+    if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)) {
+      entries.push({
+        text: <FormattedMessage module="policyHolder" id="menu.declaration" />,
+        icon: <ListAlt />,
+        route: "/" + ROUTE_DECLARATION,
+      });
+    }
+   
     if (!entries.length) return null;
     return (
       <MainMenuContribution

@@ -123,5 +123,17 @@
     "policyHolder.nbEmployeesValidation.regexMsg.en": "Pleae Fill Numeric Value",
     "policyHolder.policyHolderInsuree.downloadsample": "Download Sample",
     "policyHolder.policyHolderInsuree.downloadInsuree": "Download Insuree",
-    "policyHolder.print": "Print"
+    "policyHolder.print": "Print",
+    "policyHolder.menu.declaration": "Declaration Report",
+    "policyHolder.declarationFilter.declared": "Declared",
+    "policyHolder.declarationFilter.notDeclared": "Not-Declared",
+    "policyHolder.declarationFilter.fromMonth": "From Month",
+    "policyHolder.declarationFilter.toMonth": "To Month",
+    "policyHolder.declarationFilter.camuCode": "CAMU Code",
+    "policyHolder.declarationFilter.search": "Search",
+    "policyHolder.declarationFilter.clear": "Clear",
+    "policyHolder.declarationDownload.tooltip":"Download Declaration Report",
+    "policyHolder.menu.paymentForApproval":"Payments for Approval",
+    "policyHolder.rights.exception.title": "Exception Configuration",
+    "policyHolder.rights.exception.applyException": "Apply Exception"
 }

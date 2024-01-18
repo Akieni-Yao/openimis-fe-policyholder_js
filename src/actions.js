@@ -7,6 +7,7 @@ import {
   graphqlWithVariables,
   decodeId,
   formatGQLString,
+  formatQuery
 } from "@openimis/fe-core";
 
 const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
@@ -912,3 +913,80 @@ export function printReportInsuree(mm, edited) {
     "success message"
   );
 }
+
+const DECLARATION_FULL_PROJECTION = (modulesManager) => [
+  "id",
+  "code",
+  "tradeName",
+  "phone",
+  "email",
+  "contactName",
+  "locations" +
+    modulesManager.getProjection("location.Location.FlatProjection"),
+
+  ,
+];
+
+export function fetchDeclarationReport(modulesManager, params) {
+  const payload = formatPageQueryWithCount(
+    "notDeclaredPolicyHolder",
+    params,
+    DECLARATION_FULL_PROJECTION(modulesManager)
+  );
+  return graphql(payload, "DECLARATION_REPORT");
+}
+
+export function selectRegion(region) {
+  return (dispatch) => {
+    dispatch({ type: "CLAIM_CLAIM_REGION_SELECTED", payload: region });
+  };
+}
+
+const PAYMENT_SUMMARIES_PROJECTION = (mm) => [
+  "uuid",
+  "id",
+  "requestDate",
+  "expectedAmount",
+  "receivedDate",
+  "receivedAmount",
+  "status",
+  "receiptNo",
+  "typeOfPayment",
+  "clientMutationId",
+  "validityTo",
+  // `paymentDetails{edges{node{premium${mm.getProjection("contribution.PremiumPicker.projection")}}}}`
+];
+
+const PAYMENT_FULL_PROJECTION = (mm) => [
+  ...PAYMENT_SUMMARIES_PROJECTION(mm),
+  "officerCode",
+  "phoneNumber",
+  "transactionNo",
+  "origin",
+  "matchedDate",
+  "rejectedReason",
+  "dateLastSms",
+  "languageName",
+  "transferFee",
+  "clientMutationId",
+];
+
+export function fetchPayment(mm) {
+  let filters = [];
+  // if (!!paymentUuid) {
+  filters.push(`status: 3`);
+  // } else if (!!clientMutationId) {
+  //   filters.push(`clientMutationId: "${clientMutationId}"`);
+  // }
+  const payload = formatPageQuery(
+    "payments",
+    filters,
+    PAYMENT_FULL_PROJECTION(mm)
+  );
+  return graphql(payload, "PAYMENT_OVERVIEW");
+}
+
+export const havingPAymentApprove = (uuid) => {
+  const payload = formatQuery("havingPaymentApproveRight", [`uuid:"${uuid}"`]);
+  return graphql(payload, "HAVING_APPROVER");
+};
