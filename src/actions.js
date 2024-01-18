@@ -7,7 +7,7 @@ import {
   graphqlWithVariables,
   decodeId,
   formatGQLString,
-  formatQuery
+  formatQuery,
 } from "@openimis/fe-core";
 
 const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
@@ -954,6 +954,7 @@ const PAYMENT_SUMMARIES_PROJECTION = (mm) => [
   "typeOfPayment",
   "clientMutationId",
   "validityTo",
+  "paymentCode",
   // `paymentDetails{edges{node{premium${mm.getProjection("contribution.PremiumPicker.projection")}}}}`
 ];
 

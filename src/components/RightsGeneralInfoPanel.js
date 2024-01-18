@@ -307,6 +307,13 @@ class RightsGeneralInfoPanel extends FormPanel {
                   });
                   // Additional code if needed
                 }}
+                readOnly={
+                  !!edited &&
+                  !!edited?.jsonExt &&
+                  !!edited?.jsonExt.penaltyWaiveOffContract
+                    ? false
+                    : true
+                }
               />
             </Grid>
           </Grid>
