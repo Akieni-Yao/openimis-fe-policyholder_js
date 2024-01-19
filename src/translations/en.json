@@ -135,5 +135,6 @@
     "policyHolder.declarationDownload.tooltip":"Download Declaration Report",
     "policyHolder.menu.paymentForApproval":"Payments for Approval",
     "policyHolder.rights.exception.title": "Exception Configuration",
-    "policyHolder.rights.exception.applyException": "Apply Exception"
+    "policyHolder.rights.exception.applyException": "Apply Exception",
+    "policyHolder.payment.code": "Payment Code"
 }

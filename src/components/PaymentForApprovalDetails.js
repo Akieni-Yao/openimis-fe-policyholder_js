@@ -175,6 +175,7 @@ class PaymentForApprovalDetails extends PagedDataHandler {
 
   headers = () => {
     var h = [
+      "policyHolder.payment.code",
       "payment.payment.receivedDate",
       "payment.payment.requestDate",
       "payment.payment.expectedAmount",
@@ -197,10 +198,10 @@ class PaymentForApprovalDetails extends PagedDataHandler {
   ];
 
   headerActions = [
-    this.sorter("PedingApproval.tempCamuNo"),
-    this.sorter("PedingApproval.firstName"),
-    this.sorter("PedingApproval.lastName"),
-    this.sorter("PedingApproval.lastName"),
+    // this.sorter("code"),
+    // this.sorter("receivedDate"),
+    // this.sorter("requestDate"),
+    // this.sorter("PedingApproval.lastName"),
   ];
 
   onDocumentViewClose = () => {
@@ -305,6 +306,7 @@ class PaymentForApprovalDetails extends PagedDataHandler {
   formatters = () => {
     const { intl, modulesManager, rights, readOnly = false } = this.props;
     const rows = [
+      (p) => p.paymentCode,
       (p) => formatDateFromISO(modulesManager, intl, p.receivedDate),
       (p) => formatDateFromISO(modulesManager, intl, p.requestDate),
       (p) => formatAmount(intl, p.expectedAmount),
@@ -363,7 +365,7 @@ class PaymentForApprovalDetails extends PagedDataHandler {
       errorPayments,
       edited,
       paymentApproval,
-      paymentsPageInfo
+      paymentsPageInfo,
     } = this.props;
     let actions =
       !!readOnly || !!checkingCanAddInsuree || !!errorCanAddInsuree
