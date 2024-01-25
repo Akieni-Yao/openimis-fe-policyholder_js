@@ -279,6 +279,7 @@ class RightsGeneralInfoPanel extends FormPanel {
                 required
                 format={"DD-MMMM-YYYY"}
                 monthtrue
+                maxDate={moment().add(6, 'months').format("YYYY-MM-DD")}
                 // minDate={
                 //   !!edited && !!edited.dateValidFrom && edited.dateValidFrom
                 // }
