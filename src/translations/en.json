@@ -136,6 +136,5 @@
     "policyHolder.menu.paymentForApproval":"Payments for Approval",
     "policyHolder.rights.exception.title": "Exception Configuration",
     "policyHolder.rights.exception.applyException": "Apply Exception",
-    "policyHolder.payment.code": "Payment Code",
-    "policyHolder.legalStatus": "Legal Status"
+    "policyHolder.payment.code": "Payment Code"
 }
