@@ -98,9 +98,9 @@ class PolicyHolderInsureesTabPanel extends Component {
     } catch (error) {
       alert(
         error?.message ??
-          formatMessage(
-            `An error occurred. Please contact your administrator. ${error?.message}`
-          )
+        formatMessage(
+          `An error occurred. Please contact your administrator. ${error?.message}`
+        )
       );
       this.setState({ downloadError: error });
     }
@@ -179,9 +179,6 @@ class PolicyHolderInsureesTabPanel extends Component {
   };
   handleInsureeDownload = async () => {
     const { policyHolder } = this.props;
-    // const file = event.target.files[0];
-    // let formData = new FormData();
-    // formData.append("file", file);
 
     let encodedCode = encodeURIComponent(policyHolder.code);
     let url_import = `${baseApiUrl}/policyholder/export/${encodedCode}/policyholderinsurees`;
@@ -189,16 +186,12 @@ class PolicyHolderInsureesTabPanel extends Component {
     try {
       const response = await fetch(url_import, {
         headers: apiHeaders,
-        // body: formData,
         method: "GET",
         credentials: "same-origin",
       });
 
-      // const payload = await response.text();
 
       if (response.status >= 400) {
-        // alert(`Error ${response.status}: ${payload.error}`);
-        // alert(`Error ${response.status}: ${payload}`);
 
         return;
       }
@@ -210,48 +203,17 @@ class PolicyHolderInsureesTabPanel extends Component {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      // alert(`Success: ${payload}`);
-      // console.log(`Success: ${payload}`);
 
       this.setState({ insureeCheck: true });
     } catch (error) {
       alert(
         error?.message ??
-          formatMessage(
-            `An error occurred. Please contact your administrator. ${error?.message}`
-          )
+        formatMessage(
+          `An error occurred. Please contact your administrator. ${error?.message}`
+        )
       );
     }
   };
-  // handleInsureeDownload = async () => {
-  //   const policyholderId = "CAMUAEP0911022023008";
-  //   const headers = {
-  //     "Authorization": `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   };
-  //   try {
-  //     const response = await fetch(
-  //       `https://camu.bluesquare.org/api/policyholder/export/${policyholderId}/policyholderinsurees`,
-  //       {
-  //         method: "POST",
-  //         headers: headers,
-  //       });
-
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-  //     const blob = await response.blob();
-  //     const url = window.URL.createObjectURL(blob);
-  //     const a = document.createElement("a");
-  //     a.href = url;
-  //     a.download = "policyholder_insurees.xlsx";
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     document.body.removeChild(a);
-  //   } catch (error) {
-  //     console.error("Error downloading file:", error);
-  //   }
-  // };
 
   render() {
     const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
@@ -268,108 +230,89 @@ class PolicyHolderInsureesTabPanel extends Component {
             <Fragment>
               {(rights.includes(RIGHT_POLICYHOLDERINSUREE_CREATE) ||
                 rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_CREATE)) && (
-                <Grid
-                  container
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <label>
-                    <Button
-                      onClick={this.handleDownload}
-                      variant="contained"
-                      component="span"
-                      color="primary"
-                      startIcon={<GetAppIcon />}
-                      style={{ marginRight: "5px" }}
-                    >
-                      <FormattedMessage
-                        module="policyHolder"
-                        id="policyHolderInsuree.downloadsample"
-                      />
-                    </Button>
-                  </label>
-                  <Input
-                    required
-                    id="import-button"
-                    style={{ display: "none" }}
-                    inputProps={{
-                      accept:
-                        ".xls, application/vnd.ms-excel, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    }}
-                    type="file"
-                    onChange={this.onUpload}
-                  />
-                  <label htmlFor="import-button">
-                    <Button
-                      variant="contained"
-                      component="span"
-                      color="primary"
-                      startIcon={<CloudUploadIcon />}
-                    >
-                      <FormattedMessage
-                        module="policyHolder"
-                        id="policyHolderInsuree.import"
-                      />
-                    </Button>
-                  </label>
-                  <Grid item>
-                    <Typography>
-                      <FormattedMessage
-                        module="policyHolder"
-                        id="policyHolderInsuree.createPolicyHolderInsuree"
-                      />
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <CreatePolicyHolderInsureeDialog
-                      policyHolder={policyHolder}
-                      onSave={this.onSave}
-                    />
-                  </Grid>
-                  <Grid item>
-                    {/* <Input
-                    required
-                    id="download-button"
-                    style={{ display: "none" }}
-                    inputProps={{
-                      accept:
-                        ".xls, application/vnd.ms-excel, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    }}
-                    type="file"
-                    onChange={this.onUpload}
-                  /> */}
-                    <label htmlFor="download-button">
+                  <Grid
+                    container
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    spacing={1}
+                  >
+                    <label>
                       <Button
-                        onClick={this.handleInsureeDownload}
+                        onClick={this.handleDownload}
                         variant="contained"
                         component="span"
                         color="primary"
-                        style={{
-                          marginLeft: "50px",
-                          display: "flex",
-                          justifyContent: "end",
-                        }}
                         startIcon={<GetAppIcon />}
+                        // style={{ marginRight: "5px" }}
                       >
                         <FormattedMessage
                           module="policyHolder"
-                          id="policyHolderInsuree.downloadInsuree"
+                          id="policyHolderInsuree.downloadsample"
                         />
                       </Button>
                     </label>
+                    <Grid item>
+                      <label htmlFor="download-button">
+                        <Button
+                          onClick={this.handleInsureeDownload}
+                          variant="contained"
+                          component="span"
+                          color="primary"
+                          style={{
+                            // marginLeft: "50px",
+                            display: "flex",
+                            justifyContent: "end",
+                          }}
+                          startIcon={<GetAppIcon />}
+                        >
+                          <FormattedMessage
+                            module="policyHolder"
+                            id="policyHolderInsuree.downloadInsuree"
+                          />
+                        </Button>
+                      </label>
+                    </Grid>
+                    <Input
+                      required
+                      id="import-button"
+                      style={{ display: "none" }}
+                      inputProps={{
+                        accept:
+                          ".xls, application/vnd.ms-excel, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                      }}
+                      type="file"
+                      onChange={this.onUpload}
+                    />
+                    <label htmlFor="import-button">
+                      <Button
+                        variant="contained"
+                        component="span"
+                        color="primary"
+                        startIcon={<CloudUploadIcon />}
+                      >
+                        <FormattedMessage
+                          module="policyHolder"
+                          id="policyHolderInsuree.import"
+                        />
+                      </Button>
+                    </label>
+                    <Grid item>
+                      <Typography>
+                        <FormattedMessage
+                          module="policyHolder"
+                          id="policyHolderInsuree.createPolicyHolderInsuree"
+                        />
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <CreatePolicyHolderInsureeDialog
+                        policyHolder={policyHolder}
+                        onSave={this.onSave}
+                      />
+                    </Grid>
+
                   </Grid>
-                  {/* <Grid item>
-                                            <Button onClick={this.handleDownload} style={{ marginLeft: "50px", display: "flex", justifyContent: "end" }} variant="contained"
-                                                component="span"
-                                                color="primary">
-                                                <GetAppIcon />
-                                                <FormattedMessage module="core" id="download sample" />
-                                                
-                                            </Button>
-                                        </Grid> */}
-                </Grid>
-              )}
+                )}
               <PolicyHolderInsureeSearcher
                 policyHolder={policyHolder}
                 rights={rights}
