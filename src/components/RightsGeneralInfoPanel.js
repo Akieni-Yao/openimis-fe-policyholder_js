@@ -174,7 +174,6 @@ class RightsGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
     } = this.props;
-    console.log("edited", edited);
     return (
       <Fragment>
         <Grid
@@ -279,6 +278,7 @@ class RightsGeneralInfoPanel extends FormPanel {
                 required
                 format={"DD-MMMM-YYYY"}
                 monthtrue
+                maxDate={moment().add(6, 'months').format("YYYY-MM-DD")}
                 // minDate={
                 //   !!edited && !!edited.dateValidFrom && edited.dateValidFrom
                 // }

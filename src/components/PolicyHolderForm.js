@@ -16,8 +16,21 @@ import {
   Helmet,
   FormattedMessage,
 } from "@openimis/fe-core";
-import { fetchPolicyHolder, clearPolicyHolder, sendEmail, printReport,havingPAymentApprove } from "../actions";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@material-ui/core";
+import {
+  fetchPolicyHolder,
+  clearPolicyHolder,
+  sendEmail,
+  printReport,
+  havingPAymentApprove,
+} from "../actions";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@material-ui/core";
 
 import {
   RIGHT_PORTALPOLICYHOLDER_SEARCH,
@@ -40,40 +53,40 @@ const styles = (theme) => ({
     paddingRight: 20,
     paddingLeft: 20,
     paddingTop: 10,
-    paddingBootom: 10
+    paddingBootom: 10,
   },
   dialogText: {
     color: "#000000",
-    fontWeight: "Bold"
+    fontWeight: "Bold",
   },
   primaryHeading: {
-    font: 'normal normal medium 20px/22px Roboto',
-    color: '#333333'
+    font: "normal normal medium 20px/22px Roboto",
+    color: "#333333",
   },
   primaryButton: {
     backgroundColor: "#FFFFFF 0% 0% no-repeat padding-box",
-    border: '1px solid #999999',
+    border: "1px solid #999999",
     color: "#999999",
-    borderRadius: '4px',
+    borderRadius: "4px",
     // fontWeight: "bold",
     "&:hover": {
-      backgroundColor: '#FF0000',
-      border: '1px solid #FF0000',
-      color: '#FFFFFF'
+      backgroundColor: "#FF0000",
+      border: "1px solid #FF0000",
+      color: "#FFFFFF",
     },
-  },//theme.dialog.primaryButton,
+  }, //theme.dialog.primaryButton,
   secondaryButton: {
     backgroundColor: "#FFFFFF 0% 0% no-repeat padding-box",
-    border: '1px solid #999999',
+    border: "1px solid #999999",
     color: "#999999",
-    borderRadius: '4px',
+    borderRadius: "4px",
     // fontWeight: "bold",
     "&:hover": {
-      backgroundColor: '#FF0000',
-      border: '1px solid #FF0000',
-      color: '#FFFFFF'
+      backgroundColor: "#FF0000",
+      border: "1px solid #FF0000",
+      color: "#FFFFFF",
     },
-  }
+  },
 });
 
 const jsonFields = ["address", "contactName", "bankAccount", "jsonExt"];
@@ -85,7 +98,7 @@ class PolicyHolderForm extends Component {
       policyHolder: {},
       isFormValid: true,
       success: false,
-      successMessage: ""
+      successMessage: "",
     };
   }
   wrapJSONFields = (policyHolder) => {
@@ -121,7 +134,7 @@ class PolicyHolderForm extends Component {
       );
     }
     const userid = localStorage.getItem("userId");
-    this.props.havingPAymentApprove(userid.trim());
+    this.props.havingPAymentApprove(userid?.trim());
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -152,34 +165,34 @@ class PolicyHolderForm extends Component {
     // Define the list of mandatory fields based on the value of rccm
     const mandatoryFields = rccmHasValue
       ? [
-        'tradeName',
-        'locations',
-        'jsonExt.mainActivity',
-        'activityCode',
-        'contactName',
-        'address',
-        'phone',
-        'legalForm',
-        'jsonExt.rccm',
-        'jsonExt.nbEmployees',
-        'jsonExt.createdAt',
-        'dateValidFrom'
-      ]
+          "tradeName",
+          "locations",
+          "jsonExt.mainActivity",
+          "activityCode",
+          "contactName",
+          "address",
+          "phone",
+          "legalForm",
+          "jsonExt.rccm",
+          "jsonExt.nbEmployees",
+          "jsonExt.createdAt",
+          "dateValidFrom",
+        ]
       : [
-        'tradeName',
-        'locations',
-        'jsonExt.mainActivity',
-        'activityCode',
-        'contactName',
-        'address',
-        'phone',
-        'legalForm',
-      ];
+          "tradeName",
+          "locations",
+          "jsonExt.mainActivity",
+          "activityCode",
+          "contactName",
+          "address",
+          "phone",
+          "legalForm",
+        ];
 
     // Check if any mandatory field is undefined or empty
-    const isEmpty = mandatoryFields.some(fieldPath => {
+    const isEmpty = mandatoryFields.some((fieldPath) => {
       // Split the property path and traverse the object
-      const fieldKeys = fieldPath.split('.');
+      const fieldKeys = fieldPath.split(".");
       let fieldValue = policyHolder;
 
       for (const key of fieldKeys) {
@@ -209,7 +222,7 @@ class PolicyHolderForm extends Component {
   //     !!policyHolder.address &&
   //     !!policyHolder.phone &&
   //     !!policyHolder.legalForm
-  //     // && 
+  //     // &&
   //     // !!policyHolder.jsonExt.createdAt
   //   ) {
   //     return false;
@@ -223,50 +236,64 @@ class PolicyHolderForm extends Component {
   // };
 
   emailButton = async (edited) => {
-    const message = await this.props.sendEmail(this.props.modulesManager, edited)
+    const message = await this.props.sendEmail(
+      this.props.modulesManager,
+      edited
+    );
     if (message?.payload?.data?.sentNotification?.message) {
       // If the email was sent successfully, update the success state and message
       this.setState({
         success: true,
-        successMessage: 'Email sent successfully',
+        successMessage: "Email sent successfully",
       });
     } else {
       // If the email send was not successful, you can also set success to false here
       // and provide an appropriate error message.
       this.setState({
         success: false,
-        successMessage: 'Email sending failed',
+        successMessage: "Email sending failed",
       });
     }
-  }
+  };
   displayPrintWindow = (base64Data, contentType) => {
-    const printWindow = window.open('', 'Print Window', 'width=600, height=400');
+    const printWindow = window.open(
+      "",
+      "Print Window",
+      "width=600, height=400"
+    );
     printWindow.document.open();
 
-    if (contentType === 'pdf') {
+    if (contentType === "pdf") {
       // printWindow.print(`<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`);
-      printWindow.document.write(`<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`);
+      printWindow.document.write(
+        `<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`
+      );
     } else {
-      printWindow.document.write(`<img src="data:image/png;base64,${base64Data}" />`);
+      printWindow.document.write(
+        `<img src="data:image/png;base64,${base64Data}" />`
+      );
     }
 
     printWindow.document.close();
     // printWindow.print();
-  }
+  };
   printReport = async (edited) => {
-    const data = await this.props.printReport(this.props.modulesManager, edited)
+    const data = await this.props.printReport(
+      this.props.modulesManager,
+      edited
+    );
 
     const base64Data = data?.payload?.data?.sentNotification?.data;
-    const contentType = 'pdf';
+    const contentType = "pdf";
     if (base64Data) {
-      this.displayPrintWindow(base64Data, contentType)
+      this.displayPrintWindow(base64Data, contentType);
     }
-  }
+  };
   cancel = () => {
     this.setState({
       success: false,
     });
-  }
+  };
   doesPolicyHolderChange = () => {
     const { policyHolder } = this.props;
     if (_.isEqual(policyHolder, this.state.policyHolder)) {
@@ -329,7 +356,8 @@ class PolicyHolderForm extends Component {
           saveTooltip={formatMessage(
             intl,
             "policyHolder",
-            `savePolicyHolderButton.tooltip.${this.canSave() ? "enabled" : "disabled"
+            `savePolicyHolderButton.tooltip.${
+              this.canSave() ? "enabled" : "disabled"
             }`
           )}
           onValidation={this.onValidation}
@@ -342,7 +370,6 @@ class PolicyHolderForm extends Component {
           print={policyHolderId}
           printButton={this.printReport}
           success={this.state.success}
-
         />
         <CommonSnackbar
           open={this.props.snackbar}
@@ -364,7 +391,7 @@ class PolicyHolderForm extends Component {
                 <FormattedMessage
                   module="insuree"
                   id="success"
-                // values={this.state.successMessage}
+                  // values={this.state.successMessage}
                 />
               </DialogContentText>
             </DialogContent>
@@ -408,7 +435,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchPolicyHolder, clearPolicyHolder, journalize, sendEmail, printReport,havingPAymentApprove },
+    {
+      fetchPolicyHolder,
+      clearPolicyHolder,
+      journalize,
+      sendEmail,
+      printReport,
+      havingPAymentApprove,
+    },
     dispatch
   );
 };
