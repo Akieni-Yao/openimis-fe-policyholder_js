@@ -972,20 +972,15 @@ const PAYMENT_FULL_PROJECTION = (mm) => [
   "clientMutationId",
 ];
 
-export function fetchPayment(mm) {
-  let filters = [];
-  // if (!!paymentUuid) {
-  filters.push(`status: 3`);
-  // } else if (!!clientMutationId) {
-  //   filters.push(`clientMutationId: "${clientMutationId}"`);
-  // }
-  const payload = formatPageQuery(
+export function fetchPayment(mm, filters) {
+  const payload = formatPageQueryWithCount(
     "payments",
     filters,
-    PAYMENT_FULL_PROJECTION(mm)
+    PAYMENT_SUMMARIES_PROJECTION(mm)
   );
   return graphql(payload, "PAYMENT_OVERVIEW");
 }
+
 
 export const havingPAymentApprove = (uuid) => {
   const payload = formatQuery("havingPaymentApproveRight", [`uuid:"${uuid}"`]);

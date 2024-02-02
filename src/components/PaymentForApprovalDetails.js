@@ -1,95 +1,34 @@
-import React, { Fragment } from "react";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import React, { Component, Fragment } from "react";
 import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import _ from "lodash";
+import { IconButton, Tooltip, Grid } from "@material-ui/core";
+import TabIcon from "@material-ui/icons/Tab";
+import { Delete as DeleteIcon } from "@material-ui/icons";
+import PaymentFilter from "./PaymentFilter";
 import {
-  Checkbox,
-  Paper,
-  IconButton,
-  Grid,
-  Divider,
-  Typography,
-  Tooltip,
-  Button,
-  Box,
-} from "@material-ui/core";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import {
-  formatMessage,
-  formatMessageWithValues,
   withModulesManager,
+  formatMessageWithValues,
   formatDateFromISO,
-  historyPush,
-  withHistory,
-  withTooltip,
-  FormattedMessage,
-  formatSorter,
-  sort,
-  coreAlert,
-  Table,
-  PagedDataHandler,
+  formatMessage,
+  Searcher,
   PublishedComponent,
-  ProgressOrError,
-  clearCurrentPaginationPage,
   formatAmount,
+  journalize,
+  withHistory,
+  historyPush,
 } from "@openimis/fe-core";
-import {
-  // selectFamilyMember,
-  fetchPayment,
-} from "../actions";
 import HelpIcon from "@material-ui/icons/Help";
+import { fetchPayment } from "../actions";
+import { RIGHT_PAYMENT_EDIT } from "../constants";
+// import DeletePaymentDialog from "./DeletePaymentDialog";
 
-const styles = (theme) => ({
-  paper: theme.paper.paper,
-  paperHeader: theme.paper.header,
-  paperHeaderAction: theme.paper.action,
-  tableTitle: theme.table.title,
-  tableHeader: theme.table.header,
-  biometricPaper: {
-    background: "#fff",
-  },
-  btnPrimary: theme.formTable.actions,
-  approvedIcon: {
-    "&.Mui-checked": {
-      color: "#00913E",
-    },
-  },
-  rejectIcon: {
-    "&.Mui-checked": {
-      color: "#FF0000",
-    },
-  },
-  commonBtn: {
-    color: "grey",
-  },
-  noBtnClasses: {
-    visibility: "hidden",
-  },
-  customArrow: {
-    color: "#eeeaea",
-  },
-  tooltip: {
-    maxWidth: 1000,
-    width: "fit-content",
-    // width: "auto",
-    color: "white",
-    backgroundColor: "#eeeaea",
-  },
-});
+const PAYMENT_SEARCHER_CONTRIBUTION_KEY = "payment.PaymentSearcher";
 
-class PaymentForApprovalDetails extends PagedDataHandler {
+class PaymentForApproverDetails extends Component {
   state = {
-    documentViewOpen: false,
-    chfid: null,
-    confirmedAction: null,
-    documentId: null,
-    changeInsureeFamily: null,
+    deletePayment: null,
     reset: 0,
-    canAddAction: null,
-    checkedCanAdd: false,
-    dataFromAPI: null,
   };
 
   constructor(props) {
@@ -98,84 +37,44 @@ class PaymentForApprovalDetails extends PagedDataHandler {
     this.defaultPageSize = 10;
     this.locationLevels = 4;
   }
-  // onDoubleClick = (f, newTab = false) => {
-  //   historyPush(
-  //     this.props.modulesManager,
-  //     this.props.history,
-  //     "insuree/insurees/familyOverview",
-  //     [f.uuid],
-  //     newTab
-  //   );
-  // };
-  componentDidMount() {
-    this.setState({ orderBy: null }, (e) =>
-      this.onChangeRowsPerPage(this.defaultPageSize)
-    );
-    this.props.fetchPayment(this.props.modulesManager);
 
-    const moduleName = "insuree";
-    const { module } = this.props;
-    if (module !== moduleName) this.props.clearCurrentPaginationPage();
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.documentViewOpen !== this.state.documentViewOpen) {
-      this.adjustButtonZIndex();
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.submittingMutation && !this.props.submittingMutation) {
+      this.props.journalize(this.props.mutation);
+      this.setState({ reset: this.state.reset + 1 });
     }
   }
 
-  componentWillUnmount = () => {
-    const { location, history } = this.props;
-    const {
-      location: { pathname },
-    } = history;
-    // const urlPath = location.pathname;
-    // if (!pathname.includes(urlPath)) this.props.clearCurrentPaginationPage();
+  fetch = (prms) => {
+    this.props.fetchPayment(this.props.modulesManager, prms);
   };
 
-  queryPrms = () => {
-    let prms = [];
-    if (!!this.state.orderBy) {
-      prms.push(`orderBy: "${this.state.orderBy}"`);
+  rowIdentifier = (r) => r.uuid;
+
+  filtersToQueryParams = (state) => {
+    let prms = Object.keys(state.filters)
+      .filter((contrib) => !!state.filters[contrib]["filter"])
+      .map((contrib) => state.filters[contrib]["filter"]);
+    if (!state.beforeCursor && !state.afterCursor) {
+      prms.push(`first: ${state.pageSize}`);
     }
-    if (!!this.props.family && !!this.props.family.uuid) {
-      prms.push(`familyUuid:"${this.props.family.uuid}"`);
-      return prms;
+    if (!!state.afterCursor) {
+      prms.push(`after: "${state.afterCursor}"`);
+      prms.push(`first: ${state.pageSize}`);
     }
-    return null;
+    if (!!state.beforeCursor) {
+      prms.push(`before: "${state.beforeCursor}"`);
+      prms.push(`last: ${state.pageSize}`);
+    }
+    if (!!state.orderBy) {
+      prms.push(`orderBy: ["${state.orderBy}"]`);
+    }
+    return prms;
   };
 
-  // onDoubleClick = (i, newTab = false) => {
-  //   historyPush(this.props.modulesManager, this.props.history, "insuree.route.insuree", [i.uuid], newTab);
-  // };
-  onDoubleClick = (p, newTab = false) => {
-    historyPush(
-      this.props.modulesManager,
-      this.props.history,
-      "payment.paymentOverview",
-      [p.uuid],
-      newTab
-    );
-  };
-
-  // onDoubleClick = (f, newTab = false) => {
-  //   console.log("checkf", f);
-  //   historyPush(
-  //     this.props.modulesManager,
-  //     this.props.history,
-  //     "insuree.route.familyOverview",
-  //     [f.headInsuree.uuid],
-  //     newTab,
-  //   );
-  //   // historyPush(this.props.modulesManager, this.props.history, "insuree.route.family");
-  // };
-
-  // onChangeSelection = (i) => {
-  //   this.props.selectFamilyMember(i[0] || null);
-  // };
-
-  headers = () => {
+  headers = (filters) => {
     var h = [
-      "policyHolder.payment.code",
+      "Code",
       "payment.payment.receivedDate",
       "payment.payment.requestDate",
       "payment.payment.expectedAmount",
@@ -184,128 +83,60 @@ class PaymentForApprovalDetails extends PagedDataHandler {
       "payment.payment.receiptNo",
       "payment.payment.status",
     ];
-
     return h;
   };
 
-  sorter = (attr, asc = true) => [
-    () =>
-      this.setState(
-        (state, props) => ({ orderBy: sort(state.orderBy, attr, asc) }),
-        (e) => this.query()
-      ),
-    () => formatSorter(this.state.orderBy, attr, asc),
-  ];
-
-  headerActions = [
-    // this.sorter("code"),
-    // this.sorter("receivedDate"),
-    // this.sorter("requestDate"),
-    // this.sorter("PedingApproval.lastName"),
-  ];
-
-  onDocumentViewClose = () => {
-    this.setState({ documentViewOpen: false });
+  sorts = (filters) => {
+    var results = [
+      ["receivedDate", true],
+      ["requestDate", true],
+      ["expectedAmount", true],
+      ["receivedAmount", true],
+      ["typeOfPayment", true],
+      ["receiptNo", true],
+      ["status", true],
+      "contribution.openNewTabHead",
+    ];
+    return results;
   };
-  rejectedCommentsTooltip = (rejectComment) => {
-    return (
-      <PublishedComponent
-        pubRef="insuree.RejectCommentPicker"
-        withNull
-        filterLabels={false}
-        value={!!rejectComment.comments && Number(rejectComment.comments)}
-        readOnly={true}
-      >
-        <div style={{ color: "white" }}>{rejectComment.comments}</div>
-      </PublishedComponent>
-    );
+
+  deletePayment = () => {
+    let payment = this.state.deletePayment;
+    this.setState({ deletePayment: null }, (e) => {
+      //   this.props.deletePayment(
+      //     this.props.modulesManager,
+      //     payment,
+      //     formatMessageWithValues(
+      //       this.props.intl,
+      //       "payment",
+      //       "deletePaymentDialog.title"
+      //     )
+      //   );
+    });
   };
-  viewDocumentAction = (uuid) => {
-    return (
+
+  confirmDelete = (deletePayment) => {
+    this.setState({ deletePayment });
+  };
+
+  deletePaymentAction = (i) =>
+    !!i.validityTo || !!i.clientMutationId ? null : (
       <Tooltip
         title={formatMessage(
           this.props.intl,
-          "insuree",
-          "Insuree.viewDocuments"
+          "payment",
+          "deletePayment.tooltip"
         )}
       >
-        <IconButton
-          onClick={(e) =>
-            this.setState({ documentId: uuid, documentViewOpen: true })
-          }
-        >
-          <InsertDriveFileIcon className={this.props.classes.btnPrimary} />
+        <IconButton onClick={() => this.confirmDelete(i)}>
+          <DeleteIcon />
         </IconButton>
       </Tooltip>
     );
-  };
-  getCheckBoxClass = (status) => {
-    const checkStatus = status.documentStatus;
-    let selectedClass = null;
-    let rejectedTooltip = null;
-    let docsStatus = null;
-    switch (checkStatus) {
-      case "APPROVED":
-        selectedClass = this.props.classes.approvedIcon;
-        // docsStatus = "Approved";
-        docsStatus = formatMessage(
-          this.props.intl,
-          "insuree",
-          "Insuree.approved"
-        );
-        break;
-      case "REJECTED":
-        selectedClass = this.props.classes.rejectIcon;
-        rejectedTooltip = (
-          <Tooltip
-            placement="right"
-            arrow
-            classes={{
-              tooltip: this.props.classes.tooltip,
-              arrow: this.props.classes.customArrow,
-            }}
-            title={this.rejectedCommentsTooltip(status)}
-          >
-            <IconButton>
-              <HelpIcon />
-            </IconButton>
-          </Tooltip>
-        );
-        // docsStatus = "Rejected";
-        docsStatus = formatMessage(
-          this.props.intl,
-          "insuree",
-          "Insuree.rejected"
-        );
-        break;
-      case "PENDING_FOR_REVIEW":
-        selectedClass = this.props.classes.commonBtn;
-        // docsStatus = "NOT REVIEWED";
-        docsStatus = formatMessage(
-          this.props.intl,
-          "insuree",
-          "Insuree.notReviewed"
-        );
-        break;
-      default:
-        selectedClass = this.props.classes.noBtnClasses;
-        break;
-    }
 
-    return { selectedClass, rejectedTooltip, docsStatus };
-  };
-  parentLocation = (location, level) => {
-    if (!location) return "";
-    let loc = location;
-    for (var i = 1; i < this.locationLevels - level; i++) {
-      if (!loc.parent) return "";
-      loc = loc.parent;
-    }
-    return !!loc ? loc.name : "";
-  };
-  formatters = () => {
+  itemFormatters = () => {
     const { intl, modulesManager, rights, readOnly = false } = this.props;
-    const rows = [
+    const formatters = [
       (p) => p.paymentCode,
       (p) => formatDateFromISO(modulesManager, intl, p.receivedDate),
       (p) => formatDateFromISO(modulesManager, intl, p.requestDate),
@@ -321,17 +152,35 @@ class PaymentForApprovalDetails extends PagedDataHandler {
       ),
       (p) => p.receiptNo,
       (p) => (
-        <PublishedComponent
-          readOnly={true}
-          pubRef="payment.PaymentStatusPicker"
-          withLabel={false}
-          value={p.status}
-          nullLabel="payment.status.none"
-        />
+        <Grid style={{ display: "flex" }}>
+          <PublishedComponent
+            readOnly={true}
+            pubRef="payment.PaymentStatusPicker"
+            withLabel={false}
+            value={p.status}
+            nullLabel="payment.status.none"
+          />
+          {p.status == -1 ? (
+            <Tooltip
+              placement="right"
+              arrow
+              //   classes={{ tooltip: this.props.classes.tooltip }}
+              title={formatMessage(
+                this.props.intl,
+                "payment",
+                `payment.rejectComment.${p.rejectedReason}`
+              )}
+            >
+              <IconButton>
+                <HelpIcon />
+              </IconButton>
+            </Tooltip>
+          ) : null}
+        </Grid>
       ),
     ];
     // if (rights.includes(RIGHT_PAYMENT_EDIT)) {
-    //   rows.push((p) => (
+    //   formatters.push((p) => (
     //     <Tooltip title={formatMessage(intl, "payment", "openNewTab")}>
     //       <IconButton onClick={() => this.onDoubleClick(p, true)}>
     //         <TabIcon />
@@ -340,202 +189,117 @@ class PaymentForApprovalDetails extends PagedDataHandler {
     //   ));
     // }
     // if (!readOnly && rights.includes(RIGHT_PAYMENT_DELETE)) {
-    //   rows.push(this.deletePaymentAction);
+    //   formatters.push(this.deletePaymentAction);
     // }
-    return rows;
+    return formatters;
   };
 
-  addNewInsuree = () =>
+  rowDisabled = (selection, i) => !!i.validityTo;
+  rowLocked = (selection, i) => !!i.clientMutationId;
+
+  defaultFilters = () => {
+    return {
+      status: {
+        value: 3,
+        filter: `status: 3`,
+      },
+    };
+  };
+
+  onDoubleClick = (p, newTab = false) => {
     historyPush(
       this.props.modulesManager,
       this.props.history,
-      "insuree.route.insuree",
-      ["_NEW_", this.props.family.uuid]
+      "payment.paymentOverview",
+      [p.uuid],
+      newTab
     );
-  rowLocked = (i) => !!i.clientMutationId;
+  };
+
   render() {
     const {
       intl,
-      classes,
-      pageInfo,
-      fetchingPayments,
-      readOnly,
-      checkingCanAddInsuree,
-      errorCanAddInsuree,
-      errorPayments,
-      edited,
-      paymentApproval,
+      rights,
+      payments,
       paymentsPageInfo,
+      fetchingPayments,
+      fetchedPayment,
+      errorPayments,
+      filterPaneContributionsKey,
+      cacheFiltersKey,
     } = this.props;
-    let actions =
-      !!readOnly || !!checkingCanAddInsuree || !!errorCanAddInsuree
-        ? []
-        : [
-            // {
-            //   button: (
-            //     <Button onClick={this.handleExternalNavigation} variant="contained" color="primary">
-            //       Collect Documents
-            //     </Button>
-            //   ),
-            // },
-          ];
-    if (!!checkingCanAddInsuree || !!errorCanAddInsuree) {
-      actions.push({
-        button: (
-          <div>
-            <ProgressOrError
-              progress={checkingCanAddInsuree}
-              error={errorCanAddInsuree}
-            />
-          </div>
-        ),
-        tooltip: formatMessage(intl, "insuree", "familyCheckCanAdd"),
-      });
-    }
-    // let bioActions =
-    //   !!readOnly || !!checkingCanAddInsuree || !!errorCanAddInsuree
-    //     ? []
-    //     : [
-    //         {
-    //           button: (
-    //             <Button onClick={this.handleExternalNavigation} variant="contained" color="primary">
-    //               Collect Biometric
-    //             </Button>
-    //           ),
-    //         },
-    //       ];
-    if (!!checkingCanAddInsuree || !!errorCanAddInsuree) {
-      actions.push({
-        button: (
-          <div>
-            <ProgressOrError
-              progress={checkingCanAddInsuree}
-              error={errorCanAddInsuree}
-            />
-          </div>
-        ),
-        tooltip: formatMessage(intl, "insuree", "familyCheckCanAdd"),
-      });
-    }
-    console.log("this.formatters()", paymentApproval);
+    let count = paymentsPageInfo.totalCount;
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Grid
-              container
-              alignItems="center"
-              direction="row"
-              className={classes.paperHeader}
-            >
-              <Grid item xs={8}>
-                <Typography className={classes.tableTitle}>
-                  <FormattedMessage
-                    module="insuree"
-                    id="Insuree.pendingApproval"
-                  />
-                </Typography>
-              </Grid>
-              <Grid item xs={4}>
-                <Grid container justify="flex-end">
-                  {actions.map((a, idx) => {
-                    return (
-                      <Grid
-                        item
-                        key={`form-action-${idx}`}
-                        className={classes.paperHeaderAction}
-                      >
-                        {withTooltip(a.button, a.tooltip)}
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-            </Grid>
-            {/* {documentDetails?.length > 0 && !fetchingDocuments ? ( */}
-            <Table
-              module="payment"
-              headers={this.headers()}
-              headerActions={this.headerActions}
-              itemFormatters={this.formatters()}
-              items={paymentApproval}
-              fetching={fetchingPayments}
-              error={errorPayments}
-              onDoubleClick={this.onDoubleClick}
-              withSelection={"single"}
-              // onChangeSelection={this.onChangeSelection}
-              withPagination={false}
-              rowsPerPageOptions={this.rowsPerPageOptions}
-              defaultPageSize={this.defaultPageSize}
-              page={this.currentPage()}
-              pageSize={this.currentPageSize()}
-              count={paymentsPageInfo.totalCount}
-              onChangePage={this.onChangePage}
-              onChangeRowsPerPage={this.onChangeRowsPerPage}
-              rowLocked={this.rowLocked}
-            />
-            {/* ) : !fetchingDocuments && documentDetails?.length == 0 ? (
-              <Grid
-                style={{
-                  dispaly: "flex",
-                  height: "15rem",
-                }}
-              >
-                <Typography
-                  style={{
-                    color: "red",
-                    justifyContent: "center",
-                    textAlign: "center",
-                    alignItems: "center",
-                    padding: "6rem 0",
-                    fontSize: "1.8rem",
-                  }}
-                >
-                  {formatMessage(this.props.intl, "insuree", "Insuree.noDocuments")}
-                </Typography>
-              </Grid>
-            ) : null} */}
-          </Paper>
-        </Grid>
-      </Grid>
+      <Fragment>
+        {/* <DeletePaymentDialog
+          payment={this.state.deletePayment}
+          onConfirm={this.deletePayment}
+          onCancel={(e) => this.setState({ deletePayment: null })}
+        /> */}
+        <Searcher
+          module="payment"
+          cacheFiltersKey={cacheFiltersKey}
+          FilterPane={PaymentFilter}
+          filterPaneContributionsKey={filterPaneContributionsKey}
+          items={payments}
+          itemsPageInfo={paymentsPageInfo}
+          fetchingItems={fetchingPayments}
+          fetchedItems={fetchedPayment}
+          errorItems={errorPayments}
+          contributionKey={PAYMENT_SEARCHER_CONTRIBUTION_KEY}
+          tableTitle={formatMessageWithValues(
+            intl,
+            "payment",
+            "paymentSummaries",
+            { count }
+          )}
+          rowsPerPageOptions={this.rowsPerPageOptions}
+          defaultPageSize={this.defaultPageSize}
+          fetch={this.fetch}
+          rowIdentifier={this.rowIdentifier}
+          filtersToQueryParams={this.filtersToQueryParams}
+          defaultOrderBy="-receivedDate"
+          headers={this.headers}
+          itemFormatters={this.itemFormatters}
+          sorts={this.sorts}
+          rowDisabled={this.rowDisabled}
+          rowLocked={this.rowLocked}
+          onDoubleClick={(c) =>
+            !c.clientMutationId &&
+            rights.includes(RIGHT_PAYMENT_EDIT) &&
+            this.onDoubleClick(c)
+          }
+          reset={this.state.reset}
+          defaultFilters={this.defaultFilters()}
+        />
+      </Fragment>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  rights:
+    !!state.core && !!state.core.user && !!state.core.user.i_user
+      ? state.core.user.i_user.rights
+      : [],
+  submittingMutation: state.payment.submittingMutation,
+  mutation: state.payment.mutation,
   fetchingPayments: state.policyHolder.fetchingPayments,
   fetchedPayment: state.policyHolder.fetchedPayment,
   errorPayments: state.policyHolder.errorPayments,
-  paymentApproval: state.policyHolder.payment,
-  paymentsPageInfo: state.payment.paymentsPageInfo,
+  payments: state.policyHolder.payment,
+  paymentsPageInfo: state.policyHolder.paymentsPageInfo,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    {
-      // selectFamilyMember,
-      coreAlert,
-      fetchPayment,
-      clearCurrentPaginationPage,
-    },
-    dispatch
-  );
+  return bindActionCreators({ fetchPayment, journalize }, dispatch);
 };
 
 export default withModulesManager(
   withHistory(
-    injectIntl(
-      withTheme(
-        withStyles(styles)(
-          connect(
-            mapStateToProps,
-            mapDispatchToProps
-          )(PaymentForApprovalDetails)
-        )
-      )
-    )
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(injectIntl(PaymentForApproverDetails))
   )
 );

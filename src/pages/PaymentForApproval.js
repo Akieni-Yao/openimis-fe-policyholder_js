@@ -139,6 +139,7 @@ class PaymentForApproval extends Component {
             )}
           />
           <PaymentForApprovalDetails
+            cacheFiltersKey="paymentsPageFiltersCache"
             rights={rights}
             reset={this.state.reset}
             onSave={this.onSave}
