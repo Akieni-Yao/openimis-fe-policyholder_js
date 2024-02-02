@@ -174,7 +174,6 @@ class RightsGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
     } = this.props;
-    console.log("edited", edited);
     return (
       <Fragment>
         <Grid
