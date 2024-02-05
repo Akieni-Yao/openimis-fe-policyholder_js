@@ -95,8 +95,8 @@ class PaymentFilter extends Component {
             field={
               <Grid item xs={3} className={classes.item}>
                 <TextInput
-                  module="payment"
-                  label="Payment Code"
+                  module="policyHolder"
+                  label="payment.code"
                   name="payment_code"
                   value={this._filterValue("payment_code")}
                   onChange={(v) =>
