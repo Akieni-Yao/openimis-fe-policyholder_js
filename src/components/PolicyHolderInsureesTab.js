@@ -52,7 +52,7 @@ class PolicyHolderInsureesTabPanel extends Component {
       downloadError: null,
     };
   }
-
+  userlang = localStorage.getItem("userLanguage");
   onSave = () => {
     this.setState((state) => ({
       reset: state.reset + 1,
@@ -88,7 +88,7 @@ class PolicyHolderInsureesTabPanel extends Component {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "policyholder_insurees.xlsx";
+      a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -171,7 +171,7 @@ class PolicyHolderInsureesTabPanel extends Component {
     link.href =
       "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
       dataURI;
-    link.download = "data.xlsx"; // Change the filename if needed
+    link.download = this.userlang === "fr" ? "Echantillon_données_assurés.xlsx" : "sample_insurees_data.xlsx"; // Change the filename if needed
     link.style.display = "none";
     document.body.appendChild(link);
     link.click();
@@ -199,7 +199,7 @@ class PolicyHolderInsureesTabPanel extends Component {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "policyholder_insurees.xlsx";
+      a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -243,7 +243,7 @@ class PolicyHolderInsureesTabPanel extends Component {
                         component="span"
                         color="primary"
                         startIcon={<GetAppIcon />}
-                        // style={{ marginRight: "5px" }}
+                      // style={{ marginRight: "5px" }}
                       >
                         <FormattedMessage
                           module="policyHolder"
