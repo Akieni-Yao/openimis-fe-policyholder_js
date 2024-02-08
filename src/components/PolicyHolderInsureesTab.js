@@ -199,7 +199,7 @@ class PolicyHolderInsureesTabPanel extends Component {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";;
+      a.download = this.userlang === "fr" ? "liste des assurées Ouvrant droit.xlsx" : "policyholder_insurees.xlsx";;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
