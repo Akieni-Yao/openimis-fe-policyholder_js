@@ -129,7 +129,11 @@ class DeclarationPage extends Component {
     document.body.removeChild(a);
     // URL.revokeObjectURL(url);
   };
-
+  userlang = localStorage.getItem("userLanguage");
+  getFileName(defaultName, frenchName) {
+    // Assuming userLang holds the language information
+    return this.userlang === "fr" ? frenchName : defaultName;
+  }
   handleInsureeDownload = async () => {
     const resultObject = {};
     this.state.filterData.forEach((item) => {
@@ -201,8 +205,8 @@ class DeclarationPage extends Component {
       a.href = url;
       a.download = `${
         !!resultObject.declared
-          ? "declared_policyholder.xlsx"
-          : "notdeclared_policyholder.xlsx"
+          ? this.getFileName("declared_policyholder.xlsx","Souscripteur déclaré.xlsx")
+          : this.getFileName("notdeclared_policyholder.xlsx","Souscripteur non-déclaré.xlsx")
       }`;
       document.body.appendChild(a);
       a.click();
