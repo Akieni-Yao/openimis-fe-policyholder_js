@@ -52,77 +52,77 @@ class PaymentForApproval extends Component {
     if (!pathname.includes(urlPath)) this.props.clearCurrentPaginationPage();
   };
 
-  _downloadExcel = () => {
-    const { declaration } = this.props;
+  // _downloadExcel = () => {
+  //   const { declaration } = this.props;
 
-    if (!declaration || declaration.length === 0) {
-      // Handle the case where there is no data to download
-      return;
-    }
+  //   if (!declaration || declaration.length === 0) {
+  //     // Handle the case where there is no data to download
+  //     return;
+  //   }
 
-    // Flatten nested objects
-    const flattenedData = declaration.map((item) => {
-      const flatItem = { ...item };
+  //   // Flatten nested objects
+  //   const flattenedData = declaration.map((item) => {
+  //     const flatItem = { ...item };
 
-      // Flatten the 'locations' object if it exists
-      if (flatItem.locations) {
-        flatItem.locationId = flatItem.locations.id;
-        flatItem.locationUuid = flatItem.locations.uuid;
-        flatItem.locationCode = flatItem.locations.code;
-        flatItem.locationName = flatItem.locations.name;
-        flatItem.locationType = flatItem.locations.type;
-        delete flatItem.locations;
-      }
+  //     // Flatten the 'locations' object if it exists
+  //     if (flatItem.locations) {
+  //       flatItem.locationId = flatItem.locations.id;
+  //       flatItem.locationUuid = flatItem.locations.uuid;
+  //       flatItem.locationCode = flatItem.locations.code;
+  //       flatItem.locationName = flatItem.locations.name;
+  //       flatItem.locationType = flatItem.locations.type;
+  //       delete flatItem.locations;
+  //     }
 
-      // If 'contactName' is a string, parse it as JSON
-      if (typeof flatItem.contactName === "string") {
-        try {
-          const contactNameObj = JSON.parse(flatItem.contactName);
-          flatItem.contactName = contactNameObj.contactName;
-        } catch (error) {
-          // Handle the parsing error if necessary
-        }
-      }
+  //     // If 'contactName' is a string, parse it as JSON
+  //     if (typeof flatItem.contactName === "string") {
+  //       try {
+  //         const contactNameObj = JSON.parse(flatItem.contactName);
+  //         flatItem.contactName = contactNameObj.contactName;
+  //       } catch (error) {
+  //         // Handle the parsing error if necessary
+  //       }
+  //     }
 
-      return flatItem;
-    });
+  //     return flatItem;
+  //   });
 
-    // Create a table element
-    const table = document.createElement("table");
+  //   // Create a table element
+  //   const table = document.createElement("table");
 
-    // Add table headers
-    const headerRow = table.insertRow(0);
-    Object.keys(flattenedData[0]).forEach((key) => {
-      const cell = headerRow.insertCell();
-      cell.textContent = key;
-    });
+  //   // Add table headers
+  //   const headerRow = table.insertRow(0);
+  //   Object.keys(flattenedData[0]).forEach((key) => {
+  //     const cell = headerRow.insertCell();
+  //     cell.textContent = key;
+  //   });
 
-    // Add table data
-    flattenedData.forEach((item, index) => {
-      const row = table.insertRow(index + 1);
-      Object.values(item).forEach((value) => {
-        const cell = row.insertCell();
-        cell.textContent = value;
-      });
-    });
+  //   // Add table data
+  //   flattenedData.forEach((item, index) => {
+  //     const row = table.insertRow(index + 1);
+  //     Object.values(item).forEach((value) => {
+  //       const cell = row.insertCell();
+  //       cell.textContent = value;
+  //     });
+  //   });
 
-    // Create a workbook from the table
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Declaration Data");
+  //   // Create a workbook from the table
+  //   const ws = XLSX.utils.table_to_sheet(table);
+  //   const wb = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, "Declaration Data");
 
-    const dataURI = XLSX.write(wb, { bookType: "xlsx", type: "base64" });
-    const a = document.createElement("a");
-    a.href =
-      "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
-      dataURI;
-    // a.href = url;
-    a.download = "declaration_data.xlsx";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    // URL.revokeObjectURL(url);
-  };
+  //   const dataURI = XLSX.write(wb, { bookType: "xlsx", type: "base64" });
+  //   const a = document.createElement("a");
+  //   a.href =
+  //     "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
+  //     dataURI;
+  //   // a.href = url;
+  //   a.download = "declaration_data.xlsx";
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   document.body.removeChild(a);
+  //   // URL.revokeObjectURL(url);
+  // };
 
   render() {
     const { classes, rights } = this.props;
@@ -144,7 +144,7 @@ class PaymentForApproval extends Component {
             reset={this.state.reset}
             onSave={this.onSave}
           />
-          {withTooltip(
+          {/* {withTooltip(
             <div className={classes.fab}>
               <Fab color="primary" onClick={this._downloadExcel}>
                 <SystemUpdateAltIcon />
@@ -155,7 +155,7 @@ class PaymentForApproval extends Component {
               "policyHolder",
               "declarationDownload.tooltip"
             )
-          )}
+          )} */}
         </div>
       )
     );
