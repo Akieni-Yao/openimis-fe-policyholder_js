@@ -78,6 +78,10 @@ class PaymentForApproverDetails extends Component {
       "payment.payment.receivedDate",
       "payment.payment.requestDate",
       "payment.payment.expectedAmount",
+      "payment.payment.previousDue",
+      "payment.payment.declarationPenaltyAmount",
+      "payment.payment.paymentPenaltyAmount",
+      "payment.payment.totalAmount",
       "payment.payment.receivedAmount",
       "payment.payment.typeOfPayment",
       "payment.payment.receiptNo",
@@ -88,9 +92,14 @@ class PaymentForApproverDetails extends Component {
 
   sorts = (filters) => {
     var results = [
+      ["paymentCode", true],
       ["receivedDate", true],
       ["requestDate", true],
       ["expectedAmount", true],
+      ["parentPaymentPending", true],
+      ["contractPenaltyAmount", true],
+      ["parentPaymentPenalty", true],
+      ["totalAmount", true],
       ["receivedAmount", true],
       ["typeOfPayment", true],
       ["receiptNo", true],
@@ -141,6 +150,10 @@ class PaymentForApproverDetails extends Component {
       (p) => formatDateFromISO(modulesManager, intl, p.receivedDate),
       (p) => formatDateFromISO(modulesManager, intl, p.requestDate),
       (p) => formatAmount(intl, p.expectedAmount),
+      (p) => formatAmount(intl, p.parentPendingPayment),
+      (p) => p.contractPenaltyAmount,
+      (p) => p.parentPaymentPenalty,
+      (p) => formatAmount(intl, p.totalAmount),
       (p) => formatAmount(intl, p.receivedAmount),
       (p) => (
         <PublishedComponent
@@ -238,7 +251,7 @@ class PaymentForApproverDetails extends Component {
         /> */}
         <Searcher
           module="payment"
-          cacheFiltersKey={cacheFiltersKey}
+          // cacheFiltersKey={cacheFiltersKey}
           FilterPane={PaymentFilter}
           filterPaneContributionsKey={filterPaneContributionsKey}
           items={payments}
@@ -258,7 +271,7 @@ class PaymentForApproverDetails extends Component {
           fetch={this.fetch}
           rowIdentifier={this.rowIdentifier}
           filtersToQueryParams={this.filtersToQueryParams}
-          defaultOrderBy="-receivedDate"
+          defaultOrderBy="-paymentCode"
           headers={this.headers}
           itemFormatters={this.itemFormatters}
           sorts={this.sorts}
