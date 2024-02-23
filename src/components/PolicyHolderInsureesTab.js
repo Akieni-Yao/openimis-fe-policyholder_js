@@ -109,10 +109,10 @@ class PolicyHolderInsureesTabPanel extends Component {
   handleDownload = () => {
     const data = [
       [
-        "CAMU Number",
-        "Prénom",
+        "Numéro CAMU",
         "Nom",
-        "Tempoprary CAMU Number",
+        "Prénom",
+        "Numéro CAMU temporaire",
         "Date de naissance",
         "Lieu de naissance",
         "Sexe",
@@ -129,7 +129,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         "Part Salariale %",
         "Part Salariale",
         "Cotisation total",
-        "Delete",
+        "Supprimé",
       ],
       [
         "",
