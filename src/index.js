@@ -42,12 +42,28 @@ import BankPicker from "./pickers/BankPicker";
 import DeclarationPage from "./pages/DeclarationPage";
 import PaymentForApproval from "./pages/PaymentForApproval";
 import RightsGeneralInfoPanel from "./components/RightsGeneralInfoPanel";
+import ExceptionTabPanel from "./components/ExceptionTabPanel";
+import {
+  ExceptionInsureeTabLabel,
+  ExceptionInsureeTabPanel,
+} from "./pages/ExceptionInsureePage";
+import ExceptionStatusPicker from "./pickers/ExceptionStatusPicker";
+import {
+  ExceptionPolicyholderTabLabel,
+  ExceptionPolicyholderTabPanel,
+} from "./pages/ExceptionPolicyHolderPage";
+import CamuCodePicker from "./pickers/CamuCodePicker";
+import ExceptionForm from "./components/ExceptionForm";
+import ExceptionInsureesFormPage from "./pages/ExceptionInsureesFormPage";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
 const ROUTE_POLICY_HOLDER_USERS = "policyHolderUsers";
 const ROUTE_DECLARATION = "declaration";
 const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
+const EXCEPTION_PANELS = "exception";
+const EXCEPTION__PENDING_APPROVAL_PANELS = "exception/pendingapproval";
+const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS = "exception/pendingapproval/policyholder";
 
 const DEFAULT_CONFIG = {
   translations: [{ key: "en", messages: messages_en }],
@@ -59,6 +75,8 @@ const DEFAULT_CONFIG = {
     { key: "policyHolder.ConfigBasedPicker", ref: ConfigBasedPicker },
     { key: "policyHolder.TabPanel", ref: TabPanel },
     { key: "policyHolder.PolicyHolderPicker", ref: PolicyHolderPicker },
+    { key: "policyHolder.ExceptionStatusPicker", ref: ExceptionStatusPicker },
+    { key: "policyHolder.camuCodePicker", ref: CamuCodePicker },
     {
       key: "policyHolder.PolicyHolderPicker.projection",
       ref: POLICYHOLDER_PICKER_PROJECTION,
@@ -85,6 +103,14 @@ const DEFAULT_CONFIG = {
     },
     { key: "policyHolder.route.policyHolders", ref: ROUTE_POLICY_HOLDERS },
     { key: "policyHolder.route.policyHolder", ref: ROUTE_POLICY_HOLDER },
+    {
+      key: "policyHolder.route.exception",
+      ref: EXCEPTION__PENDING_APPROVAL_PANELS,
+    },
+    {
+      key: "policyHolder.route.exception.policyholder",
+      ref: EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS,
+    },
   ],
   "core.Router": [
     { path: ROUTE_POLICY_HOLDERS, component: PolicyHoldersPage },
@@ -95,6 +121,19 @@ const DEFAULT_CONFIG = {
     { path: ROUTE_POLICY_HOLDER_USERS, component: PolicyHolderUsersPage },
     { path: ROUTE_DECLARATION, component: DeclarationPage },
     { path: ROUTE_PAYMENT_FOR_APPROVAL, component: PaymentForApproval },
+    { path: EXCEPTION_PANELS, component: ExceptionTabPanel },
+    {
+      path: EXCEPTION__PENDING_APPROVAL_PANELS,
+      component: ExceptionTabPanel,
+    },
+    {
+      path: EXCEPTION__PENDING_APPROVAL_PANELS + "/:policyholder_id?",
+      component: ExceptionInsureesFormPage,
+    },
+    {
+      path: EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS + "/:policyholder_id?",
+      component: ExceptionInsureesFormPage,
+    },
   ],
   "insuree.MainMenu": [
     {
@@ -133,6 +172,14 @@ const DEFAULT_CONFIG = {
     PolicyHolderContributionPlanBundlesTabPanel,
     PolicyHolderPaymentsTabPanel,
     PolicyHolderUsersTabPanel,
+  ],
+  "Exception.TabPanel.label": [
+    ExceptionInsureeTabLabel,
+    ExceptionPolicyholderTabLabel,
+  ],
+  "Exception.TabPanel.panel": [
+    ExceptionInsureeTabPanel,
+    ExceptionPolicyholderTabPanel,
   ],
   "invoice.SubjectAndThirdpartyPicker": [
     {

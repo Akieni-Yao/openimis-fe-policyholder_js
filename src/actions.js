@@ -155,8 +155,20 @@ export function fetchPickerPolicyHolders(params) {
   return graphql(payload, "POLICYHOLDER_POLICYHOLDERS");
 }
 
+
+
 export function fetchPolicyHolder(modulesManager, policyHolderId) {
   let filter = !!policyHolderId ? `id: "${policyHolderId}"` : "";
+  const payload = formatPageQuery(
+    "policyHolder",
+    [filter],
+    POLICYHOLDER_FULL_PROJECTION(modulesManager)
+  );
+  return graphql(payload, "POLICYHOLDER_POLICYHOLDER");
+}
+
+export function fetchPolicyHolderCode(modulesManager, policyHolderCode) {
+  let filter = !!policyHolderCode ? `code: "${policyHolderCode}"` : "";
   const payload = formatPageQuery(
     "policyHolder",
     [filter],
