@@ -17,6 +17,7 @@ import {
   fetchPolicyHolderInsurees,
   deletePolicyHolderInsuree,
   printReportInsuree,
+  fetchInsureeException
 } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -42,6 +43,7 @@ class ExceptionInsureeSearcher extends Component {
       open: false,
       policyHolderInsuree: {},
       jsonExtValid: true,
+      jsonData:{}
     };
   }
 
@@ -50,7 +52,7 @@ class ExceptionInsureeSearcher extends Component {
       this.props.insureeCheck &&
       prevProps.insureeCheck !== this.props.insureeCheck
     ) {
-      this.props.fetchPolicyHolderInsurees(
+      this.props.fetchInsureeException(
         this.props.modulesManager,
         // this.state.queryParams
         null
@@ -75,7 +77,7 @@ class ExceptionInsureeSearcher extends Component {
     }
   }
   fetch = (params) =>
-    this.props.fetchPolicyHolderInsurees(this.props.modulesManager, params);
+    this.props.fetchInsureeException(this.props.modulesManager, params);
 
   refetch = () => this.fetch(this.state.queryParams);
 
@@ -86,8 +88,11 @@ class ExceptionInsureeSearcher extends Component {
     if (!state.beforeCursor && !state.afterCursor) {
       params.push(`first: ${state.pageSize}`);
     }
-    if (!state.filters.hasOwnProperty("isDeleted")) {
-      params.push("isDeleted: false");
+    // if (!state.filters.hasOwnProperty("isDeleted")) {
+    //   params.push("isDeleted: false");
+    // }
+    if (this.props.pendingApprovalUser && !state.filters.hasOwnProperty("status")) {
+      params.push("status: \"PENDING\"");
     }
     if (!!state.afterCursor) {
       params.push(`after: "${state.afterCursor}"`);
@@ -97,9 +102,9 @@ class ExceptionInsureeSearcher extends Component {
       params.push(`before: "${state.beforeCursor}"`);
       params.push(`last: ${state.pageSize}`);
     }
-    if (!!state.orderBy) {
-      params.push(`orderBy: ["${state.orderBy}"]`);
-    }
+    // if (!!state.orderBy) {
+    //   params.push(`orderBy: ["${state.orderBy}"]`);
+    // }
     this.setState({ queryParams: params });
     return params;
   };
@@ -107,14 +112,14 @@ class ExceptionInsureeSearcher extends Component {
   headers = () => {
     const { rights, pendingApprovalUser } = this.props;
     let result = [
-      "exception.date",
       "exception.camuNo",
       "exception.firstName",
       "exception.lastName",
       "exception.bithDate",
       "exception.phone",
+      "exception.date",
+      "exception.enddate",
       "exception.city",
-      "exception.exceptionType",
       // "exception.exceptionStatus",
       //   "policyHolder.dateValidTo",
       //   "policyHolder.print",
@@ -169,114 +174,147 @@ class ExceptionInsureeSearcher extends Component {
     } = this.props;
     let result = [
       (policyHolderInsuree) =>
-        !!policyHolderInsuree.dateValidFrom
-          ? formatDateFromISO(
-              modulesManager,
-              intl,
-              policyHolderInsuree.dateValidFrom
-            )
-          : "",
-      (policyHolderInsuree) =>
         !!policyHolderInsuree.insuree
           ? policyHolderInsuree.insuree.camuNumber
           : "",
       (policyHolderInsuree) =>
         !!policyHolderInsuree.insuree
-          ? `${policyHolderInsuree.insuree.lastName}-${policyHolderInsuree.insuree.otherNames}`
+          ? policyHolderInsuree.insuree.otherNames
           : "",
       (policyHolderInsuree) =>
-        !!policyHolderInsuree.contributionPlanBundle
-          ? `${policyHolderInsuree.contributionPlanBundle?.code} - ${policyHolderInsuree.contributionPlanBundle?.name}`
-          : "",
-
-      (policyHolderInsuree) =>
-        policyHolderInsuree?.employerNumber
-          ? policyHolderInsuree?.employerNumber
+        !!policyHolderInsuree.insuree
+          ? policyHolderInsuree.insuree.lastName
           : "",
       (policyHolderInsuree) =>
-        policyHolderInsuree?.employerNumber
-          ? policyHolderInsuree?.employerNumber
+        policyHolderInsuree?.insuree
+          ? policyHolderInsuree?.insuree.dob
           : "",
       (policyHolderInsuree) =>
-        policyHolderInsuree?.employerNumber
-          ? policyHolderInsuree?.employerNumber
-          : "",
-      (policyHolderInsuree) =>
-        policyHolderInsuree?.employerNumber
-          ? policyHolderInsuree?.employerNumber
+        !!policyHolderInsuree.insuree
+          ? policyHolderInsuree.insuree.phone
           : "",
       // (policyHolderInsuree) =>
+      //   policyHolderInsuree?.employerNumber
+      //     ? policyHolderInsuree?.employerNumber
+      //     : "",
+      // (policyHolderInsuree) =>
       // !!policyHolderInsuree.status ? policyHolderInsuree.status : "",
+      (policyHolderInsuree) =>
+        !!policyHolderInsuree.startDate
+          ? formatDateFromISO(
+            modulesManager,
+            intl,
+            policyHolderInsuree.startDate
+          )
+          : "",
+      (policyHolderInsuree) =>
+        !!policyHolderInsuree.endDate
+          ? formatDateFromISO(
+            modulesManager,
+            intl,
+            policyHolderInsuree.endDate
+          )
+          : "",
     ];
+
+    result.push((policyHolderInsuree) => {
+      try {
+        const insureeLocations = JSON.parse(policyHolderInsuree.insuree.jsonExt)
+          .insureelocations;
+        const parentData = insureeLocations.parent;
+        return `${parentData.name}`;
+      } catch (error) {
+        console.error("Error parsing JSON or extracting parent data:", error);
+        return "N/A";
+      }
+    });
+    // if (!pendingApprovalUser) {
+    //   result.push((policyHolderInsuree) =>
+    //     !!policyHolderInsuree.status ? policyHolderInsuree.status : ""
+    //   );
+    // }
     if (!pendingApprovalUser) {
-      result.push((policyHolderInsuree) =>
-        !!policyHolderInsuree.status ? policyHolderInsuree.status : ""
+      result.push((policyHolderInsuree) => {
+        let color = "inherit"; // Default color
+        if (policyHolderInsuree.status === "APPROVED") {
+          color = "green"; // Green color for APPROVED status
+        } else if (policyHolderInsuree.status === "REJECTED") {
+          color = "red"; // Red color for REJECTED status
+        }
+        return (
+          <span style={{ color }}>
+            {policyHolderInsuree.status}
+          </span>
+        );
+      },
+        // <span style={{ color: policyHolderInsuree.status === "APPROVED" ? "green" : policyHolderInsuree.status === "REJETCED" ? "red" : "black" }}>{!!policyHolderInsuree.status ? policyHolderInsuree.status : ""}</span>
+        // !!policyHolderInsuree.status ? policyHolderInsuree.status : ""
       );
     }
     return result;
   };
 
-  onDelete = (policyHolderInsuree) => {
-    const { intl, coreConfirm, deletePolicyHolderInsuree, policyHolder } =
-      this.props;
-    let confirm = () =>
-      coreConfirm(
-        formatMessageWithValues(
-          intl,
-          "policyHolder",
-          "policyHolderInsuree.dialog.delete.title",
-          {
-            otherNames: policyHolderInsuree.insuree.otherNames,
-            lastName: policyHolderInsuree.insuree.lastName,
-          }
-        ),
-        formatMessage(intl, "policyHolder", "dialog.delete.message")
-      );
-    let confirmedAction = () => {
-      deletePolicyHolderInsuree(
-        policyHolderInsuree,
-        formatMessageWithValues(
-          intl,
-          "policyHolder",
-          "DeletePolicyHolderInsuree.mutationLabel",
-          {
-            code: policyHolder.code,
-            tradeName: policyHolder.tradeName,
-          }
-        ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
-      );
-      this.setState({ toDelete: policyHolderInsuree.id });
-    };
-    this.setState({ confirmedAction }, confirm);
-  };
+  // onDelete = (policyHolderInsuree) => {
+  //   const { intl, coreConfirm, deletePolicyHolderInsuree, policyHolder } =
+  //     this.props;
+  //   let confirm = () =>
+  //     coreConfirm(
+  //       formatMessageWithValues(
+  //         intl,
+  //         "policyHolder",
+  //         "policyHolderInsuree.dialog.delete.title",
+  //         {
+  //           otherNames: policyHolderInsuree.insuree.otherNames,
+  //           lastName: policyHolderInsuree.insuree.lastName,
+  //         }
+  //       ),
+  //       formatMessage(intl, "policyHolder", "dialog.delete.message")
+  //     );
+  //   let confirmedAction = () => {
+  //     deletePolicyHolderInsuree(
+  //       policyHolderInsuree,
+  //       formatMessageWithValues(
+  //         intl,
+  //         "policyHolder",
+  //         "DeletePolicyHolderInsuree.mutationLabel",
+  //         {
+  //           code: policyHolder.code,
+  //           tradeName: policyHolder.tradeName,
+  //         }
+  //       ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
+  //     );
+  //     this.setState({ toDelete: policyHolderInsuree.id });
+  //   };
+  //   this.setState({ confirmedAction }, confirm);
+  // };
 
-  isReplaced = (policyHolderInsuree) => !!policyHolderInsuree.replacementUuid;
+  // isReplaced = (policyHolderInsuree) => !!policyHolderInsuree.replacementUuid;
 
-  isDeletedFilterEnabled = (policyHolderInsuree) =>
-    policyHolderInsuree.isDeleted;
+  // isDeletedFilterEnabled = (policyHolderInsuree) =>
+  //   policyHolderInsuree.isDeleted;
 
-  isRowDisabled = (_, policyHolderInsuree) =>
-    this.state.deleted.includes(policyHolderInsuree.id) &&
-    !this.isDeletedFilterEnabled(policyHolderInsuree);
+  // isRowDisabled = (_, policyHolderInsuree) =>
+  //   this.state.deleted.includes(policyHolderInsuree.id) &&
+  //   !this.isDeletedFilterEnabled(policyHolderInsuree);
 
-  sorts = () => {
-    return [
-      ["insuree", true],
-      ["contributionPlanBundle", true],
-      null,
-      ["dateValidFrom", true],
-      ["dateValidTo", true],
-    ];
-  };
+  // sorts = () => {
+  //   return [
+  //     ["insuree", true],
+  //     ["contributionPlanBundle", true],
+  //     null,
+  //     ["dateValidFrom", true],
+  //     ["dateValidTo", true],
+  //   ];
+  // };
 
-  defaultFilters = () => {
-    return {
-      policyHolder_Id: {
-        value: decodeId(this.props.policyHolder.id),
-        filter: `policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`,
-      },
-    };
-  };
+  // defaultFilters = () => {
+  //   return {
+  //     policyHolder_Id: {
+  //       value: decodeId(this.props.policyHolder.id),
+  //       filter: `policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`,
+  //     },
+  //   };
+  // };
 
   isBulkActionOnSelectedEnabled = (selection) =>
     !!selection && selection.length === 0;
@@ -294,19 +332,23 @@ class ExceptionInsureeSearcher extends Component {
 
   handleClose = () => {
     this.setState({ open: false, policyHolderInsuree: {} });
+    this.setState({ open: false, jsonData: {} });
+  
   };
 
 
   onDoubleClick = (policyHolder, newTab = false) => {
-    const { rights, modulesManager, history } = this.props; 
-      historyPush(
-        modulesManager,
-        history,
-        "policyHolder.route.exception",
-        [decodeId(policyHolder.id)],
-        newTab
-      );
-    
+    // console.log("policyHolder",policyHolder)
+    // debugger;
+    const { rights, modulesManager, history } = this.props;
+    historyPush(
+      modulesManager,
+      history,
+      "policyHolder.route.exception",
+      [policyHolder.id],
+      newTab
+    );
+
   };
   render() {
     const {
@@ -322,6 +364,7 @@ class ExceptionInsureeSearcher extends Component {
       onSave,
       pendingApprovalUser,
     } = this.props;
+    console.log("policyHolderInsurees", policyHolderInsurees)
     let actions = [];
     if (!pendingApprovalUser) {
       actions.push({
@@ -350,7 +393,7 @@ class ExceptionInsureeSearcher extends Component {
           headers={this.headers}
           itemFormatters={this.itemFormatters}
           filtersToQueryParams={this.filtersToQueryParams}
-          sorts={this.sorts}
+          // sorts={this.sorts}
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           defaultPageSize={DEFAULT_PAGE_SIZE}
           defaultOrderBy={DEFAULT_ORDER_BY}
@@ -402,13 +445,12 @@ class ExceptionInsureeSearcher extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  fetchingPolicyHolderInsurees: state.policyHolder.fetchingPolicyHolderInsurees,
-  fetchedPolicyHolderInsurees: state.policyHolder.fetchedPolicyHolderInsurees,
-  errorPolicyHolderInsurees: state.policyHolder.errorPolicyHolderInsurees,
-  policyHolderInsurees: state.policyHolder.policyHolderInsurees,
-  policyHolderInsureesPageInfo: state.policyHolder.policyHolderInsureesPageInfo,
-  policyHolderInsureesTotalCount:
-    state.policyHolder.policyHolderInsureesTotalCount,
+  fetchingPolicyHolderInsurees: state.policyHolder.fetchingExceptionInsurees,
+  fetchedPolicyHolderInsurees: state.policyHolder.fetchedExceptionInsurees,
+  errorPolicyHolderInsurees: state.policyHolder.errorExceptionInsurees,
+  policyHolderInsurees: state.policyHolder.ExceptionInsurees,
+  policyHolderInsureesPageInfo: state.policyHolder.ExceptionInsureesPageInfo,
+  policyHolderInsureesTotalCount: state.policyHolder.ExceptionInsureesTotalCount,
   confirmed: state.core.confirmed,
 });
 
@@ -419,12 +461,13 @@ const mapDispatchToProps = (dispatch) => {
       deletePolicyHolderInsuree,
       coreConfirm,
       printReportInsuree,
+      fetchInsureeException
     },
     dispatch
   );
 };
 
-export default withModulesManager( withHistory(
+export default withModulesManager(withHistory(
   injectIntl(
     connect(mapStateToProps, mapDispatchToProps)(ExceptionInsureeSearcher)
   ))

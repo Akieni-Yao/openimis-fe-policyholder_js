@@ -15,6 +15,7 @@ import {
 } from "@openimis/fe-core";
 import {
   fetchPolicyHolderInsurees,
+  fetchPolicyHolderException,
   deletePolicyHolderInsuree,
   printReportInsuree,
 } from "../actions";
@@ -52,7 +53,7 @@ class ExceptionPolicyHolderSearcher extends Component {
       this.props.insureeCheck &&
       prevProps.insureeCheck !== this.props.insureeCheck
     ) {
-      this.props.fetchPolicyHolderInsurees(
+      this.props.fetchPolicyHolderException(
         this.props.modulesManager,
         // this.state.queryParams
         null
@@ -77,7 +78,7 @@ class ExceptionPolicyHolderSearcher extends Component {
     }
   }
   fetch = (params) =>
-    this.props.fetchPolicyHolderInsurees(this.props.modulesManager, params);
+    this.props.fetchPolicyHolderException(this.props.modulesManager, params);
 
   refetch = () => this.fetch(this.state.queryParams);
 
@@ -88,8 +89,11 @@ class ExceptionPolicyHolderSearcher extends Component {
     if (!state.beforeCursor && !state.afterCursor) {
       params.push(`first: ${state.pageSize}`);
     }
-    if (!state.filters.hasOwnProperty("isDeleted")) {
-      params.push("isDeleted: false");
+    // if (!state.filters.hasOwnProperty("isDeleted")) {
+    //   params.push("isDeleted: false");
+    // }
+    if (this.props.pendingApprovalUser && !state.filters.hasOwnProperty("status")) {
+      params.push("status: \"PENDING\"");
     }
     if (!!state.afterCursor) {
       params.push(`after: "${state.afterCursor}"`);
@@ -99,9 +103,9 @@ class ExceptionPolicyHolderSearcher extends Component {
       params.push(`before: "${state.beforeCursor}"`);
       params.push(`last: ${state.pageSize}`);
     }
-    if (!!state.orderBy) {
-      params.push(`orderBy: ["${state.orderBy}"]`);
-    }
+    // if (!!state.orderBy) {
+    //   params.push(`orderBy: ["${state.orderBy}"]`);
+    // }
     this.setState({ queryParams: params });
     return params;
   };
@@ -157,32 +161,43 @@ class ExceptionPolicyHolderSearcher extends Component {
     const { intl, modulesManager, rights, policyHolder, onSave } = this.props;
     let result = [
       (policyHolderInsuree) =>
-        !!policyHolderInsuree.insuree
-          ? policyHolderInsuree.insuree.camuNumber
-          : "",
-      (policyHolderInsuree) =>
-        !!policyHolderInsuree.insuree
-          ? `${policyHolderInsuree.insuree.lastName}-${policyHolderInsuree.insuree.otherNames}`
-          : "",
-      (policyHolderInsuree) =>
-        !!policyHolderInsuree.contributionPlanBundle
-          ? `${policyHolderInsuree.contributionPlanBundle?.code} - ${policyHolderInsuree.contributionPlanBundle?.name}`
-          : "",
-
-      (policyHolderInsuree) =>
-        policyHolderInsuree?.employerNumber
-          ? policyHolderInsuree?.employerNumber
-          : "",
-      (policyHolderInsuree) =>
-        !!policyHolderInsuree.dateValidFrom
+        !!policyHolderInsuree.createdTime
           ? formatDateFromISO(
-              modulesManager,
-              intl,
-              policyHolderInsuree.dateValidFrom
-            )
+            modulesManager,
+            intl,
+            policyHolderInsuree.createdTime
+          )
           : "",
       (policyHolderInsuree) =>
-        !!policyHolderInsuree.status ? policyHolderInsuree.status : "",
+        !!policyHolderInsuree?.policyHolder?.code
+          ? policyHolderInsuree?.policyHolder?.code
+          : "",
+      (policyHolderInsuree) =>
+        !!policyHolderInsuree?.policyHolder?.tradeName
+          ? policyHolderInsuree?.policyHolder?.tradeName
+          : "",
+      (policyHolderInsuree) =>
+        policyHolderInsuree?.policyHolder?.locations?.parent?.name
+          ? policyHolderInsuree?.policyHolder?.locations?.parent?.name
+          : "",
+      (policyHolderInsuree) =>
+        !!policyHolderInsuree?.exceptionReason
+          ? formatMessage(this.props.intl, "policyHolder.exceptionReason", policyHolderInsuree?.exceptionReason)
+          : "",
+      (policyHolderInsuree) => {
+        // !!policyHolderInsuree.status ? policyHolderInsuree.status : "",
+        let color = "inherit"; // Default color
+        if (policyHolderInsuree.status === "APPROVED") {
+          color = "green"; // Green color for APPROVED status
+        } else if (policyHolderInsuree.status === "REJECTED") {
+          color = "red"; // Red color for REJECTED status
+        }
+        return (
+          <span style={{ color }}>
+            {policyHolderInsuree.status}
+          </span>
+        );
+      }
     ];
 
     return result;
@@ -231,15 +246,15 @@ class ExceptionPolicyHolderSearcher extends Component {
     this.state.deleted.includes(policyHolderInsuree.id) &&
     !this.isDeletedFilterEnabled(policyHolderInsuree);
 
-  sorts = () => {
-    return [
-      ["insuree", true],
-      ["contributionPlanBundle", true],
-      null,
-      ["dateValidFrom", true],
-      ["dateValidTo", true],
-    ];
-  };
+  // sorts = () => {
+  //   return [
+  //     ["insuree", true],
+  //     ["contributionPlanBundle", true],
+  //     null,
+  //     ["dateValidFrom", true],
+  //     ["dateValidTo", true],
+  //   ];
+  // };
 
   defaultFilters = () => {
     return {
@@ -253,7 +268,7 @@ class ExceptionPolicyHolderSearcher extends Component {
   isBulkActionOnSelectedEnabled = (selection) =>
     !!selection && selection.length === 0;
 
-  createExceptionDialogOpen = () => {
+  CreateExceptionPolicyHolderDialog = () => {
     this.setState((_, props) => ({
       open: true,
       policyHolderInsuree: {
@@ -275,7 +290,7 @@ class ExceptionPolicyHolderSearcher extends Component {
       modulesManager,
       history,
       "policyHolder.route.exception.policyholder",
-      [decodeId(policyHolder.id)],
+      [policyHolder.id],
       newTab
     );
   };
@@ -294,12 +309,13 @@ class ExceptionPolicyHolderSearcher extends Component {
       onSave,
       pendingApprovalUser
     } = this.props;
+    console.log("policyHolderInsurees", policyHolderInsurees)
     let actions = [];
     if (!pendingApprovalUser) {
       actions.push({
         label: "exception.addException",
         enabled: this.isBulkActionOnSelectedEnabled,
-        action: this.createExceptionDialogOpen,
+        action: this.CreateExceptionPolicyHolderDialog,
       });
     }
     return (
@@ -316,13 +332,13 @@ class ExceptionPolicyHolderSearcher extends Component {
           tableTitle={formatMessageWithValues(
             intl,
             "policyHolder",
-            "policyHolderInsuree.searcher.title",
+            "policyHolderException.searcher.title",
             { policyHolderInsureesTotalCount }
           )}
           headers={this.headers}
           itemFormatters={this.itemFormatters}
           filtersToQueryParams={this.filtersToQueryParams}
-          sorts={this.sorts}
+          // sorts={this.sorts}
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           defaultPageSize={DEFAULT_PAGE_SIZE}
           defaultOrderBy={DEFAULT_ORDER_BY}
@@ -382,13 +398,12 @@ class ExceptionPolicyHolderSearcher extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  fetchingPolicyHolderInsurees: state.policyHolder.fetchingPolicyHolderInsurees,
-  fetchedPolicyHolderInsurees: state.policyHolder.fetchedPolicyHolderInsurees,
-  errorPolicyHolderInsurees: state.policyHolder.errorPolicyHolderInsurees,
-  policyHolderInsurees: state.policyHolder.policyHolderInsurees,
-  policyHolderInsureesPageInfo: state.policyHolder.policyHolderInsureesPageInfo,
-  policyHolderInsureesTotalCount:
-    state.policyHolder.policyHolderInsureesTotalCount,
+  fetchingPolicyHolderInsurees: state.policyHolder.fetchingExceptionPolicyholder,
+  fetchedPolicyHolderInsurees: state.policyHolder.fetchedExceptionPolicyholder,
+  errorPolicyHolderInsurees: state.policyHolder.errorExceptionPolicyholder,
+  policyHolderInsurees: state.policyHolder.ExceptionPolicyholder,
+  policyHolderInsureesPageInfo: state.policyHolder.ExceptionPolicyholderPageInfo,
+  policyHolderInsureesTotalCount: state.policyHolder.ExceptionPolicyholderTotalCount,
   confirmed: state.core.confirmed,
 });
 
@@ -399,6 +414,7 @@ const mapDispatchToProps = (dispatch) => {
       deletePolicyHolderInsuree,
       coreConfirm,
       printReportInsuree,
+      fetchPolicyHolderException
     },
     dispatch
   );
@@ -407,5 +423,5 @@ const mapDispatchToProps = (dispatch) => {
 export default withModulesManager(withHistory(
   injectIntl(
     connect(mapStateToProps, mapDispatchToProps)(ExceptionPolicyHolderSearcher))
-  )
+)
 );

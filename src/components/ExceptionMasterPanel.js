@@ -35,12 +35,15 @@ const styles = (theme) => ({
     color: "red",
   },
 });
-const PAYMENTS_DOCUMENTS_KEY = "insuree.payment.documents";
+const EXCEPTION_DOCUMENTS_KEY = "policyHolder.policyHolder.documents";
 const payment_rejection = ["not_clear_docs", "not_valid"];
 class ExceptionMasterPanel extends FormPanel {
   render() {
     const { intl, classes, edited, readOnly, overview, userName, paymentData } =
       this.props;
+    const jsonExtString = edited && edited[0]?.insuree?.jsonExt;
+    const jsonExtObj = jsonExtString ? JSON.parse(jsonExtString) : {};
+    const insureeLocation = jsonExtObj?.insureelocations?.parent?.name;
     return (
       <Fragment>
         <Grid container className={classes.item}>
@@ -49,17 +52,8 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.camuNo"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
-            />
-          </Grid>
-          <Grid item xs={3} className={classes.item}>
-            <TextInput
-              module="policyHolder"
-              label="exception.camuCode"
-              readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!edited ? "" : edited[0]?.insuree?.camuNumber}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -67,8 +61,8 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.firstName"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!edited ? "" : edited[0]?.insuree?.otherNames}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -76,8 +70,8 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.lastName"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!edited ? "" : edited[0]?.insuree?.lastName}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -85,8 +79,8 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.city"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!!insureeLocation ? insureeLocation : ""}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -94,8 +88,8 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.phone"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!edited ? "" : edited[0]?.insuree?.phone}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -103,8 +97,8 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.bithDate"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!edited ? "" : edited[0]?.insuree?.dob}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -112,8 +106,8 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.exceptionType"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!edited ? "" : edited[0]?.rejectionReason}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
@@ -121,8 +115,10 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.exceptionStatus"
               readOnly={true}
-              value={!edited ? "" : edited.paymentCode}
-              // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={!edited ? "" : edited[0]?.status}
+
+            // value={!edited ? "" : edited.paymentCode}
+            // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
 
@@ -132,7 +128,7 @@ class ExceptionMasterPanel extends FormPanel {
                 {...this.props}
                 edited={edited}
                 updateAttribute={this.updateAttribute}
-                contributionKey={PAYMENTS_DOCUMENTS_KEY}
+                contributionKey={EXCEPTION_DOCUMENTS_KEY}
               />
             </Grid>
           </Grid>

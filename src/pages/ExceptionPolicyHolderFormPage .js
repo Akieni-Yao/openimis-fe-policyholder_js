@@ -106,13 +106,13 @@ class ExceptionPolicyHolderFormPage extends Component {
   };
   titleParams = (policyHolder) => {
     var params = { label: null };
-    if (!!policyHolder.code && !!policyHolder.tradeName) {
-      params.label = `${policyHolder.code} - ${policyHolder.tradeName}`;
+    if (!!policyHolder[0]?.code && !!policyHolder[0]?.tradeName) {
+      params.label = `${policyHolder[0]?.code} - ${policyHolder[0]?.tradeName}`;
     } else {
-      if (!!policyHolder.code) {
-        params.label = `${policyHolder.code}`;
-      } else if (!!policyHolder.tradeName) {
-        params.label = `${policyHolder.tradeName}`;
+      if (!!policyHolder[0]?.code) {
+        params.label = `${policyHolder[0]?.code}`;
+      } else if (!!policyHolder[0]?.tradeName) {
+        params.label = `${policyHolder[0]?.tradeName}`;
       }
     }
     return params;

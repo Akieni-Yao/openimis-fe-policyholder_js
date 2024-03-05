@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { ConstantBasedPicker } from "@openimis/fe-core";
-import { EXCEPTION_STATUS } from "../constants";
+import { EXCEPTION_REASON } from "../constants";
 
-class ExceptionStatusPicker extends Component {
+class ExceptionRegionPicker extends Component {
   render() {
     return (
       <ConstantBasedPicker
         module="policyHolder"
-        label="Exception Status"
-        constants={EXCEPTION_STATUS}
+        label="exceptionReason"
+        constants={EXCEPTION_REASON}
         {...this.props}
       />
     );
   }
 }
 
-export default ExceptionStatusPicker;
+export default ExceptionRegionPicker;

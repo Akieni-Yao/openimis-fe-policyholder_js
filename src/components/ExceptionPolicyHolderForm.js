@@ -22,6 +22,10 @@ import {
   sendEmail,
   printReport,
   havingPAymentApprove,
+  fetchPolicyHolderExceptionBYId,
+  policyHolderExceptionApproval,
+  updateExternalDocuments
+
 } from "../actions";
 import {
   Dialog,
@@ -44,6 +48,9 @@ import Snackbar from "@material-ui/core/Snackbar";
 import CommonSnackbar from "./CommonSnackbar";
 import ExceptionMasterPanel from "./ExceptionMasterPanel";
 import ExceptionPolicyHolderMasterPanel from "./ExceptionPolicyHolderMasterPanel";
+import ApproveRejectDialog from "./ApproveRejectDialog";
+import ApproveRejectPolicyholderDialog from "./ApproveRejectPolicyholderDialog";
+
 const styles = (theme) => ({
   paper: theme.paper.paper,
   paperHeader: theme.paper.header,
@@ -101,6 +108,12 @@ class ExceptionPolicyHolderForm extends Component {
       isFormValid: true,
       success: false,
       successMessage: "",
+      confirmDialog: false,
+      statusCheck: null,
+      snackbar: false,
+      severity: null,
+      snackbarMsg: null,
+      payload: null
     };
   }
   // wrapJSONFields = (policyHolder) => {
@@ -129,7 +142,7 @@ class ExceptionPolicyHolderForm extends Component {
       this.setState(
         (_, props) => ({ policyHolderId: props.policyHolderId }),
         () =>
-          this.props.fetchPolicyHolder(
+          this.props.fetchPolicyHolderExceptionBYId(
             this.props.modulesManager,
             this.props.policyHolderId
           )
@@ -154,7 +167,13 @@ class ExceptionPolicyHolderForm extends Component {
       this.props.journalize(this.props.mutation);
     }
   }
-
+  reload = () => {
+    const { payment } = this.state;
+    this.props.fetchPolicyHolderExceptionBYId(
+      this.props.modulesManager,
+      this.props.policyHolderId
+    )
+  };
   componentWillUnmount() {
     this.props.clearPolicyHolder();
   }
@@ -253,9 +272,58 @@ class ExceptionPolicyHolderForm extends Component {
     this.props.rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH) &&
     !this.props.rights.includes(RIGHT_POLICYHOLDER_CREATE) &&
     !this.props.rights.includes(RIGHT_POLICYHOLDER_UPDATE);
+  _approveorreject = async (paymentData) => {
+    console.log("paymentData.status", paymentData[0]?.id)
+    const response = await this.props.policyHolderExceptionApproval("", paymentData);
+    this.handleDialogClose();
+    if (!!response?.payload?.data?.approvePolicyholderException?.success) {
+      if (paymentData.status == -1) {
+        this.props.updateExternalDocuments(
+          this.props.modulesManager,
+          this.props.documentDetails,
+          paymentData[0]?.code,
+          false
+        );
+      }
+      this.setState({
+        snackbar: true,
+        severity: paymentData.status == 5 ? "success" : "error",
+        snackbarMsg:
+          paymentData.status == 5
+            ? formatMessageWithValues(
+              this.props.intl,
+              "policyHolder",
+              "snackbar.approve",
+              {}
+            )
+            : formatMessageWithValues(
+              this.props.intl,
+              "policyHolder",
+              "snackbar.reject",
+              {}
+            ),
+      });
+      setTimeout(() => {
+        this.reload();
+      }, 3000);
+    }
+  };
+  handleDialogOpen = (insureeData) => {
+    this.setState({ confirmDialog: true });
+    this.setState({ statusCheck: insureeData.status });
+    this.setState({ payload: insureeData });
+  };
+  handleDialogClose = () => {
+    this.setState({ confirmDialog: false });
+  };
+  handleSnackbarClose = () => {
+    this.setState({ snackbar: false });
+  };
 
   render() {
-    const { intl, rights, back, save, policyHolderId, classes } = this.props;
+    const { intl, rights, back, save, policyHolderId, classes, approverData } = this.props;
+    const { payment, newPayment, reset, payload, statusCheck } = this.state;
+    const exceptionApprove = !!approverData
     return (
       <Fragment>
         <Helmet
@@ -280,13 +348,35 @@ class ExceptionPolicyHolderForm extends Component {
           saveTooltip={formatMessage(
             intl,
             "policyHolder",
-            `savePolicyHolderButton.tooltip.${
-              this.canSave() ? "enabled" : "disabled"
+            `savePolicyHolderButton.tooltip.${this.canSave() ? "enabled" : "disabled"
             }`
           )}
           onValidation={this.onValidation}
           rights={rights}
           openDirty={save}
+          approveorreject={this.handleDialogOpen}
+          exceptionApprove={exceptionApprove}
+        />
+        <CommonSnackbar
+          open={this.props.snackbar}
+          onClose={this.props.handleClose}
+          message={formatMessageWithValues(
+            intl,
+            "policyHolder",
+            "policyHolder.CreatePolicyHolder.snackbar",
+            {}
+          )}
+          severity="success"
+          copyText={this.props.resCode && this.props.resCode}
+          backgroundColor="#00913E"
+        />
+        <ApproveRejectPolicyholderDialog
+          isOpen={this.state.confirmDialog}
+          onClose={this.handleDialogClose}
+          payload={payload}
+          approveorreject={this._approveorreject}
+          statusCheck={statusCheck}
+          classes={classes}
         />
         <CommonSnackbar
           open={this.props.snackbar}
@@ -308,7 +398,7 @@ class ExceptionPolicyHolderForm extends Component {
                 <FormattedMessage
                   module="insuree"
                   id="success"
-                  // values={this.state.successMessage}
+                // values={this.state.successMessage}
                 />
               </DialogContentText>
             </DialogContent>
@@ -319,21 +409,24 @@ class ExceptionPolicyHolderForm extends Component {
             </DialogActions>
           </Dialog>
         )}
-       
+
       </Fragment>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  fetchingPolicyHolder: state.policyHolder.fetchingPolicyHolder,
-  errorPolicyHolder: state.policyHolder.errorPolicyHolder,
-  fetchedPolicyHolder: state.policyHolder.fetchedPolicyHolder,
-  policyHolder: state.policyHolder.policyHolder,
-  isPolicyHolderCodeValid:
-    state.policyHolder?.validationFields?.policyHolderCode?.isValid,
-  submittingMutation: state.policyHolder.submittingMutation,
-  mutation: state.policyHolder.mutation,
+  fetchingPolicyHolder: state.policyHolder.fetchingExceptionPolicyholderById,
+  errorPolicyHolder: state.policyHolder.errorExceptionPolicyholderById,
+  fetchedPolicyHolder: state.policyHolder.fetchedExceptionPolicyholderById,
+  policyHolder: state.policyHolder.ExceptionPolicyholderById,
+  approverData: state.payment.approverData,
+  documentDetails: state.policyHolder.documentsData,
+
+  // isPolicyHolderCodeValid:
+  //   state.policyHolder?.validationFields?.policyHolderCode?.isValid,
+  // submittingMutation: state.policyHolder.submittingMutation,
+  // mutation: state.policyHolder.mutation,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -345,6 +438,9 @@ const mapDispatchToProps = (dispatch) => {
       sendEmail,
       printReport,
       havingPAymentApprove,
+      fetchPolicyHolderExceptionBYId,
+      policyHolderExceptionApproval,
+      updateExternalDocuments
     },
     dispatch
   );

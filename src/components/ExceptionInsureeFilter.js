@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import { withModulesManager, TextInput,PublishedComponent,formatMessage } from "@openimis/fe-core";
+import { withModulesManager, TextInput, PublishedComponent, formatMessage } from "@openimis/fe-core";
 import { Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { STARTS_WITH_LOOKUP, DATE_TO_DATETIME_SUFFIX } from "../constants";
+import { STARTS_WITH_LOOKUP, DATE_TO_DATETIME_SUFFIX, CONTAINS_LOOKUP } from "../constants";
 
 const styles = (theme) => ({
   form: {
@@ -50,7 +50,7 @@ class ExceptionInsureeFilter extends Component {
       },
     ]);
   };
-
+  pendingApprovalUser = window.location.href.includes("pendingapproval");
   render() {
     const { intl, classes, onChangeFilters, policyHolder } = this.props;
     return (
@@ -61,23 +61,36 @@ class ExceptionInsureeFilter extends Component {
             label="exception.camuNo"
             value={this._filterValue("chfId")}
             onChange={(v) =>
-              this._onChangeStringFilter("insuree_ChfId", v, STARTS_WITH_LOOKUP)
+              this._onChangeStringFilter(" insuree_CamuNumber", v, CONTAINS_LOOKUP)
             }
           />
         </Grid>
-
-        <Grid item xs={2} className={classes.item}>
-        <PublishedComponent
-              pubRef="policyHolder.ExceptionStatusPicker"
+        {/* {this.pendingApprovalUser ?
+          <Grid item xs={2} className={classes.item}>
+            <PublishedComponent
+              pubRef="policyHolder.ExceptionRegionPicker"
               module="policyHolder"
               label="exceptionReason"
               nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
               value={this._filterValue("exceptionReason")}
               onChange={(v) =>
-                this. this._onChangeFilter({ exceptionReason:  v })
+                this._onChangeStringFilter("exceptionReason", v, CONTAINS_LOOKUP)
               }
             />
-        </Grid>
+          </Grid>
+          : ""} */}
+        {!this.pendingApprovalUser ? <Grid item xs={2} className={classes.item}>
+          <PublishedComponent
+            pubRef="policyHolder.ExceptionStatusPicker"
+            module="policyHolder"
+            label="Exception Status"
+            nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+            value={this._filterValue("exceptionStatus")}
+            onChange={(v) =>
+              this._onChangeStringFilter("status", v, CONTAINS_LOOKUP)
+            }
+          />
+        </Grid> : ""}
       </Grid>
     );
   }

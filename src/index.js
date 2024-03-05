@@ -47,6 +47,8 @@ import {
   ExceptionInsureeTabLabel,
   ExceptionInsureeTabPanel,
 } from "./pages/ExceptionInsureePage";
+// import ExceptionRegionPicker from "./pickers/ExceptionStatusPicker";
+import ExceptionRegionPicker from "./pickers/ExceptionRegionPicker";
 import ExceptionStatusPicker from "./pickers/ExceptionStatusPicker";
 import {
   ExceptionPolicyholderTabLabel,
@@ -55,6 +57,8 @@ import {
 import CamuCodePicker from "./pickers/CamuCodePicker";
 import ExceptionForm from "./components/ExceptionForm";
 import ExceptionInsureesFormPage from "./pages/ExceptionInsureesFormPage";
+import ExceptionPolicyHolderFormPage from "./pages/ExceptionPolicyHolderFormPage ";
+import ExceptionDocuments from "./components/ExceptionDocuments";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
@@ -75,6 +79,7 @@ const DEFAULT_CONFIG = {
     { key: "policyHolder.ConfigBasedPicker", ref: ConfigBasedPicker },
     { key: "policyHolder.TabPanel", ref: TabPanel },
     { key: "policyHolder.PolicyHolderPicker", ref: PolicyHolderPicker },
+    { key: "policyHolder.ExceptionRegionPicker", ref: ExceptionRegionPicker },
     { key: "policyHolder.ExceptionStatusPicker", ref: ExceptionStatusPicker },
     { key: "policyHolder.camuCodePicker", ref: CamuCodePicker },
     {
@@ -132,9 +137,10 @@ const DEFAULT_CONFIG = {
     },
     {
       path: EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS + "/:policyholder_id?",
-      component: ExceptionInsureesFormPage,
+      component: ExceptionPolicyHolderFormPage,
     },
   ],
+  "policyHolder.policyHolder.documents": [ExceptionDocuments],
   "insuree.MainMenu": [
     {
       text: <FormattedMessage module="policyHolder" id="menu.policyHolders" />,

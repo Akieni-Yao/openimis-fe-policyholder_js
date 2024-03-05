@@ -38,6 +38,39 @@ class CamuCodePicker extends Component {
     }
   }
 
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if (prevProps.reset !== this.props.reset) {
+  //     this.setState((state, props) => ({
+  //       ...INIT_STATE,
+  //       // search: !!props.value ? props.value.chfId : null,
+  //       search: !!props.value ? props.value.code : null,
+  //       selected: props.value,
+  //     }));
+  //   } 
+  //   else if (this.props?.policyholderData !== null) {
+  //     if (
+  //       !_.isEqual(
+  //         prevProps?.policyholderData?.code,
+  //         this.props?.policyholderData?.code
+  //       )
+  //     ) {
+  //       this.props.onChange(
+  //         this.props?.policyholderData?.code,
+  //         this.formatInsuree(this.props.policyholderData)
+  //       );
+  //       this.setState((state, props) => ({
+         
+  //         selected: this.props.policyholderData,
+  //       }));
+  //     }
+  //   } else if (!_.isEqual(prevProps.value, this.props.value)) {
+  //     this.setState((state, props) => ({
+  //       // search: !!props.value ? props.value.chfId : this.state.search,
+  //       search: !!props.value ? props.value.code : this.state.search,
+  //       selected: props.value,
+  //     }));
+  //   }
+  // }
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.reset !== this.props.reset) {
       this.setState((state, props) => ({
@@ -46,31 +79,16 @@ class CamuCodePicker extends Component {
         search: !!props.value ? props.value.code : null,
         selected: props.value,
       }));
-    } else if (this.props?.policyholderData !== null) {
-      if (
-        !_.isEqual(
-          prevProps?.policyholderData?.code,
-          this.props?.policyholderData?.code
-        )
-      ) {
-        this.props.onChange(
-          this.props?.policyholderData?.code,
-          this.formatInsuree(this.props.policyholderData)
-        );
-        this.setState((state, props) => ({
-         
-          selected: this.props.policyholderData,
-        }));
-      }
+    } else if (!_.isEqual(prevProps.policyholderData, this.props.policyholderData)) {
+      this.props.onChange(this.props.policyholderData, this.formatInsuree(this.props.policyholderData));
     } else if (!_.isEqual(prevProps.value, this.props.value)) {
       this.setState((state, props) => ({
         // search: !!props.value ? props.value.chfId : this.state.search,
-        search: !!props.value ? props.value.code : this.state.search,
+        search: !!props.value ? props.value.code : null,
         selected: props.value,
       }));
     }
   }
-
   fetch = (camuCode) => {
     console.log("camuCode", camuCode);
     this.setState(
@@ -120,10 +138,10 @@ class CamuCodePicker extends Component {
         </Grid>
         <Grid item xs={12}>
           <ProgressOrError
-            progress={this.props.fetchingPolicyHolder}
-            error={this.props.errorPolicyHolder}
+            progress={this.props.fetchingPolicyHolderCode}
+            error={this.props.errorPolicyHolderCode}
           />
-          {!this.props.fetchingPolicyHolder && (
+          {!this.props.fetchingPolicyHolderCode && (
             <TextInput
               readOnly={true}
               module="policyHolder"
@@ -140,9 +158,9 @@ class CamuCodePicker extends Component {
 
 const mapStateToProps = (state, props) => ({
   fetchingPolicyHolder: state.policyHolder.fetchingPolicyHolder,
-  errorPolicyHolder: state.policyHolder.errorPolicyHolder,
-  fetchedPolicyHolder: state.policyHolder.fetchedPolicyHolder,
-  policyholderData: state.policyHolder.policyHolder,
+  errorPolicyHolder: state.policyHolder.errorPolicyHolderCode,
+  fetchedPolicyHolder: state.policyHolder.fetchedPolicyHolderCode,
+  policyholderData: state.policyHolder.policyHolderCode,
 });
 
 const mapDispatchToProps = (dispatch) => {

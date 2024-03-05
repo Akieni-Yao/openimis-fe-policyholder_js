@@ -65,5 +65,6 @@ export const RIGHT_POLICYHOLDERCONTRACT_SEARCH = 152101
 export const INSUREE_STATUS="PRE_REGISTERED"
 
 export const RIGHT_PAYMENT_EDIT = 101403
-export const EXCEPTION_REASON = ["not_able_to_pay"]
+export const EXCEPTION_REASON = ["not_able_to_pay","death_of_head_insuree"]
+export const EXCEPTION_STATUS=["Pending","Ongoing","Completed"]
 export const exception_month = [3,6]

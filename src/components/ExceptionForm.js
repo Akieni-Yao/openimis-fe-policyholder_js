@@ -22,6 +22,9 @@ import {
   sendEmail,
   printReport,
   havingPAymentApprove,
+  fetchInsureeExceptionByID,
+  insureeExceptionApproval,
+  updateExternalDocuments
 } from "../actions";
 import {
   Dialog,
@@ -43,6 +46,7 @@ import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import CommonSnackbar from "./CommonSnackbar";
 import ExceptionMasterPanel from "./ExceptionMasterPanel";
+import ApproveRejectDialog from "./ApproveRejectDialog";
 const styles = (theme) => ({
   paper: theme.paper.paper,
   paperHeader: theme.paper.header,
@@ -100,6 +104,12 @@ class ExceptionForm extends Component {
       isFormValid: true,
       success: false,
       successMessage: "",
+      confirmDialog: false,
+      statusCheck: null,
+      snackbar: false,
+      severity: null,
+      snackbarMsg: null,
+      payload: null
     };
   }
   // wrapJSONFields = (policyHolder) => {
@@ -128,7 +138,7 @@ class ExceptionForm extends Component {
       this.setState(
         (_, props) => ({ policyHolderId: props.policyHolderId }),
         () =>
-          this.props.fetchPolicyHolder(
+          this.props.fetchInsureeExceptionByID(
             this.props.modulesManager,
             this.props.policyHolderId
           )
@@ -177,6 +187,13 @@ class ExceptionForm extends Component {
         successMessage: "Email sending failed",
       });
     }
+  };
+  reload = () => {
+    const { payment } = this.state;
+    this.props.fetchInsureeExceptionByID(
+      this.props.modulesManager,
+      this.props.policyHolderId
+    )
   };
   displayPrintWindow = (base64Data, contentType) => {
     const printWindow = window.open(
@@ -252,9 +269,58 @@ class ExceptionForm extends Component {
     this.props.rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH) &&
     !this.props.rights.includes(RIGHT_POLICYHOLDER_CREATE) &&
     !this.props.rights.includes(RIGHT_POLICYHOLDER_UPDATE);
-
+  _approveorreject = async (paymentData) => {
+    // console.log("paymentData.status", paymentData)
+    // debugger;
+    const response = await this.props.insureeExceptionApproval("", paymentData);
+    this.handleDialogClose();
+    if (!!response?.payload?.data?.approveInsureeException?.success) {
+      if (paymentData.status == -1) {
+        this.props.updateExternalDocuments(
+          this.props.modulesManager,
+          this.props.documentDetails,
+          paymentData[0]?.code,
+          false
+        );
+      }
+      this.setState({
+        snackbar: true,
+        severity: paymentData.status == 5 ? "success" : "error",
+        snackbarMsg:
+          paymentData.status == 5
+            ? formatMessageWithValues(
+              this.props.intl,
+              "policyHolder",
+              "snackbar.approve",
+              {}
+            )
+            : formatMessageWithValues(
+              this.props.intl,
+              "policyHolder",
+              "snackbar.reject",
+              {}
+            ),
+      });
+      setTimeout(() => {
+        this.reload();
+      }, 3000);
+    }
+  };
+  handleDialogOpen = (insureeData) => {
+    this.setState({ confirmDialog: true });
+    this.setState({ statusCheck: insureeData.status });
+    this.setState({ payload: insureeData });
+  };
+  handleDialogClose = () => {
+    this.setState({ confirmDialog: false });
+  };
+  handleSnackbarClose = () => {
+    this.setState({ snackbar: false });
+  };
   render() {
-    const { intl, rights, back, save, policyHolderId, classes } = this.props;
+    const { intl, rights, back, save, policyHolderId, classes, approverData } = this.props;
+    const { payment, newPayment, reset, payload, statusCheck } = this.state;
+    const exceptionApprove = !!approverData
     return (
       <Fragment>
         <Helmet
@@ -279,13 +345,23 @@ class ExceptionForm extends Component {
           saveTooltip={formatMessage(
             intl,
             "policyHolder",
-            `savePolicyHolderButton.tooltip.${
-              this.canSave() ? "enabled" : "disabled"
+            `savePolicyHolderButton.tooltip.${this.canSave() ? "enabled" : "disabled"
             }`
           )}
           onValidation={this.onValidation}
           rights={rights}
           openDirty={save}
+          approveorreject={this.handleDialogOpen}
+          exceptionApprove={exceptionApprove}
+
+        />
+        <ApproveRejectDialog
+          isOpen={this.state.confirmDialog}
+          onClose={this.handleDialogClose}
+          payload={payload}
+          approveorreject={this._approveorreject}
+          statusCheck={statusCheck}
+          classes={classes}
         />
         <CommonSnackbar
           open={this.props.snackbar}
@@ -307,7 +383,7 @@ class ExceptionForm extends Component {
                 <FormattedMessage
                   module="insuree"
                   id="success"
-                  // values={this.state.successMessage}
+                // values={this.state.successMessage}
                 />
               </DialogContentText>
             </DialogContent>
@@ -318,32 +394,36 @@ class ExceptionForm extends Component {
             </DialogActions>
           </Dialog>
         )}
-       
+
       </Fragment>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  fetchingPolicyHolder: state.policyHolder.fetchingPolicyHolder,
-  errorPolicyHolder: state.policyHolder.errorPolicyHolder,
-  fetchedPolicyHolder: state.policyHolder.fetchedPolicyHolder,
-  policyHolder: state.policyHolder.policyHolder,
+  fetchingPolicyHolder: state.policyHolder.fetchingExceptionInsureesByID,
+  errorPolicyHolder: state.policyHolder.errorExceptionInsureesByID,
+  fetchedPolicyHolder: state.policyHolder.fetchedExceptionInsureesByID,
+  policyHolder: state.policyHolder.ExceptionInsureesByID,
   isPolicyHolderCodeValid:
     state.policyHolder?.validationFields?.policyHolderCode?.isValid,
   submittingMutation: state.policyHolder.submittingMutation,
   mutation: state.policyHolder.mutation,
+  approverData: state.payment.approverData,
+  documentDetails: state.policyHolder.documentsData,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      fetchPolicyHolder,
+      fetchInsureeExceptionByID,
       clearPolicyHolder,
       journalize,
       sendEmail,
       printReport,
       havingPAymentApprove,
+      insureeExceptionApproval,
+      updateExternalDocuments
     },
     dispatch
   );

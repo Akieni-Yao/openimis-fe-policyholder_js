@@ -13,7 +13,8 @@ import {
 } from "@openimis/fe-core";
 import { Fab, Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { createPolicyHolderInsuree } from "../actions";
+// import { createPolicyHolderInsuree } from "../actions";
+import { createException } from "../actions";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -34,6 +35,7 @@ class CreateExceptionDialog extends Component {
       open: false,
       policyHolderInsuree: {},
       jsonExtValid: true,
+      jsonData:{}
     };
   }
 
@@ -50,41 +52,36 @@ class CreateExceptionDialog extends Component {
 
 
   handleSave = () => {
-    const { intl, policyHolder, onSave, createPolicyHolderInsuree } =
+    const { intl, policyHolder, onSave, createException } =
       this.props;
-    createPolicyHolderInsuree(
-      this.state.policyHolderInsuree,
-      formatMessageWithValues(
-        intl,
-        "policyHolder",
-        "CreatePolicyHolderInsuree.mutationLabel",
-        {
-          code: policyHolder.code,
-          tradeName: policyHolder.tradeName,
-        }
-      ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
+      createException(policyHolder,
+      this.state.jsonData,
     );
     onSave();
-    this.handleClose();
+    this.props.handleClose();
+    this.setState({ open: false, jsonData: {} });
+
   };
 
   updateAttribute = (attribute, value) => {
+    // debugger
     this.setState((state) => ({
-      policyHolderInsuree: {
-        ...state.policyHolderInsuree,
+      jsonData: {
+        ...state.jsonData,
         [attribute]: value,
       },
     }));
   };
 
   canSave = () => {
-    const { policyHolderInsuree, jsonExtValid } = this.state;
+    const { policyHolderInsuree, jsonExtValid,jsonData } = this.state;
     return (
-      !!policyHolderInsuree.policyHolder &&
-      !!policyHolderInsuree.insuree &&
-      !!policyHolderInsuree.contributionPlanBundle &&
-      !!policyHolderInsuree.dateValidFrom &&
-      !!jsonExtValid
+      !!jsonData.insuree && jsonData.insuree
+      //  &&
+      // !!policyHolderInsuree.insuree &&
+      // !!policyHolderInsuree.contributionPlanBundle &&
+      // !!policyHolderInsuree.dateValidFrom &&
+      // !!jsonExtValid
     );
   };
 
@@ -93,14 +90,14 @@ class CreateExceptionDialog extends Component {
   render() {
     const { intl, classes, open, policyHolderInsuree, handleClose } =
       this.props;
-    console.log("policyHolderInsuree", policyHolderInsuree);
+    // console.log("policyHolderInsuree", policyHolderInsuree);
     return (
       <Fragment>
-     
+
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
-                        <FormattedMessage module="policyHolder" id="exception.addException" />
-                    </DialogTitle>
+            <FormattedMessage module="policyHolder" id="exception.addException" />
+          </DialogTitle>
           <DialogContent>
             <Grid container direction="column" className={classes.item}>
               <Grid item className={classes.item}>
@@ -108,38 +105,37 @@ class CreateExceptionDialog extends Component {
                   pubRef="insuree.InsureeChfIdPicker"
                   required
                   value={
-                    !!policyHolderInsuree.insuree && policyHolderInsuree.insuree
+                    !!this.state.jsonData.insuree && this.state.jsonData.insuree
                   }
                   onChange={(v) => this.updateAttribute("insuree", v)}
                 />
               </Grid>
               <Grid item className={classes.item}>
                 <PublishedComponent
-                  pubRef="policyHolder.ExceptionStatusPicker"
+                  pubRef="policyHolder.ExceptionRegionPicker"
                   module="policyHolder"
                   label="exceptionReason"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-                  value={!!policyHolderInsuree.insuree && policyHolderInsuree.insuree.exceptionReason}
+                  value={ !!this.state.jsonData.exceptionReason && this.state.jsonData.exceptionReason}
                   onChange={(v) =>
-                    this.updateAttribute({ exceptionReason: v })
+                    // this.updateAttribute({ exceptionReason: v })
+                    this.updateAttribute("exceptionReason", v)
                   }
                 />
               </Grid>
               <Grid item className={classes.item}>
-              <ConstantBasedPicker
-                    module="policyHolder"
-                    label="exception.exceptionMonth"
-                    value={
-                      !!policyHolderInsuree && policyHolderInsuree?.exceptionMonth
-                        ? policyHolderInsuree?.exceptionMonth
-                        : ""
-                    }
-                    onChange={(value) =>
-                      this.updateAttribute("exceptionMonth", value)
-                    }
-                    constants={exception_month}
-                    withNull
-                  />
+                <ConstantBasedPicker
+                  module="policyHolder"
+                  label="exception.exceptionMonth"
+                  value={
+                    !!this.state.jsonData.exceptionMonth && this.state.jsonData.exceptionMonth
+                  }
+                  onChange={(value) =>
+                    this.updateAttribute("exceptionMonth", value)
+                  }
+                  constants={exception_month}
+                  withNull
+                />
               </Grid>
             </Grid>
           </DialogContent>
@@ -164,7 +160,7 @@ class CreateExceptionDialog extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ createPolicyHolderInsuree }, dispatch);
+  return bindActionCreators({ createException }, dispatch);
 };
 
 export default injectIntl(
