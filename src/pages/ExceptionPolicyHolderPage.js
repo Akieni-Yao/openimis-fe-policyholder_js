@@ -11,6 +11,7 @@ import {
 import ExceptionPolicyHolderSearcher from "../components/ExceptionPolicyHolderSearcher";
 
 class ExceptionPolicyholderTabLabel extends Component {
+  pendingApprovalUser = window.location.href.includes("pendingapproval");
   render() {
     const { intl, rights, onChange, disabled, tabStyle, isSelected } =
       this.props;
@@ -23,7 +24,11 @@ class ExceptionPolicyholderTabLabel extends Component {
           className={tabStyle(EXCEPTION_POLICYHOLDER_TAB_VALUE)}
           selected={isSelected(EXCEPTION_POLICYHOLDER_TAB_VALUE)}
           value={EXCEPTION_POLICYHOLDER_TAB_VALUE}
-          label={formatMessage(
+          label={!!this.pendingApprovalUser ? formatMessage(
+            intl,
+            "exception",
+            "exceptionPolicyholderApproval.label"
+          ) : formatMessage(
             intl,
             "exception",
             "exceptionPolicyholder.label"

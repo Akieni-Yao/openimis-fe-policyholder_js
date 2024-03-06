@@ -28,13 +28,25 @@ import {
   ROWS_PER_PAGE_OPTIONS,
 } from "../constants";
 import ExceptionInsureeFilter from "./ExceptionInsureeFilter";
-import { Box, Typography, Grid } from "@material-ui/core";
+import { Box, Typography, Grid, IconButton, Tooltip } from "@material-ui/core";
 import CreateExceptionDialog from "../dialogs/CreateExceptionDialog";
 import ExceptionPolicyHolderFilter from "./ExceptionPolicyHolderFilter";
 import CreateExceptionPolicyHolderDialog from "../dialogs/CreateExceptionPolicyHolderDialog";
+import HelpIcon from "@material-ui/icons/Help";
 
 const DEFAULT_ORDER_BY = "insuree";
-
+const styles = (theme) => ({
+  customArrow: {
+    color: "#eeeaea",
+  },
+  tooltip: {
+    maxWidth: 1000,
+    width: "fit-content"
+    // width: "auto",
+    // color: "white",
+    // backgroundColor: "#eeeaea",
+  },
+});
 class ExceptionPolicyHolderSearcher extends Component {
   constructor(props) {
     super(props);
@@ -111,16 +123,18 @@ class ExceptionPolicyHolderSearcher extends Component {
   };
 
   headers = () => {
-    const { rights } = this.props;
+    const { rights, pendingApprovalUser } = this.props;
     let result = [
       "exception.date",
       "policyHolder.exception.camuCode",
       "policyHolder.tradeName",
       "exception.city",
       "exception.exceptionType",
-      "exception.exceptionStatus",
+      // "exception.exceptionStatus",
     ];
-
+    if (!pendingApprovalUser) {
+      result.push("exception.exceptionStatus");
+    }
     return result;
   };
   displayPrintWindow = (base64Data, contentType) => {
@@ -157,8 +171,13 @@ class ExceptionPolicyHolderSearcher extends Component {
       this.displayPrintWindow(base64Data, contentType);
     }
   };
+  rejectedCommentsTooltip = (rejectComment) => {
+    return (
+      formatMessage(this.props.intl, "policyHolder", `policyHolder.rejectComment.${rejectComment.rejectionReason}`)
+    );
+  };
   itemFormatters = () => {
-    const { intl, modulesManager, rights, policyHolder, onSave } = this.props;
+    const { intl, modulesManager, rights, policyHolder, onSave, pendingApprovalUser } = this.props;
     let result = [
       (policyHolderInsuree) =>
         !!policyHolderInsuree.createdTime
@@ -184,21 +203,62 @@ class ExceptionPolicyHolderSearcher extends Component {
         !!policyHolderInsuree?.exceptionReason
           ? formatMessage(this.props.intl, "policyHolder.exceptionReason", policyHolderInsuree?.exceptionReason)
           : "",
-      (policyHolderInsuree) => {       
-        let color = "inherit";
+      // (policyHolderInsuree) => {
+      //   // !!policyHolderInsuree.status ? policyHolderInsuree.status : "",
+      //   let color = "inherit";
+      //   if (policyHolderInsuree.status === "APPROVED") {
+      //     color = "green";
+      //   } else if (policyHolderInsuree.status === "REJECTED") {
+      //     color = "red"; 
+      //   } else if (policyHolderInsuree.status === "PENDING") {
+      //     color = "orange"; 
+      //   }
+      //   return (
+      //     <span style={{ color, fontWeight: "bold" }}>
+      //       {policyHolderInsuree.status}
+      //     </span>
+      //   );
+      // }
+    ];
+    if (!pendingApprovalUser) {
+      result.push((policyHolderInsuree) => {
+        let color = "inherit"; // Default color
         if (policyHolderInsuree.status === "APPROVED") {
           color = "green"; 
         } else if (policyHolderInsuree.status === "REJECTED") {
-          color = "red"; 
+          color = "red"; // Red color for REJECTED status
+        } else if (policyHolderInsuree.status === "PENDING") {
+          color = "orange"; // Red color for REJECTED status
         }
         return (
-          <span style={{ color }}>
-            {policyHolderInsuree.status}
-          </span>
-        );
-      }
-    ];
+          <Fragment>
+            <span style={{ color, fontWeight: "bold" }}>
+              {policyHolderInsuree.status}
+            </span>
+            {policyHolderInsuree.status === "REJECTED" && policyHolderInsuree.rejectionReason && (
+              <Tooltip
+                placement="right"
+                arrow
+                // classes={{
+                //   tooltip: this.props.classes.tooltip,
+                //   arrow: this.props.classes.customArrow
+                // }}
+                title={this.rejectedCommentsTooltip(policyHolderInsuree)}
+              >
+                <IconButton>
+                  <HelpIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Fragment>
+          // <span style={{ color,fontWeight:"bold" }}>
+          //   {policyHolderInsuree.status}
+          // </span>
 
+        );
+      },
+      );
+    }
     return result;
   };
 

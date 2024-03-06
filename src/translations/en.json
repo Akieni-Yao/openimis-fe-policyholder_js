@@ -141,6 +141,7 @@
     "policyHolder.legalStatus": "Legal Form",
     "policyHolder.policyHolder.sample_insureess_data.xlsx": "policyholder_insurees.xlsx",
     "exception.exceptionInsuree.label": "Insurees Exceptions",
+    "exception.exceptionInsureeApproval.label": "Insurees Exceptions Approval",
     "exception.camuNo": "CAMU No.",
     "exception.firstName": "First Name",
     "exception.lastName": "Last Name",
@@ -154,6 +155,7 @@
     "policyHolder.exceptionReason.not_able_to_pay": "Death of Head Insuree",
     "policyHolder.exceptionReason.death_of_head_insuree": "Unable to make a payment right now",
     "exception.exceptionPolicyholder.label": "Policy Holders Exceptions",
+    "exception.exceptionPolicyholderApproval.label": "Policy Holders Exceptions Approval",
     "policyHolder.exceptionInsuree.searcher.title": "{policyHolderInsureesTotalCount}  Insurees Found",
     "policyHolder.exception.camuCode": "CAMU Code",
     "exception.bithDate": "Birth Date",
@@ -177,5 +179,10 @@
     "policyHolder.snackbar.approve": "Exception is approved successfully!",
     "policyHolder.snackbar.reject": "Exception is rejected successfully!",
     "policyHolder.dialog.rejectTitlePolicyholder": "Policyholder Exception Rejection",
-    "policyHolder.dialog.approvedTitlePolicyholder": "Policyholder Exception Approval"
+    "policyHolder.dialog.approvedTitlePolicyholder": "Policyholder Exception Approval",
+    "policyHolder.snackbar.create": "Exception is created successfully!",
+    "policyHolder.policyHolder.rejectComment.not_clear_docs":"Documents are not clear",
+    "policyHolder.policyHolder.rejectComment.not_valid":"Documents is not valid"
+    
+
 }
