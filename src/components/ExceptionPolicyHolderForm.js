@@ -273,7 +273,7 @@ class ExceptionPolicyHolderForm extends Component {
     !this.props.rights.includes(RIGHT_POLICYHOLDER_CREATE) &&
     !this.props.rights.includes(RIGHT_POLICYHOLDER_UPDATE);
   _approveorreject = async (paymentData) => {
-    console.log("paymentData.status", paymentData[0]?.id)
+    // console.log("paymentData.status", paymentData[0]?.id)
     const response = await this.props.policyHolderExceptionApproval("", paymentData);
     this.handleDialogClose();
     if (!!response?.payload?.data?.approvePolicyholderException?.success) {
@@ -321,9 +321,11 @@ class ExceptionPolicyHolderForm extends Component {
   };
 
   render() {
-    const { intl, rights, back, save, policyHolderId, classes, approverData } = this.props;
+    const { intl, rights, back, save, policyHolderId, classes, approverData, documentDetails,policyHolder } = this.props;
+    // console.log("policyHolder",policyHolder);
+    // console.log("documentDetails", documentDetails)
     const { payment, newPayment, reset, payload, statusCheck } = this.state;
-    const exceptionApprove = !!approverData
+    const exceptionApprove = !!approverData && documentDetails?.length > 0 && policyHolder[0]?.status==="PENDING"
     return (
       <Fragment>
         <Helmet
@@ -356,20 +358,21 @@ class ExceptionPolicyHolderForm extends Component {
           openDirty={save}
           approveorreject={this.handleDialogOpen}
           exceptionApprove={exceptionApprove}
+          documentDetails={documentDetails}
         />
-        <CommonSnackbar
+        {/* <CommonSnackbar
           open={this.props.snackbar}
           onClose={this.props.handleClose}
-          message={formatMessageWithValues(
-            intl,
-            "policyHolder",
-            "policyHolder.CreatePolicyHolder.snackbar",
-            {}
-          )}
+          // message={formatMessageWithValues(
+          //   intl,
+          //   "policyHolder",
+          //   "policyHolder.CreatePolicyHolder.snackbar",
+          //   {}
+          // )}
           severity="success"
           copyText={this.props.resCode && this.props.resCode}
           backgroundColor="#00913E"
-        />
+        /> */}
         <ApproveRejectPolicyholderDialog
           isOpen={this.state.confirmDialog}
           onClose={this.handleDialogClose}
@@ -379,14 +382,15 @@ class ExceptionPolicyHolderForm extends Component {
           classes={classes}
         />
         <CommonSnackbar
-          open={this.props.snackbar}
-          onClose={this.props.handleClose}
-          message={formatMessageWithValues(
-            intl,
-            "policyHolder",
-            "policyHolder.CreatePolicyHolder.snackbar",
-            {}
-          )}
+          open={this.state.snackbar}
+          onClose={this.handleSnackbarClose}
+          // message={formatMessageWithValues(
+          //   intl,
+          //   "policyHolder",
+          //   "policyHolder.CreatePolicyHolder.snackbar",
+          //   {}
+          // )}
+          message={this.state.snackbarMsg}
           severity="success"
           copyText={this.props.resCode && this.props.resCode}
           backgroundColor="#00913E"

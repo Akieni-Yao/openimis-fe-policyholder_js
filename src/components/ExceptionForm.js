@@ -318,9 +318,12 @@ class ExceptionForm extends Component {
     this.setState({ snackbar: false });
   };
   render() {
-    const { intl, rights, back, save, policyHolderId, classes, approverData } = this.props;
+    const { intl, rights, back, save, policyHolderId, classes, approverData, documentDetails,policyHolder } = this.props;
+    // console.log("documentDetails", documentDetails)
     const { payment, newPayment, reset, payload, statusCheck } = this.state;
-    const exceptionApprove = !!approverData
+    // const exceptionApprove = !!approverData 
+    const exceptionApprove = !!approverData && documentDetails?.length > 0 && policyHolder[0]?.status==="PENDING"
+
     return (
       <Fragment>
         <Helmet
@@ -364,16 +367,17 @@ class ExceptionForm extends Component {
           classes={classes}
         />
         <CommonSnackbar
-          open={this.props.snackbar}
-          onClose={this.props.handleClose}
-          message={formatMessageWithValues(
-            intl,
-            "policyHolder",
-            "policyHolder.CreatePolicyHolder.snackbar",
-            {}
-          )}
+          open={this.state.snackbar}
+          onClose={this.handleSnackbarClose}
+          // message={formatMessageWithValues(
+          //   intl,
+          //   "policyHolder",
+          //   "policyHolder.CreatePolicyHolder.snackbar",
+          //   {}
+          // )}
+          message={this.state.snackbarMsg}
           severity="success"
-          copyText={this.props.resCode && this.props.resCode}
+          // copyText={this.props.resCode && this.props.resCode}
           backgroundColor="#00913E"
         />
         {this.state.success && (

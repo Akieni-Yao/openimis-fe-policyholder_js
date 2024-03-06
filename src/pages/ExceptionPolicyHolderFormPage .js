@@ -31,11 +31,12 @@ class ExceptionPolicyHolderFormPage extends Component {
     this.state = { snackbar: false, resCode: "" };
   }
   back = () => {
-    historyPush(
-      this.props.modulesManager,
-      this.props.history,
-      "policyHolder.route.exception.policyholder"
-    );
+    this.props.history.goBack();
+    // historyPush(
+    //   this.props.modulesManager,
+    //   this.props.history,
+    //   "policyHolder.route.exception.policyholder"
+    // );
   };
 
   save = async (policyHolder) => {
