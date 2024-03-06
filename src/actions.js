@@ -984,7 +984,7 @@ export function createException(mm, jsonData) {
     }
 }`;
   return graphql(
-    mutation, ["POLICYHOLDER_MUTATION_REQ", "POLICYHOLDER_EXCP_CREATE_RESP", "POLICYHOLDER_MUTATION_ERR"], {
+    mutation, ["POLICYHOLDER_MUTATION_REQ", "POLICYHOLDER_POLICYHOLDER_INSEXCP_CREATE_RESP", "POLICYHOLDER_MUTATION_ERR"], {
 
   }
   );
@@ -1089,6 +1089,7 @@ export function fetchInsureeExceptionByID(mm, id) {
                     chfId
                     phone
                     jsonExt
+                    dob
                 }
             }
           }

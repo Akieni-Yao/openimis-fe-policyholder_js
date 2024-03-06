@@ -102,13 +102,25 @@ class ExceptionMasterPanel extends FormPanel {
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
-            <TextInput
+          <PublishedComponent
+                  pubRef="policyHolder.ExceptionRegionPicker"
+                  module="policyHolder"
+                  label="exceptionReason"
+                  readOnly={true}
+                  nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+                  value={!edited ? "" : edited[0]?.exceptionReason}
+                  // onChange={(v) =>
+                  //   // this.updateAttribute({ exceptionReason: v })
+                  //   this.updateAttribute("exceptionReason", v)
+                  // }
+                />
+            {/* <TextInput
               module="policyHolder"
               label="exception.exceptionType"
               readOnly={true}
-              value={!edited ? "" : edited[0]?.rejectionReason}
+              value={!edited ? "" : edited[0]?.exceptionReason}
             // onChange={p => this.updateAttribute('receiptNo', p)}
-            />
+            /> */}
           </Grid>
           <Grid item xs={3} className={classes.item}>
             <TextInput

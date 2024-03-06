@@ -23,6 +23,7 @@ import {
   MAX_CLIENTMUTATIONLABEL_LENGTH,
   exception_month,
 } from "../constants";
+import CommonSnackbar from "../components/CommonSnackbar";
 
 const styles = (theme) => ({
   item: theme.paper.item,
@@ -35,7 +36,15 @@ class CreateExceptionDialog extends Component {
       open: false,
       policyHolderInsuree: {},
       jsonExtValid: true,
-      jsonData:{}
+      jsonData: {},
+      success: false,
+      successMessage: "",
+      confirmDialog: false,
+      statusCheck: null,
+      snackbar: false,
+      severity: null,
+      snackbarMsg: null,
+      camuCode: null
     };
   }
 
@@ -51,18 +60,35 @@ class CreateExceptionDialog extends Component {
   };
 
 
-  handleSave = () => {
+  handleSave = async () => {
     const { intl, policyHolder, onSave, createException } =
       this.props;
-      createException(policyHolder,
+    const response = await createException(this.props.modulesManager,
       this.state.jsonData,
     );
+    // console.log(response, "response")
+    if (!!response?.payload?.data?.createInsureeException?.insureeException) {
+      this.setState({
+        snackbar: true,
+        camuCode: !!response?.payload?.data?.createInsureeException?.insureeException?.code ? response?.payload?.data?.createInsureeException?.insureeException?.code : "",
+
+        // severity: paymentData.status == 5 ? "success" : "error",
+        snackbarMsg: formatMessageWithValues(
+          this.props.intl,
+          "policyHolder",
+          "snackbar.create",
+          {}
+        )
+      });
+    }
     onSave();
     this.props.handleClose();
     this.setState({ open: false, jsonData: {} });
 
   };
-
+  closeSnakBar = () => {
+    this.setState({ snackbar: false });
+  }
   updateAttribute = (attribute, value) => {
     // debugger
     this.setState((state) => ({
@@ -74,7 +100,7 @@ class CreateExceptionDialog extends Component {
   };
 
   canSave = () => {
-    const { policyHolderInsuree, jsonExtValid,jsonData } = this.state;
+    const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
     return (
       !!jsonData.insuree && jsonData.insuree
       //  &&
@@ -116,7 +142,7 @@ class CreateExceptionDialog extends Component {
                   module="policyHolder"
                   label="exceptionReason"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-                  value={ !!this.state.jsonData.exceptionReason && this.state.jsonData.exceptionReason}
+                  value={!!this.state.jsonData.exceptionReason && this.state.jsonData.exceptionReason}
                   onChange={(v) =>
                     // this.updateAttribute({ exceptionReason: v })
                     this.updateAttribute("exceptionReason", v)
@@ -154,6 +180,20 @@ class CreateExceptionDialog extends Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <CommonSnackbar
+          open={this.state.snackbar}
+          onClose={this.closeSnakBar}
+          // message={formatMessageWithValues(
+          //   intl,
+          //   "policyHolder",
+          //   "policyHolder.CreatePolicyHolder.snackbar",
+          //   {}
+          // )}
+          message={this.state.snackbarMsg}
+          severity="success"
+          copyText={!!this.state.camuCode ? this.state.camuCode : ""}
+          backgroundColor="#00913E"
+        />
       </Fragment>
     );
   }

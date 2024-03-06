@@ -21,6 +21,8 @@ import * as XLSX from "xlsx";
 import ExceptionInsureeSearcher from "../components/ExceptionInsureeSearcher";
 
 class ExceptionInsureeTabLabel extends Component {
+  pendingApprovalUser = window.location.href.includes("pendingapproval");
+
   render() {
     const { intl, rights, onChange, disabled, tabStyle, isSelected } =
       this.props;
@@ -33,7 +35,7 @@ class ExceptionInsureeTabLabel extends Component {
           className={tabStyle(POLICYHOLDERINSUREE_TAB_VALUE)}
           selected={isSelected(POLICYHOLDERINSUREE_TAB_VALUE)}
           value={POLICYHOLDERINSUREE_TAB_VALUE}
-          label={formatMessage(intl, "exception", "exceptionInsuree.label")}
+          label={!!this.pendingApprovalUser ? formatMessage(intl, "exception", "exceptionInsureeApproval.label") : formatMessage(intl, "exception", "exceptionInsuree.label")}
         />
       )
     );
@@ -57,10 +59,10 @@ class ExceptionInsureeTabPanel extends Component {
   };
 
   pendingApprovalUser = window.location.href.includes("pendingapproval");
-  
+
   render() {
     const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
- 
+
     return (
       (rights.includes(RIGHT_POLICYHOLDERINSUREE_SEARCH) ||
         rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_SEARCH)) && (

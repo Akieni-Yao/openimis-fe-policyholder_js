@@ -66,6 +66,7 @@ const ROUTE_POLICY_HOLDER_USERS = "policyHolderUsers";
 const ROUTE_DECLARATION = "declaration";
 const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
 const EXCEPTION_PANELS = "exception";
+const EXCEPTION_PANELS_POLICYHOLDER = "exception/policyholder";
 const EXCEPTION__PENDING_APPROVAL_PANELS = "exception/pendingapproval";
 const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS = "exception/pendingapproval/policyholder";
 
@@ -127,6 +128,7 @@ const DEFAULT_CONFIG = {
     { path: ROUTE_DECLARATION, component: DeclarationPage },
     { path: ROUTE_PAYMENT_FOR_APPROVAL, component: PaymentForApproval },
     { path: EXCEPTION_PANELS, component: ExceptionTabPanel },
+    { path: EXCEPTION_PANELS_POLICYHOLDER, component: ExceptionTabPanel },
     {
       path: EXCEPTION__PENDING_APPROVAL_PANELS,
       component: ExceptionTabPanel,

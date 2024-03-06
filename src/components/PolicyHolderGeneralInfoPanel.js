@@ -69,82 +69,82 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
         },
       }
     );
-    this.tradeNameValidation = props.modulesManager.getConf(
-      "policyHolder",
-      "policyHolderForm.tradeNameValidation",
-      {
-        regex: /^[[éàèùçâêîôûëïüaa-zA-Z0-9. ]*$/,
-        regexMsg: {
-          en: formatMessage(
-            props.intl,
-            "policyHolder",
-            "tradeNameValidation.regexMsg.en"
-          ),
-          fr: formatMessage(
-            props.intl,
-            "policyHolder",
-            "tradeNameValidation.regexMsg.fr"
-          ),
-        },
-      }
-    );
-    this.mainActivityValidation = props.modulesManager.getConf(
-      "policyHolder",
-      "policyHolderForm.mainActivityValidation",
-      {
-        regex: /^[a-zA-Z0-9. ]*$/,
-        regexMsg: {
-          en: formatMessage(
-            props.intl,
-            "policyHolder",
-            "mainActivityValidation.regexMsg.en"
-          ),
-          fr: formatMessage(
-            props.intl,
-            "policyHolder",
-            "mainActivityValidation.regexMsg.fr"
-          ),
-        },
-      }
-    );
-    this.contactNameValidation = props.modulesManager.getConf(
-      "policyHolder",
-      "policyHolderForm.contactNameValidation",
-      {
-        regex: /^[a-zA-Z0-9. ]*$/,
-        regexMsg: {
-          en: formatMessage(
-            props.intl,
-            "policyHolder",
-            "contactNameValidation.regexMsg.en"
-          ),
-          fr: formatMessage(
-            props.intl,
-            "policyHolder",
-            "contactNameValidation.regexMsg.fr"
-          ),
-        },
-      }
-    );
-    this.shortNameValidation = props.modulesManager.getConf(
-      "policyHolder",
-      "policyHolderForm.shortNameValidation",
-      {
-        regex: /^[a-zA-Z0-9. ]*$/,
-        regexMsg: {
-          en: formatMessage(
-            props.intl,
-            "policyHolder",
-            "shortNameValidation.regexMsg.en"
-          ),
-          fr: formatMessage(
-            props.intl,
-            "policyHolder",
-            "shortNameValidation.regexMsg.fr"
-          ),
-        },
-      }
-    );
+    // this.tradeNameValidation = props.modulesManager.getConf(
+    //   "policyHolder",
+    //   "policyHolderForm.tradeNameValidation",
+    //   {
+    //     regex: /^[[éàèùçâêîôûëïüaa-zA-Z0-9. ]*$/,
+    //     regexMsg: {
+    //       en: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "tradeNameValidation.regexMsg.en"
+    //       ),
+    //       fr: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "tradeNameValidation.regexMsg.fr"
+    //       ),
+    //     },
+    //   }
+    // );
+    // this.mainActivityValidation = props.modulesManager.getConf(
+    //   "policyHolder",
+    //   "policyHolderForm.mainActivityValidation",
+    //   {
+    //     regex: /^[a-zA-Z0-9. ]*$/,
+    //     regexMsg: {
+    //       en: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "mainActivityValidation.regexMsg.en"
+    //       ),
+    //       fr: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "mainActivityValidation.regexMsg.fr"
+    //       ),
+    //     },
+    //   }
+    // );
+    // this.contactNameValidation = props.modulesManager.getConf(
+    //   "policyHolder",
+    //   "policyHolderForm.contactNameValidation",
+    //   {
+    //     regex: /^[a-zA-Z0-9. ]*$/,
+    //     regexMsg: {
+    //       en: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "contactNameValidation.regexMsg.en"
+    //       ),
+    //       fr: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "contactNameValidation.regexMsg.fr"
+    //       ),
+    //     },
+    //   }
+    // );
+    // this.shortNameValidation = props.modulesManager.getConf(
+    //   "policyHolder",
+    //   "policyHolderForm.shortNameValidation",
+    //   {
+    //     regex: /^[a-zA-Z0-9. ]*$/,
+    //     regexMsg: {
+    //       en: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "shortNameValidation.regexMsg.en"
+    //       ),
+    //       fr: formatMessage(
+    //         props.intl,
+    //         "policyHolder",
+    //         "shortNameValidation.regexMsg.fr"
+    //       ),
+    //     },
+    //   }
+    // );
     this.niuValidation = props.modulesManager.getConf(
       "policyHolder",
       "policyHolderForm.niuValidation",
@@ -479,10 +479,10 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       let isFormValid = true;
       if (
         !!this.regexError("phone", edited?.phone) ||
-        !!this.regexError("tradeName", edited?.tradeName) ||
-        !!this.regexError("mainActivity", edited?.jsonExt?.mainActivity) ||
-        !!this.regexError("contactName", edited?.contactName) ||
-        !!this.regexError("shortName", edited?.jsonExt?.shortName) ||
+        // !!this.regexError("tradeName", edited?.tradeName) ||
+        // !!this.regexError("mainActivity", edited?.jsonExt?.mainActivity) ||
+        // !!this.regexError("contactName", edited?.contactName) ||
+        // !!this.regexError("shortName", edited?.jsonExt?.shortName) ||
         !!this.regexError("niu", edited?.jsonExt?.niu) ||
         !!this.regexError("rccm", edited?.jsonExt?.rccm) ||
         !!this.regexError("address", edited?.address) ||
@@ -609,6 +609,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       policyHolderId,
       approverData,
     } = this.props;
+    console.log("edited",edited)
     // const capitalizeWords = (inputString) => {
     //   let result = "";
 
@@ -869,7 +870,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               label="address"
               required
               inputProps={{ maxLength: MAX_ADDRESS_LENGTH }}
-              value={!!edited && !!edited.address ? edited.address : ""}
+              value={!!edited && !!edited?.address ? edited?.address : ""}
               onChange={(v) => this.updateAttribute("address", v)}
               error={this.regexError("address", edited?.address)}
               readOnly={isPolicyHolderPortalUser}
