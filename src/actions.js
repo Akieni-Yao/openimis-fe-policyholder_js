@@ -1251,7 +1251,7 @@ export function policyHolderExceptionApproval(mm, jsonData) {
 }
 
 function formatExternalDocument(docs, tempCamu, isApprove) {
-  debugger
+  // debugger
   const newarray = docs?.map((doc) => ({
     documentId: doc.documentId,
     status: "REJECTED",
