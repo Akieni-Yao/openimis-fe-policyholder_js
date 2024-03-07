@@ -392,7 +392,7 @@ class ExceptionPolicyHolderForm extends Component {
           // )}
           message={this.state.snackbarMsg}
           severity="success"
-          copyText={this.props.resCode && this.props.resCode}
+          // copyText={this.props.resCode && this.props.resCode}
           backgroundColor="#00913E"
         />
         {this.state.success && (
