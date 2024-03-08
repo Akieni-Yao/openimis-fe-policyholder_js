@@ -47,10 +47,10 @@ const CommonSnackbar = ({ open, onClose, message, severity, copyText, background
           <>
             <div style={{ display: "flex", alignItems: "center" }}>
               <div>{copyText}</div>
-              <IconButton size="small" onClick={handleCopyClick} style={{ marginLeft: "4px" }} color="inherit">
+              {!!copyText ? <IconButton size="small" onClick={handleCopyClick} style={{ marginLeft: "4px" }} color="inherit">
                 <FileCopyIcon />
-              </IconButton>
-              {isCopied ? "Copied!" : "Copy"}
+              </IconButton> : ""}
+              {isCopied ? "Copied!" : !!copyText ? "Copy" : ""}
             </div>
             <IconButton size="small" onClick={handleClose} style={{ marginLeft: "4px" }} color="inherit">
               <CloseIcon />
