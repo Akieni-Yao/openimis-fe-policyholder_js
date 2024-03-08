@@ -152,8 +152,11 @@
     "exception.addException": "Add Exception",
     "policyHolder.exceptionReason": "Exception Reason",
     "policyHolder.exceptionReason.null": "None",
-    "policyHolder.exceptionReason.not_able_to_pay": "Death of Head Insuree",
-    "policyHolder.exceptionReason.death_of_head_insuree": "Unable to make a payment right now",
+    "policyHolder.exceptionReason.death_of_head_insuree": "Death of Head Insuree",
+    "policyHolder.exceptionReason.not_able_to_pay": "Unable to make a payment right now",
+    "policyHolder.insureeexceptionReason.null": "None",
+    "policyHolder.insureeexceptionReason.death_of_head_insuree": "Death of Head Insuree",
+    "policyHolder.insureeexceptionReason.Loss_of_Job": "Loss of Job",
     "exception.exceptionPolicyholder.label": "Policy Holders Exceptions",
     "exception.exceptionPolicyholderApproval.label": "Policy Holders Exceptions Approval",
     "policyHolder.exceptionInsuree.searcher.title": "{policyHolderInsureesTotalCount}  Insurees Found",
@@ -168,9 +171,9 @@
     "policyHolder.exception.exceptionMonth.null": " ",
     "policyHolder.exception.exceptionMonth.3": "3",
     "policyHolder.exception.exceptionMonth.6": "6",
-    "policyHolder.Exception Status.Pending": "Pending",
-    "policyHolder.Exception Status.Ongoing": "Ongoing",
-    "policyHolder.Exception Status.Completed": "Completed",
+    "policyHolder.Exception Status.PENDING": "Pending",
+    "policyHolder.Exception Status.APPROVED": "Approved",
+    "policyHolder.Exception Status.REJECTED": "Rejected",
     "policyHolder.dialog.rejectTitle": "Insuree Exception Rejection",
     "policyHolder.dialog.approvedTitle": "Insuree Exception Approval",
     "policyHolder.policyHolder.ApprovalMsg": "Are you sure, you want to approve the Exception - {paymentCode}? ",
@@ -181,8 +184,11 @@
     "policyHolder.dialog.rejectTitlePolicyholder": "Policyholder Exception Rejection",
     "policyHolder.dialog.approvedTitlePolicyholder": "Policyholder Exception Approval",
     "policyHolder.snackbar.create": "Exception is created successfully!",
-    "policyHolder.policyHolder.rejectComment.not_clear_docs":"Documents are not clear",
-    "policyHolder.policyHolder.rejectComment.not_valid":"Documents is not valid"
-    
-
+    "policyHolder.policyHolder.rejectComment.not_clear_docs": "Documents are not clear",
+    "policyHolder.policyHolder.rejectComment.not_valid": "Documents is not valid",
+    "policyHolder.insureeexceptionReason": "Exception Reason",
+    "policyHolder.CreatePolicyHolder.PolicyHolder's contribution plan periodicity should be 1": "PolicyHolder's contribution plan periodicity should be 1",
+    "policyHolder.CreatePolicyHolder.Payment already done for all contracts.": "Payment already done for all contracts.",
+    "policyHolder.InsureeExceptionError.Insuree is not active or approved.": "Insuree is not active or approved.",
+    "policyHolder.ExceptionMonth": "Exception Month"
 }

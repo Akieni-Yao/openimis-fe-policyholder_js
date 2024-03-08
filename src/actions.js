@@ -981,6 +981,7 @@ export function createException(mm, jsonData) {
             rejectionReason
             code
         }
+        message
     }
 }`;
   return graphql(
@@ -1008,6 +1009,7 @@ export function createPolicyHolderException(mm, jsonData) {
         createdTime
         modifiedTime
     }
+    message
     }
 }`;
   return graphql(

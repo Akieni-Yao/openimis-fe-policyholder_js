@@ -49,6 +49,7 @@ import {
 } from "./pages/ExceptionInsureePage";
 // import ExceptionRegionPicker from "./pickers/ExceptionStatusPicker";
 import ExceptionRegionPicker from "./pickers/ExceptionRegionPicker";
+import InsureeExceptionRegion from "./pickers/InsureeExceptionRegion";
 import ExceptionStatusPicker from "./pickers/ExceptionStatusPicker";
 import {
   ExceptionPolicyholderTabLabel,
@@ -81,6 +82,8 @@ const DEFAULT_CONFIG = {
     { key: "policyHolder.TabPanel", ref: TabPanel },
     { key: "policyHolder.PolicyHolderPicker", ref: PolicyHolderPicker },
     { key: "policyHolder.ExceptionRegionPicker", ref: ExceptionRegionPicker },
+    { key: "policyHolder.InsureeExceptionRegion", ref: InsureeExceptionRegion },
+
     { key: "policyHolder.ExceptionStatusPicker", ref: ExceptionStatusPicker },
     { key: "policyHolder.camuCodePicker", ref: CamuCodePicker },
     {

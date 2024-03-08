@@ -251,7 +251,7 @@ class ExceptionInsureeSearcher extends Component {
         return (
           <Fragment>
           <span style={{ color, fontWeight: "bold" }}>
-            {policyHolderInsuree.status}
+            {formatMessage(this.props.intl, "policyHolder", `policyHolder.Exception Status.${policyHolderInsuree.status}`)}
           </span>
           {policyHolderInsuree.status === "REJECTED" && policyHolderInsuree.rejectionReason && (
             <Tooltip
