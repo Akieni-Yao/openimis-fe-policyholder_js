@@ -187,8 +187,9 @@
     "policyHolder.policyHolder.rejectComment.not_clear_docs": "Documents are not clear",
     "policyHolder.policyHolder.rejectComment.not_valid": "Documents is not valid",
     "policyHolder.insureeexceptionReason": "Exception Reason",
-    "policyHolder.CreatePolicyHolder.PolicyHolder's contribution plan periodicity should be 1": "PolicyHolder's contribution plan periodicity should be 1",
+    "policyHolder.CreatePolicyHolder.PolicyHolder's contribution plan periodicity should be 1.": "PolicyHolder's contribution plan periodicity should be 1",
     "policyHolder.CreatePolicyHolder.Payment already done for all contracts.": "Payment already done for all contracts.",
     "policyHolder.InsureeExceptionError.Insuree is not active or approved.": "Insuree is not active or approved.",
-    "policyHolder.ExceptionMonth": "Exception Month"
+    "policyHolder.ExceptionMonth": "Exception Month",
+    "exception.month":"Exception Month"
 }
