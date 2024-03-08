@@ -1124,6 +1124,7 @@ export function fetchPolicyHolderException(mm, filters) {
                   modifiedBy
                   createdTime
                   modifiedTime
+                  month
                   policyHolder {
                     code
                     tradeName

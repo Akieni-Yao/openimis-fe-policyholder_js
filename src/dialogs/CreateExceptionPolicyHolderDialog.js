@@ -209,7 +209,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
           message={formatMessageWithValues(
             intl,
             "policyHolder",
-            "CreatePolicyHolder.PolicyHolder's contribution plan periodicity should be 1",
+            `CreatePolicyHolder.${this.state.snackbarMsg}`,
             {}
           )}
           // message={this.state.snackbarMsg}
