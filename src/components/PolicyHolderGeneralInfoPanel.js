@@ -1069,14 +1069,14 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             />
           </Grid> */}
         </Grid>
-        {!!edited && !!edited?.code && !!approverData ? (
+        {/* {!!edited && !!edited?.code && !!approverData ? (
           <Contributions
             {...this.props}
             edited={edited}
             updateAttribute={this.updateAttribute}
             contributionKey={POLICYHOLDER_RIGHTS_PANEL}
           />
-        ) : null}
+        ) : null} */}
       </Fragment>
     );
   }

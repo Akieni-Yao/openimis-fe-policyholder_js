@@ -130,6 +130,7 @@ class ExceptionPolicyHolderSearcher extends Component {
       "policyHolder.tradeName",
       "exception.city",
       "exception.exceptionType",
+      "exception.month"
       // "exception.exceptionStatus",
     ];
     if (!pendingApprovalUser) {
@@ -203,6 +204,10 @@ class ExceptionPolicyHolderSearcher extends Component {
         !!policyHolderInsuree?.exceptionReason
           ? formatMessage(this.props.intl, "policyHolder.exceptionReason", policyHolderInsuree?.exceptionReason)
           : "",
+      (policyHolderInsuree) =>
+        !!policyHolderInsuree?.month
+          ? formatMessage(this.props.intl, "policyHolder.exceptionReason", policyHolderInsuree?.month)
+          : "",
       // (policyHolderInsuree) => {
       //   // !!policyHolderInsuree.status ? policyHolderInsuree.status : "",
       //   let color = "inherit";
@@ -233,7 +238,9 @@ class ExceptionPolicyHolderSearcher extends Component {
         return (
           <Fragment>
             <span style={{ color, fontWeight: "bold" }}>
-              {policyHolderInsuree.status}
+              {/* {policyHolderInsuree.status} */}
+              {formatMessage(this.props.intl, "policyHolder", `policyHolder.Exception Status.${policyHolderInsuree.status}`)}
+
             </span>
             {policyHolderInsuree.status === "REJECTED" && policyHolderInsuree.rejectionReason && (
               <Tooltip

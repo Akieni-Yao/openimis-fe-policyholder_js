@@ -62,9 +62,11 @@ export const RIGHT_PORTALPOLICYHOLDERUSER_DELETE = 154404
 export const RIGHT_PORTALPOLICYHOLDERUSER_REPLACE = 154406
 export const RIGHT_PAYMENT_SEARCH = 101401
 export const RIGHT_POLICYHOLDERCONTRACT_SEARCH = 152101
-export const INSUREE_STATUS="PRE_REGISTERED"
+export const INSUREE_STATUS = "PRE_REGISTERED"
 
 export const RIGHT_PAYMENT_EDIT = 101403
-export const EXCEPTION_REASON = ["not_able_to_pay","death_of_head_insuree"]
-export const EXCEPTION_STATUS=["Pending","Ongoing","Completed"]
-export const exception_month = [3,6]
+export const EXCEPTION_REASON = ["not_able_to_pay", "death_of_head_insuree"]
+export const INSUREE_EXCEPTION_REASON = ["Loss_of_Job", "death_of_head_insuree"]
+
+export const EXCEPTION_STATUS = ["PENDING", "APPROVED", "REJECTED"]
+export const exception_month = [3, 6]
