@@ -25,6 +25,7 @@ export const STARTS_WITH_LOOKUP = "Istartswith"
 export const DEFAULT_PAGE_SIZE = 10
 export const ROWS_PER_PAGE_OPTIONS = [10, 20, 50, 100]
 export const POLICYHOLDERINSUREE_TAB_VALUE = "policyHolderInsureesTab"
+export const EXCEPTION_POLICYHOLDER_TAB_VALUE = "exceptionPolicyHolderTab"
 export const POLICYHOLDERCONTRIBUTIONPLANBUNDLE_TAB_VALUE = "policyHolderContributionPlanBundlesTab"
 export const POLICYHOLDERUSER_TAB_VALUE = "policyHolderUsersTab"
 export const MAX_CODE_LENGTH = 32
@@ -61,6 +62,11 @@ export const RIGHT_PORTALPOLICYHOLDERUSER_DELETE = 154404
 export const RIGHT_PORTALPOLICYHOLDERUSER_REPLACE = 154406
 export const RIGHT_PAYMENT_SEARCH = 101401
 export const RIGHT_POLICYHOLDERCONTRACT_SEARCH = 152101
-export const INSUREE_STATUS="PRE_REGISTERED"
+export const INSUREE_STATUS = "PRE_REGISTERED"
 
 export const RIGHT_PAYMENT_EDIT = 101403
+export const EXCEPTION_REASON = ["not_able_to_pay", "death_of_head_insuree"]
+export const INSUREE_EXCEPTION_REASON = ["Loss_of_Job", "death_of_head_insuree"]
+
+export const EXCEPTION_STATUS = ["PENDING", "APPROVED", "REJECTED"]
+export const exception_month = [3, 6]
