@@ -162,7 +162,6 @@ class CreateExceptionDialog extends Component {
     const { intl, classes, open, policyHolderInsuree, handleClose } =
       this.props;
     const { exceptionReason } = this.state.jsonData;
-    // console.log("policyHolderInsuree", policyHolderInsuree);
     return (
       <Fragment>
 
@@ -203,20 +202,16 @@ class CreateExceptionDialog extends Component {
                   readOnly={true}
                 // onChange={(event) => this.updateAttribute("exceptionMonth", event.target.value)}
                 />
-                {/* <ConstantBasedPicker
-                  module="policyHolder"
-                  label="exception.exceptionMonth"
-                  value={
-                    !!this.state.jsonData.exceptionMonth && this.state.jsonData.exceptionMonth
-                  }
-                  onChange={(value) =>
-                    this.updateAttribute("exceptionMonth", value)
-                  }
-                  // constants={exception_month}
-                  constants={this.getExceptionMonthOptions(exceptionReason)}
-                  withNull
-                /> */}
               </Grid>
+              {this.state.jsonData.exceptionMonth == 6 ? <Grid item className={classes.item}>
+                <PublishedComponent
+                  pubRef="insuree.RequestedByPicker"
+                  value={!!this.state.jsonData.secondGuardian && this.state.jsonData.secondGuardian}
+                  onChange={(v) => this.updateAttribute("secondGuardian", v)}
+                  uuid={this.state.jsonData.insuree?.family?.uuid}
+                />
+              </Grid> : ""}
+
             </Grid>
           </DialogContent>
           <DialogActions>
