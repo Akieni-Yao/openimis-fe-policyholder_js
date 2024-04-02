@@ -391,7 +391,7 @@ class ExceptionInsureeSearcher extends Component {
       onSave,
       pendingApprovalUser,
     } = this.props;
-    console.log("policyHolderInsurees", policyHolderInsurees)
+
     let actions = [];
     if (!pendingApprovalUser) {
       actions.push({

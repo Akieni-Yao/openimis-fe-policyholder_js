@@ -28,6 +28,11 @@ import CommonSnackbar from "../components/CommonSnackbar";
 
 const styles = (theme) => ({
   item: theme.paper.item,
+  errorMessage: {
+    color: 'red',
+    marginTop: '5px',
+    marginLeft: "9px" // Adjust the spacing as needed
+  },
 });
 
 class CreateExceptionDialog extends Component {
@@ -45,7 +50,7 @@ class CreateExceptionDialog extends Component {
       snackbar: false,
       severity: null,
       snackbarMsg: null,
-      camuCode: null
+      camuCode: null,
     };
   }
 
@@ -137,14 +142,11 @@ class CreateExceptionDialog extends Component {
   };
   canSave = () => {
     const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
+    const isValid = jsonData.insuree?.status !== "END_OF_LIFE" || jsonData.exceptionMonth !== 6;
     return (
       !!jsonData.insuree && jsonData.insuree &&
-      !!jsonData.exceptionMonth && jsonData.exceptionMonth
-      //  &&
-      // !!policyHolderInsuree.insuree &&
-      // !!policyHolderInsuree.contributionPlanBundle &&
-      // !!policyHolderInsuree.dateValidFrom &&
-      // !!jsonExtValid
+      !!jsonData.exceptionMonth && jsonData.exceptionMonth &&
+      isValid
     );
   };
   getExceptionMonthOptions = (exceptionReason) => {
@@ -162,7 +164,6 @@ class CreateExceptionDialog extends Component {
     const { intl, classes, open, policyHolderInsuree, handleClose } =
       this.props;
     const { exceptionReason } = this.state.jsonData;
-    // console.log("policyHolderInsuree", policyHolderInsuree);
     return (
       <Fragment>
 
@@ -182,6 +183,12 @@ class CreateExceptionDialog extends Component {
                   onChange={(v) => this.updateAttribute("insuree", v)}
                 />
               </Grid>
+              {this?.state?.jsonData?.insuree?.status == "END_OF_LIFE" && this.state.jsonData.exceptionMonth == 6 && (
+                <span className={classes.errorMessage} style={{ fontSize: "12px" }}><FormattedMessage
+                  module="policyholder"
+                  id="policyholder.error"
+                /></span>
+              )}
               <Grid item className={classes.item}>
                 <PublishedComponent
                   pubRef="policyHolder.InsureeExceptionRegion"
@@ -203,20 +210,16 @@ class CreateExceptionDialog extends Component {
                   readOnly={true}
                 // onChange={(event) => this.updateAttribute("exceptionMonth", event.target.value)}
                 />
-                {/* <ConstantBasedPicker
-                  module="policyHolder"
-                  label="exception.exceptionMonth"
-                  value={
-                    !!this.state.jsonData.exceptionMonth && this.state.jsonData.exceptionMonth
-                  }
-                  onChange={(value) =>
-                    this.updateAttribute("exceptionMonth", value)
-                  }
-                  // constants={exception_month}
-                  constants={this.getExceptionMonthOptions(exceptionReason)}
-                  withNull
-                /> */}
               </Grid>
+              {this.state.jsonData.exceptionMonth == 6 ? <Grid item className={classes.item}>
+                <PublishedComponent
+                  pubRef="insuree.RequestedByPicker"
+                  value={!!this.state.jsonData.secondGuardian && this.state.jsonData.secondGuardian}
+                  onChange={(v) => this.updateAttribute("secondGuardian", v)}
+                  uuid={this.state.jsonData.insuree?.family?.uuid}
+                />
+              </Grid> : ""}
+
             </Grid>
           </DialogContent>
           <DialogActions>
