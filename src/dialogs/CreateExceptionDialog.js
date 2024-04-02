@@ -28,6 +28,11 @@ import CommonSnackbar from "../components/CommonSnackbar";
 
 const styles = (theme) => ({
   item: theme.paper.item,
+  errorMessage: {
+    color: 'red',
+    marginTop: '5px',
+    marginLeft: "9px" // Adjust the spacing as needed
+  },
 });
 
 class CreateExceptionDialog extends Component {
@@ -45,7 +50,7 @@ class CreateExceptionDialog extends Component {
       snackbar: false,
       severity: null,
       snackbarMsg: null,
-      camuCode: null
+      camuCode: null,
     };
   }
 
@@ -137,14 +142,11 @@ class CreateExceptionDialog extends Component {
   };
   canSave = () => {
     const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
+    const isValid = jsonData.insuree?.status !== "END_OF_LIFE" || jsonData.exceptionMonth !== 6;
     return (
       !!jsonData.insuree && jsonData.insuree &&
-      !!jsonData.exceptionMonth && jsonData.exceptionMonth
-      //  &&
-      // !!policyHolderInsuree.insuree &&
-      // !!policyHolderInsuree.contributionPlanBundle &&
-      // !!policyHolderInsuree.dateValidFrom &&
-      // !!jsonExtValid
+      !!jsonData.exceptionMonth && jsonData.exceptionMonth &&
+      isValid
     );
   };
   getExceptionMonthOptions = (exceptionReason) => {
@@ -181,6 +183,12 @@ class CreateExceptionDialog extends Component {
                   onChange={(v) => this.updateAttribute("insuree", v)}
                 />
               </Grid>
+              {this?.state?.jsonData?.insuree?.status == "END_OF_LIFE" && this.state.jsonData.exceptionMonth == 6 && (
+                <span className={classes.errorMessage} style={{ fontSize: "12px" }}><FormattedMessage
+                  module="policyholder"
+                  id="policyholder.error"
+                /></span>
+              )}
               <Grid item className={classes.item}>
                 <PublishedComponent
                   pubRef="policyHolder.InsureeExceptionRegion"
