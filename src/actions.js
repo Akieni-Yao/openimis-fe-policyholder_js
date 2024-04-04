@@ -964,14 +964,14 @@ export const havingPAymentApprove = (uuid) => {
   return graphql(payload, "HAVING_APPROVER");
 };
 export function createException(mm, jsonData) {
-  // debugger;
-  // console.log("jsonData", jsonData)
+  const raisedById = jsonData?.exceptionMonth == 6 ? `raisedById: ${decodeId(jsonData?.secondGuardian?.id)}` : '';
   let mutation = `mutation CreateInsureeException {
     createInsureeException(
         inputData: {
             insureeId: ${decodeId(jsonData?.insuree?.id)}
             exceptionReason:"${jsonData?.exceptionReason}"
             exceptionMonths: ${jsonData?.exceptionMonth}
+            ${raisedById}
         }
     ) {
         insureeException {
