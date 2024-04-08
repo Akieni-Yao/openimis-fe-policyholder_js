@@ -50,12 +50,8 @@ class ExceptionInsureesFormPage extends Component {
             this.titleParams(policyHolder)
           ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
         );
-        console.log("respoupd", response);
         if (!response.error) {
-          console.log(
-            "Got code",
-            response?.policyHolder[0]?.policyholder?.code
-          );
+        
           this.setState({ snackbar: true });
           this.setState({
             resCode: response?.policyHolder[0]?.policyholder?.code,
@@ -79,10 +75,7 @@ class ExceptionInsureesFormPage extends Component {
           ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
         );
         if (!response.error) {
-          console.log(
-            "Got code",
-            response?.policyHolder[0]?.policyholder?.code
-          );
+         
           this.setState({ snackbar: true });
           this.setState({
             resCode: response?.policyHolder[0]?.policyholder?.code,
