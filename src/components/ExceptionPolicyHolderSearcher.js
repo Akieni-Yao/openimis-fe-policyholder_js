@@ -229,7 +229,7 @@ class ExceptionPolicyHolderSearcher extends Component {
       result.push((policyHolderInsuree) => {
         let color = "inherit"; // Default color
         if (policyHolderInsuree.status === "APPROVED") {
-          color = "green"; // Green color for APPROVED status
+          color = "green"; 
         } else if (policyHolderInsuree.status === "REJECTED") {
           color = "red"; // Red color for REJECTED status
         } else if (policyHolderInsuree.status === "PENDING") {
@@ -343,7 +343,6 @@ class ExceptionPolicyHolderSearcher extends Component {
       },
       jsonExtValid: true,
     }));
-    // console.log("hello");
   };
 
   handleClose = () => {
@@ -375,7 +374,6 @@ class ExceptionPolicyHolderSearcher extends Component {
       onSave,
       pendingApprovalUser
     } = this.props;
-    // console.log("policyHolderInsurees", policyHolderInsurees)
     let actions = [];
     if (!pendingApprovalUser) {
       actions.push({
@@ -431,22 +429,14 @@ class ExceptionPolicyHolderSearcher extends Component {
             </Typography>
           </Box>
         )}
-        {/* {(rights.includes(RIGHT_POLICYHOLDERINSUREE_CREATE) ||
-              rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_CREATE)) && ( */}
+       
         <Grid
           container
           justifyContent="flex-end"
           alignItems="center"
           spacing={1}
         >
-          {/* <Grid item>
-            <Typography>
-              <FormattedMessage
-                module="policyHolder"
-                id="policyHolderInsuree.createPolicyHolderInsuree"
-              />
-            </Typography>
-          </Grid> */}
+        
           <Grid item>
             <CreateExceptionPolicyHolderDialog
               policyHolder={policyHolder}

@@ -191,5 +191,6 @@
     "policyHolder.CreatePolicyHolder.Payment already done for all contracts.": "Payment already done for all contracts.",
     "policyHolder.InsureeExceptionError.Insuree is not active or approved.": "Insuree is not active or approved.",
     "policyHolder.ExceptionMonth": "Exception Month",
-    "exception.month":"Exception Month"
+    "exception.month":"Exception Month",
+    "policyholder.policyholder.error":"Inusree Status is already End of Life"
 }
