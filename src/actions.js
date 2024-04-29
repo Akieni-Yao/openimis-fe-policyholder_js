@@ -311,7 +311,6 @@ function formatPolicyHolderGQL(policyHolder) {
       )}`
       : ""
     }
-    formIms: true 
     `;
 }
 
