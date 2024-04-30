@@ -110,6 +110,7 @@ class CreatePolicyHolderUserDialog extends Component {
                                     value={!!policyHolderUser.user && policyHolderUser.user}
                                     onChange={(v) => this.updateAttribute("user", v)}
                                     required
+                                    check={"check"}
                                 />
                             </Grid>
                             <Grid item className={classes.item}>
