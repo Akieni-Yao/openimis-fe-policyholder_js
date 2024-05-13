@@ -12,10 +12,11 @@ import ReceiptIcon from "@material-ui/icons/Receipt";
 import { RIGHT_POLICYHOLDERCONTRACT_SEARCH } from "../constants";
 import { ListAlt } from "@material-ui/icons";
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
-
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 const INSUREE_MAIN_MENU_CONTRIBUTION_KEY = "insuree.MainMenu";
 const ROUTE_CONTRACTS = "contracts";
 const ROUTE_DECLARATION = "declaration";
+const ROUTE_POLICYHOLDER_REQUEST = "policyholderRequest";
 const ROUTE_CONTRACT = "contracts/contract";
 const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
 class PolicyHolderMenu extends Component {
@@ -49,7 +50,13 @@ class PolicyHolderMenu extends Component {
         route: "/" + ROUTE_DECLARATION,
       });
     }
-   
+    if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)) {
+      entries.push({
+        text: <FormattedMessage module="policyHolder" id="New PolicyHolder Requests" />,
+        icon: <AssignmentIndIcon />,
+        route: "/" + ROUTE_POLICYHOLDER_REQUEST,
+      });
+    }
     if (!entries.length) return null;
     return (
       <MainMenuContribution

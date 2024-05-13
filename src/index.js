@@ -60,6 +60,10 @@ import ExceptionForm from "./components/ExceptionForm";
 import ExceptionInsureesFormPage from "./pages/ExceptionInsureesFormPage";
 import ExceptionPolicyHolderFormPage from "./pages/ExceptionPolicyHolderFormPage ";
 import ExceptionDocuments from "./components/ExceptionDocuments";
+import PolicyHolderRequestSeacrher from "./components/PolicyHolderRequestSeacrher";
+import RequestStatusPicker from "./pickers/RequestStatusPicker";
+import PolicyholderApprovalForm from "./components/PolicyholderApprovalForm";
+import PolicyHolderDocuments from "./components/PolicyHolderDocuments";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
@@ -70,7 +74,8 @@ const EXCEPTION_PANELS = "exception";
 const EXCEPTION_PANELS_POLICYHOLDER = "exception/policyholder";
 const EXCEPTION__PENDING_APPROVAL_PANELS = "exception/pendingapproval";
 const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS = "exception/pendingapproval/policyholder";
-
+const POLICYHOLDER_APPROVAL = "policyholder/approval"
+const ROUTE_POLICYHOLDER_REQUEST = "policyholderRequest";
 const DEFAULT_CONFIG = {
   translations: [{ key: "en", messages: messages_en }],
   reducers: [{ key: "policyHolder", reducer }],
@@ -85,6 +90,7 @@ const DEFAULT_CONFIG = {
     { key: "policyHolder.InsureeExceptionRegion", ref: InsureeExceptionRegion },
 
     { key: "policyHolder.ExceptionStatusPicker", ref: ExceptionStatusPicker },
+    { key: "policyHolder.RequestStatusPicker", ref: RequestStatusPicker },
     { key: "policyHolder.camuCodePicker", ref: CamuCodePicker },
     {
       key: "policyHolder.PolicyHolderPicker.projection",
@@ -120,6 +126,10 @@ const DEFAULT_CONFIG = {
       key: "policyHolder.route.exception.policyholder",
       ref: EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS,
     },
+    {
+      key: "policyHolder.route.policyholder.approval",
+      ref: POLICYHOLDER_APPROVAL,
+    },
   ],
   "core.Router": [
     { path: ROUTE_POLICY_HOLDERS, component: PolicyHoldersPage },
@@ -129,6 +139,7 @@ const DEFAULT_CONFIG = {
     },
     { path: ROUTE_POLICY_HOLDER_USERS, component: PolicyHolderUsersPage },
     { path: ROUTE_DECLARATION, component: DeclarationPage },
+    { path: ROUTE_POLICYHOLDER_REQUEST, component: PolicyHolderRequestSeacrher },
     { path: ROUTE_PAYMENT_FOR_APPROVAL, component: PaymentForApproval },
     { path: EXCEPTION_PANELS, component: ExceptionTabPanel },
     { path: EXCEPTION_PANELS_POLICYHOLDER, component: ExceptionTabPanel },
@@ -143,6 +154,10 @@ const DEFAULT_CONFIG = {
     {
       path: EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS + "/:policyholder_id?",
       component: ExceptionPolicyHolderFormPage,
+    },
+    {
+      path: POLICYHOLDER_APPROVAL + "/:policyholder_id?",
+      component: PolicyholderApprovalForm,
     },
   ],
   "policyHolder.policyHolder.documents": [ExceptionDocuments],
@@ -192,6 +207,7 @@ const DEFAULT_CONFIG = {
     ExceptionInsureeTabPanel,
     ExceptionPolicyholderTabPanel,
   ],
+  "policyholder.policyholder.documents":[PolicyHolderDocuments],
   "invoice.SubjectAndThirdpartyPicker": [
     {
       type: "policy holder",
