@@ -112,6 +112,18 @@ class PolicyHolderRequestSeacrher extends Component {
             onSave,
             predefinedPolicyHolderId = null,
         } = this.props;
+        const getStatusStyle = (status) => {
+            switch (status) {
+                case "Approved":
+                    return { color: 'green', fontWeight: 'bold' };
+                case "Rejected":
+                    return { color: 'red', fontWeight: 'bold' };
+                case "Rework":
+                    return { color: 'orange', fontWeight: 'bold' };
+                default:
+                    return { fontWeight: 'bold' };
+            }
+        };
         const result = [
             (policyHolderUser) =>
                 !!policyHolderUser.requestNumber ? policyHolderUser.requestNumber : "",
@@ -127,8 +139,11 @@ class PolicyHolderRequestSeacrher extends Component {
                 !!policyHolderUser.phone ? policyHolderUser.phone : "",
             (policyHolderUser) =>
                 !!policyHolderUser.email ? policyHolderUser.email : "",
-            (policyHolderUser) =>
-                !!policyHolderUser.email ? policyHolderUser.status : "",
+            (policyHolderUser) => (
+                <span style={getStatusStyle(policyHolderUser.status)}>
+                    {policyHolderUser.status}
+                </span>
+            ),
         ];
         return result;
     };

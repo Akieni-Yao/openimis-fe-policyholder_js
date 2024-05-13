@@ -237,8 +237,7 @@ class PolicyHolderApprovalForm extends Component {
     handleSnackbarClose = () => {
         this.setState({ snackbar: false });
     };
-    // titleParams = () =>
-    //     this.state.policyHolder && this.props.titleParams(this.state.policyHolder);
+    // titleParams = policyHolder => ({ label: !!policyHolder?.requestNumber ? policyHolder?.requestNumber : null });
     render() {
         const { intl, rights, back, save, policyHolderId, classes, policyHolder, approverData } = this.props;
         const { payment, newPayment, reset, payload, statusCheck, } = this.state;
@@ -255,7 +254,7 @@ class PolicyHolderApprovalForm extends Component {
                 />
                 <Form
                     module="policyHolder"
-                    // title="policyHolder.page.title"
+                    title={`Request No. ${policyHolder?.requestNumber ? policyHolder?.requestNumber : ""}`}
                     // titleParams={this.titleParams()}
                     edited={this.state.policyHolder}
                     back={back}
