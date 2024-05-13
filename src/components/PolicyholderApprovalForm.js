@@ -201,58 +201,39 @@ class PolicyHolderApprovalForm extends Component {
         }
     };
     _rework = async (paymentData) => {
-        // const response = await this.props.PolicyholderReworkAction("mm", paymentData);
+        const response = await this.props.PolicyholderReworkAction("mm", paymentData);
         this.handleReworkDialogClose();
-        // if (!!response?.payload?.data?.policyholderApproval?.success) {
-        //     // if (paymentData.status == 5) {
-        //     //     this.props.updateExternalDocuments(
-        //     //         this.props.modulesManager,
-        //     //         this.props.documentDetails,
-        //     //         paymentData?.requestNumber,
-        //     //         false
-        //     //     );
-        //     // }
-        //     this.setState({
-        //         snackbar: true,
-        //         severity: paymentData.status == 5 ? "success" : "error",
-        //         snackbarMsg:
-        //             paymentData.status == 5
-        //                 ? formatMessageWithValues(
-        //                     this.props.intl,
-        //                     "policyHolder",
-        //                     "snackbar.ReworkPortalapprove",
-        //                     {}
-        //                 )
-        //                 : formatMessageWithValues(
-        //                     this.props.intl,
-        //                     "policyHolder",
-        //                     "snackbar.ReworkPortalreject",
-        //                     {}
-        //                 ),
-        //     });
-        //     setTimeout(() => {
-        //         this.reload();
-        //     }, 3000);
-        // }
-
-        this.setState({
-            snackbar: true,
-            severity: paymentData.status == 5 ? "success" : "error",
-            snackbarMsg:
-                paymentData.status == 5
-                    ? formatMessageWithValues(
-                        this.props.intl,
-                        "policyHolder",
-                        "snackbar.ReworkPortalapprove",
-                        {}
-                    )
-                    : formatMessageWithValues(
-                        this.props.intl,
-                        "policyHolder",
-                        "snackbar.ReworkPortalreject",
-                        {}
-                    ),
-        });
+        if (!!response?.payload?.data?.policyholderApproval?.success) {
+            if (paymentData.status == 5) {
+                this.props.updateExternalDocuments(
+                    this.props.modulesManager,
+                    this.props.documentDetails,
+                    paymentData?.requestNumber,
+                    false
+                );
+            }
+            this.setState({
+                snackbar: true,
+                severity: paymentData.status == 5 ? "success" : "error",
+                snackbarMsg:
+                    paymentData.status == 5
+                        ? formatMessageWithValues(
+                            this.props.intl,
+                            "policyHolder",
+                            "snackbar.ReworkPortalapprove",
+                            {}
+                        )
+                        : formatMessageWithValues(
+                            this.props.intl,
+                            "policyHolder",
+                            "snackbar.ReworkPortalreject",
+                            {}
+                        ),
+            });
+            setTimeout(() => {
+                this.reload();
+            }, 3000);
+        }
     };
     handleDialogOpen = (insureeData) => {
         this.setState({ confirmDialog: true });
