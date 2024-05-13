@@ -318,7 +318,7 @@ function formatPolicyHolderInsureeGQL(
   policyHolderInsuree,
   isReplaceMutation = false
 ) {
-  // console.log("employerNumber", policyHolderInsuree);
+
   return `
         ${!!policyHolderInsuree.id
       ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
@@ -1236,6 +1236,44 @@ export function insureeExceptionApproval(mm, jsonData) {
   }
   );
 }
+export function PolicyholderApproval(mm, jsonData) {
+
+  let mutation = `mutation PolicyholderApproval  {
+    policyholderApproval( 
+      input: {
+      id: "${decodeId(jsonData?.id)}",requestNumber: "${jsonData?.requestNumber}",isRejected: ${jsonData?.status === -1 ? true : false} ,isApproved:${jsonData?.status === 5 ? true : false},isRework: false, 
+      ${!!jsonData?.rejectionReason ? `rejectionReason:${jsonData?.rejectionReason}` : ""}
+    }
+  ) {
+        success
+        message
+  
+    }
+  }`;
+  return graphql(
+    mutation, ["POLICYHOLDER_MUTATION_REQ", "INSUREE_REPORT_RESP", "POLICYHOLDER_MUTATION_ERR"], {
+  }
+  );
+}
+export function PolicyholderReworkAction(mm, jsonData) {
+  let mutation = `mutation PolicyholderApproval  {
+    policyholderApproval( 
+      input: {
+      id: "${decodeId(jsonData?.id)}",requestNumber: "${jsonData?.requestNumber}",isRejected:false ,isApproved:false,isRework:true, 
+      ${!!jsonData?.statusComment ? `reworkOption:"${jsonData?.statusComment}"` : ""}
+      ${!!jsonData?.reason ? `reworkComment:"${jsonData?.reason}"` : ""}
+    }
+  ) {
+        success
+        message
+  
+    }
+  }`;
+  return graphql(
+    mutation, ["POLICYHOLDER_MUTATION_REQ", "INSUREE_REPORT_RESP", "POLICYHOLDER_MUTATION_ERR"], {
+  }
+  );
+}
 export function policyHolderExceptionApproval(mm, jsonData) {
   // console.log("jsonDatas", jsonData)
   // console.log("jsonData", jsonData['0']['id'])
@@ -1300,5 +1338,81 @@ export function updateExternalDocuments(mm, docs, tempCamu, isApprove) {
       "INSUREE_MUTATION_ERR",
     ],
     "success message responses"
+  );
+}
+
+export function fetchPolicyholderRequest(mm, filters) {
+  return graphql(
+    `query PolicyHolder {
+      policyHolder(${filters.join(" ")}) {
+          totalCount
+          edgeCount
+          edges {
+              node {
+                  requestNumber
+                  tradeName
+                  contactName
+                  phone
+                  email
+                  status
+                  jsonExt
+                  id
+              }
+          }
+          pageInfo {
+              hasNextPage
+              hasPreviousPage
+              startCursor
+              endCursor
+          }
+      }
+  }`
+    ,
+    "POLICYHOLDER_REQUESTPOLICYHOLDER",
+  );
+}
+export function fetchPolicyholderRequestById(mm, uuid) {
+  return graphql(
+    `query PolicyHolder {
+      policyHolder(id:"${uuid}",isDeleted: false) {
+          totalCount
+          edgeCount
+          edges {
+              node {
+                          requestNumber
+                          id
+                          jsonExt
+                          code
+                          tradeName
+                          address
+                          phone
+                          fax
+                          email
+                          status
+                          contactName
+                          legalForm
+                          activityCode
+                          accountancyAccount
+                          bankAccount
+                          paymentReference
+                          isApproved
+                          requestNumber
+                          dateValidFrom
+                          locations{id, uuid, code, name, type, parent{id,uuid,code,name,type,parent{id,uuid,code,name,type,parent{id,uuid,code,name,type}}}}
+                          isSubmit
+              formPhPortal
+              isApproved
+              }
+          }
+          pageInfo {
+              hasNextPage
+              hasPreviousPage
+              startCursor
+              endCursor
+          }
+      }
+  }`
+    ,
+    "POLICYHOLDER_REQUESTPOLICYHOLDERBYID",
   );
 }

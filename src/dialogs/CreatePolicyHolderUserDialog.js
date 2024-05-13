@@ -23,6 +23,7 @@ import {
     ZERO,
     MAX_CLIENTMUTATIONLABEL_LENGTH
 } from "../constants";
+import PolicyHolderPickerNew from "../pickers/PolicyHolderPickerNew";
 
 const styles = theme => ({
     item: theme.paper.item,
@@ -40,9 +41,9 @@ class CreatePolicyHolderUserDialog extends Component {
             this.setState((state, props) => ({
                 policyHolderUser: {
                     ...state.policyHolderUser,
-                    policyHolder: props.policyHolders.find(
-                        policyHolder => policyHolder.id === props.predefinedPolicyHolderId
-                    )
+                    // policyHolder: props.policyHolders.find(
+                    //     policyHolder => policyHolder.id === props.predefinedPolicyHolderId
+                    // )
                 }
             }));
         }
@@ -82,6 +83,7 @@ class CreatePolicyHolderUserDialog extends Component {
     render() {
         const { intl, classes, tabView = false, predefinedPolicyHolderId = null } = this.props;
         const { open, policyHolderUser } = this.state;
+        console.log("policyHolderUser",policyHolderUser?.policyHolder)
         return (
             <Fragment>
                 {tabView ? (
@@ -110,10 +112,11 @@ class CreatePolicyHolderUserDialog extends Component {
                                     value={!!policyHolderUser.user && policyHolderUser.user}
                                     onChange={(v) => this.updateAttribute("user", v)}
                                     required
+                                    check={"check"}
                                 />
                             </Grid>
                             <Grid item className={classes.item}>
-                                <PolicyHolderPicker
+                                <PolicyHolderPickerNew
                                     module="policyHolder"
                                     withNull
                                     nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
