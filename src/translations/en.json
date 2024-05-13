@@ -184,10 +184,10 @@
     "policyHolder.button.reject": "Reject",
     "policyHolder.snackbar.approve": "Exception is approved successfully!",
     "policyHolder.snackbar.reject": "Exception is rejected successfully!",
-    "policyHolder.snackbar.Portalreject": "Portal request is approved successfully!",
-    "policyHolder.snackbar.Portalapprove": "Portal request is rejected successfully!",
+    "policyHolder.snackbar.Portalreject": "Portal request is rejected successfully!",
+    "policyHolder.snackbar.Portalapprove": "Portal request is approved successfully!",
     "policyHolder.snackbar.ReworkPortalreject": "Portal request is on hold and sent for rework",
-    "policyHolder.snackbar.ReworkPortalapprove": "Portal request is rejected successfully!",
+    "policyHolder.snackbar.ReworkPortalapprove": "Portal request is on hold and sent for rework successfully!",
     "policyHolder.dialog.rejectTitlePolicyholder": "Policyholder Exception Rejection",
     "policyHolder.dialog.approvedTitlePolicyholder": "Policyholder Exception Approval",
     "policyHolder.snackbar.create": "Exception is created successfully!",
@@ -197,7 +197,7 @@
     "policyholder.policyholder.SelectValidOption.null": " ",
     "policyholder.policyHolder.SelectValidOption.not_clear_docs": "Documents are not clear",
     "policyHolder.policyholder.SelectValidOption.not_valid": "Documents is not valid",
-    "payment.payment.rejectComment":"Please Select the comments",
+    "payment.payment.rejectComment": "Please Select the comments",
     "policyHolder.insureeexceptionReason": "Exception Reason",
     "policyHolder.CreatePolicyHolder.PolicyHolder's contribution plan periodicity should be 1.": "PolicyHolder's contribution plan periodicity should be 1",
     "policyHolder.CreatePolicyHolder.Payment already done for all contracts.": "Payment already done for all contracts.",
@@ -213,5 +213,5 @@
     "policyHolder.Request No.": "Request No.",
     "policyHolder.shortName": "Short Name",
     "policyholder.status": "Status",
-    "policyholder.rejectComment":"Reason For Rework"
+    "policyholder.rejectComment": "Reason For Rework"
 }

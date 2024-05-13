@@ -15,7 +15,8 @@ import {
     journalize,
     Helmet,
     FormattedMessage,
-    decodeId
+    decodeId,
+    CommonSnackbar
 } from "@openimis/fe-core";
 import {
     fetchPolicyholderRequestById,
@@ -25,26 +26,8 @@ import {
     PolicyholderReworkAction,
     PolicyholderApproval
 } from "../actions";
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Button,
-} from "@material-ui/core";
-
-import {
-    RIGHT_PORTALPOLICYHOLDER_SEARCH,
-    RIGHT_POLICYHOLDER_CREATE,
-    RIGHT_POLICYHOLDER_UPDATE,
-} from "../constants";
-import PolicyHolderGeneralInfoPanel from "./PolicyHolderGeneralInfoPanel";
-import Alert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
-import CommonSnackbar from "./CommonSnackbar";
+// import CommonSnackbar from "./CommonSnackbar";
 import PolicyHolderApprovalMasterPanel from "./PolicyHolderApprovalMasterPanel";
-import ApproveRejectDialog from "./ApproveRejectDialog";
 import PolicyholderPortalApproveReject from "./PolicyholderPortalApproveReject";
 import PolicyholderRework from "./PolicyholderRework";
 const styles = (theme) => ({
