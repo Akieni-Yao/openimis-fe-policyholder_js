@@ -91,6 +91,7 @@ class PolicyHolderApprovalForm extends Component {
             severity: null,
             snackbarMsg: null,
             reworkconfirmDialog: false,
+            payload: null
 
         };
     }

@@ -104,8 +104,8 @@ const PolicyholderRework = (props) => {
                 <DialogContent>
                     <Grid item className={classes.item}>
                         <ConstantBasedPicker
-                            module="payment"
-                            label="payment.rejectComment"
+                            module="policyHolder"
+                            label="policyHolder.rejectComment"
                             value={
                                 !!comment && !!comment?.statusComment
                                     ? comment?.statusComment

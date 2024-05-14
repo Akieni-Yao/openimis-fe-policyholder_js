@@ -20,6 +20,8 @@ import {
     MAX_CLIENTMUTATIONLABEL_LENGTH,
 } from "../constants";
 import PolicyHolderRequestSearcherPane from "./PolicyHolderRequestSearcherPane";
+import { Grid, IconButton, Tooltip } from "@material-ui/core";
+import HelpIcon from "@material-ui/icons/Help";
 
 const DEFAULT_ORDER_BY = "id";
 
@@ -104,6 +106,11 @@ class PolicyHolderRequestSeacrher extends Component {
         ];
         return result;
     };
+    rejectedCommentsTooltip = (rejectComment) => {
+        return (
+            formatMessage(this.props.intl, "policyHolder", `policyHolder.rejectComment.${rejectComment}`)
+        );
+    };
     itemFormatters = () => {
         const {
             intl,
@@ -139,11 +146,29 @@ class PolicyHolderRequestSeacrher extends Component {
                 !!policyHolderUser.phone ? policyHolderUser.phone : "",
             (policyHolderUser) =>
                 !!policyHolderUser.email ? policyHolderUser.email : "",
-            (policyHolderUser) => (
-                <span style={getStatusStyle(policyHolderUser.status)}>
-                    {policyHolderUser.status}
-                </span>
-            ),
+            (policyHolderUser) => {
+                if (policyHolderUser.status === "Rejected") {
+                    return (
+                        <Grid item>
+                            {policyHolderUser.status}
+                            {policyHolderUser?.rejectedReason && <Tooltip
+                                arrow
+                                title={this.rejectedCommentsTooltip(policyHolderUser?.rejectedReason)}
+                            >
+                                <IconButton>
+                                    <HelpIcon />
+                                </IconButton>
+                            </Tooltip>}
+                        </Grid>
+                    );
+                } else {
+                    return (
+                        <span style={getStatusStyle(policyHolderUser.status)}>
+                            {policyHolderUser.status}
+                        </span>
+                    );
+                }
+            },
         ];
         return result;
     };

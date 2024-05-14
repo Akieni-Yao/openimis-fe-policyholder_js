@@ -56,7 +56,6 @@ const PolicyholderPortalApproveReject = (props) => {
     modulesManager,
     intl,
   } = props;
-  console.log("payload",payload,"approveorreject",approveorreject)
   const approverData = useSelector((store) => store);
   const { formatMessage, formatMessageWithValues } = useTranslations(
     "policyHolder",
@@ -117,8 +116,8 @@ const PolicyholderPortalApproveReject = (props) => {
                 onChange={(e) => handleChange("statusComment", e)}
               /> */}
               <ConstantBasedPicker
-                module="payment"
-                label="payment.rejectComment"
+                module="policyHolder"
+                label="policyHolder.rejectComment"
                 value={
                   !!comment && !!comment?.statusComment
                     ? comment?.statusComment
@@ -133,8 +132,8 @@ const PolicyholderPortalApproveReject = (props) => {
             <Grid item xs={12} className={classes.item}>
               <Typography>
                 {formatMessageWithValues("policyHolder.portalApprovalMsg", {
-                  paymentCode: !!payload?.code
-                    ? payload?.code
+                  paymentCode: !!payload?.requestNumber
+                    ? payload?.requestNumber
                     : null,
                 })}
               </Typography>
