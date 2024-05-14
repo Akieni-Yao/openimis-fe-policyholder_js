@@ -147,23 +147,18 @@ class PolicyHolderRequestSeacrher extends Component {
             (policyHolderUser) =>
                 !!policyHolderUser.email ? policyHolderUser.email : "",
             (policyHolderUser) => {
-                if (policyHolderUser.status === "Rejected" || policyHolderUser.status === "Rework") {
+                if (policyHolderUser.status === "Rejected") {
                     return (
                         <Grid item>
                             {policyHolderUser.status}
-                            <Tooltip
-                                // placement="left"
+                            {policyHolderUser?.rejectedReason && <Tooltip
                                 arrow
-                                // classes={{
-                                //   tooltip: this.props.classes.tooltip,
-                                //   arrow: this.props.classes.customArrow
-                                // }}
                                 title={this.rejectedCommentsTooltip(policyHolderUser?.rejectedReason)}
                             >
                                 <IconButton>
                                     <HelpIcon />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip>}
                         </Grid>
                     );
                 } else {
