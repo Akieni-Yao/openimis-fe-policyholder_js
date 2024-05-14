@@ -130,6 +130,10 @@ const DEFAULT_CONFIG = {
       key: "policyHolder.route.policyholder.approval",
       ref: POLICYHOLDER_APPROVAL,
     },
+    {
+      key: "policyHolder.route.policyholderRequest",
+      ref: ROUTE_POLICYHOLDER_REQUEST,
+    },
   ],
   "core.Router": [
     { path: ROUTE_POLICY_HOLDERS, component: PolicyHoldersPage },

@@ -16,7 +16,8 @@ import {
     Helmet,
     FormattedMessage,
     decodeId,
-    CommonSnackbar
+    CommonSnackbar,
+    historyPush
 } from "@openimis/fe-core";
 import {
     fetchPolicyholderRequestById,
@@ -169,7 +170,7 @@ class PolicyHolderApprovalForm extends Component {
                         ? formatMessageWithValues(
                             this.props.intl,
                             "policyHolder",
-                            "snackbar.Portalreject",
+                            "snackbar.Portalapprove",
                             {}
                         )
                         : formatMessageWithValues(
@@ -238,6 +239,9 @@ class PolicyHolderApprovalForm extends Component {
     handleSnackbarClose = () => {
         this.setState({ snackbar: false });
     };
+    back = () => {
+        historyPush(this.props.modulesManager, this.props.history, "policyHolder.route.policyholderRequest")
+    }
     // titleParams = policyHolder => ({ label: !!policyHolder?.requestNumber ? policyHolder?.requestNumber : null });
     render() {
         const { intl, rights, back, save, policyHolderId, classes, policyHolder, approverData } = this.props;
@@ -245,20 +249,15 @@ class PolicyHolderApprovalForm extends Component {
         const exceptionApprove = !!approverData && policyHolder?.status === "Pending"
         return (
             <Fragment>
-                <Helmet
-                    title={formatMessageWithValues(
-                        this.props.intl,
-                        "policyHolder",
-                        "policyHolder.page.title",
-                        // this.titleParams()
-                    )}
-                />
+                {/* <Helmet
+                    title={`Request No. ${policyHolder?.requestNumber ? policyHolder?.requestNumber : ""}`}
+                /> */}
                 <Form
                     module="policyHolder"
                     title={`Request No. ${policyHolder?.requestNumber ? policyHolder?.requestNumber : ""}`}
                     // titleParams={this.titleParams()}
                     edited={this.state.policyHolder}
-                    back={back}
+                    back={this.back}
                     onEditedChanged={this.onEditedChanged}
                     HeadPanel={PolicyHolderApprovalMasterPanel}
                     printButton={this.printReport}
