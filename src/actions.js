@@ -1237,12 +1237,11 @@ export function insureeExceptionApproval(mm, jsonData) {
   );
 }
 export function PolicyholderApproval(mm, jsonData) {
-
   let mutation = `mutation PolicyholderApproval  {
     policyholderApproval( 
       input: {
       id: "${decodeId(jsonData?.id)}",requestNumber: "${jsonData?.requestNumber}",isRejected: ${jsonData?.status === -1 ? true : false} ,isApproved:${jsonData?.status === 5 ? true : false},isRework: false, 
-      ${!!jsonData?.rejectionReason ? `rejectionReason:${jsonData?.rejectionReason}` : ""}
+      ${!!jsonData?.statusComment ? `rejectedReason:"${jsonData?.statusComment}"` : ""}
     }
   ) {
         success
@@ -1357,6 +1356,7 @@ export function fetchPolicyholderRequest(mm, filters) {
                   status
                   jsonExt
                   id
+                  rejectedReason
               }
           }
           pageInfo {

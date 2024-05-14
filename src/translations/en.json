@@ -191,8 +191,6 @@
     "policyHolder.dialog.rejectTitlePolicyholder": "Policyholder Exception Rejection",
     "policyHolder.dialog.approvedTitlePolicyholder": "Policyholder Exception Approval",
     "policyHolder.snackbar.create": "Exception is created successfully!",
-    "policyHolder.policyHolder.rejectComment.not_clear_docs": "Documents are not clear",
-    "policyHolder.policyHolder.rejectComment.not_valid": "Documents is not valid",
     "policyholder.policyholder.SelectValidOption": "Select Valid Option",
     "policyholder.policyholder.SelectValidOption.null": " ",
     "policyholder.policyHolder.SelectValidOption.not_clear_docs": "Documents are not clear",
@@ -213,5 +211,9 @@
     "policyHolder.Request No.": "Request No.",
     "policyHolder.shortName": "Short Name",
     "policyholder.status": "Status",
-    "policyholder.rejectComment": "Reason For Rework"
+    "policyholder.rejectComment": "Reason For Rework",
+    "policyHolder.policyHolder.rejectComment":"Select Vaild Reason",
+    "policyHolder.policyHolder.rejectComment.null": " ",
+    "policyHolder.policyHolder.rejectComment.not_clear_docs": "Documents are not clear",
+    "policyHolder.policyHolder.rejectComment.not_valid": "Documents is not valid"
 }

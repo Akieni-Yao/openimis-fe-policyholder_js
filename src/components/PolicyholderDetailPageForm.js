@@ -218,7 +218,6 @@ class PolicyholderDetailPageForm extends FormPanel {
     console.log("edited", edited)
     const jsonExt = !!edited.jsonExt ? JSON.parse(edited.jsonExt) : ""
     const bankAccount = !!edited.bankAccount ? JSON.parse(edited.bankAccount) : "";
-    console.log("bankAccount", bankAccount?.bankAccount)
     const bankName = !!bankAccount?.bankAccount ? bankAccount?.bankAccount.bank : ""
     const contactName = !!edited?.contactName ? JSON.parse(edited?.contactName) : ""
     const address = !!edited?.address ? JSON.parse(edited.address) : ""
