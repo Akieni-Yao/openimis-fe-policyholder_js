@@ -90,7 +90,7 @@ const PolicyholderRework = (props) => {
             <Dialog open={isOpen} onClose={() => onClose()} maxWidth="xs" fullWidth>
                 <DialogTitle style={{ fontWeight: 600 }}>
                     {statusCheck == "5"
-                        && formatMessage("Request Missing Information")
+                        && formatMessage("dialog.RequestMissingInformation")
                     }
                     <IconButton
                         edge="end"
@@ -149,7 +149,7 @@ const PolicyholderRework = (props) => {
                         }
                     >
                         {statusCheck == "5"
-                            ? formatMessage("Send Request")
+                            ? formatMessage("button.SendRequest")
                             : formatMessage("button.reject")}
                     </Button>
                 </DialogActions>

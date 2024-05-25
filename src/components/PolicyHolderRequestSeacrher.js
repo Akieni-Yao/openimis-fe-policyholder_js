@@ -150,7 +150,8 @@ class PolicyHolderRequestSeacrher extends Component {
                 if (policyHolderUser.status === "Rejected") {
                     return (
                         <Grid item>
-                            {policyHolderUser.status}
+                            {/* {policyHolderUser.status} */}
+                            {formatMessage(this.props.intl, "policyHolder", `policyHolder.requeststatus.${policyHolderUser.status}`)}
                             {policyHolderUser?.rejectedReason && <Tooltip
                                 arrow
                                 title={this.rejectedCommentsTooltip(policyHolderUser?.rejectedReason)}
@@ -164,7 +165,9 @@ class PolicyHolderRequestSeacrher extends Component {
                 } else {
                     return (
                         <span style={getStatusStyle(policyHolderUser.status)}>
-                            {policyHolderUser.status}
+                            {/* {formatMessage("policyHolder.Request Status".policyHolderUser.status)} */}
+                            {formatMessage(this.props.intl, "policyHolder", `policyHolder.requeststatus.${policyHolderUser.status}`)}
+
                         </span>
                     );
                 }

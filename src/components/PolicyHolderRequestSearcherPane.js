@@ -133,7 +133,7 @@ class PolicyHolderRequestSearcherPane extends Component {
                 <Grid item xs={3} className={classes.item}>
                     <TextInput
                         module="policyHolder"
-                        label="contact Name"
+                        label="policyHolder.contactName"
                         value={!!this._filterValue("contactName") ? this._filterValue("contactName") : ""}
                         onChange={v => this._onChangeOtherFilter('contactName', v)}
                     />
@@ -141,7 +141,7 @@ class PolicyHolderRequestSearcherPane extends Component {
                 <Grid item xs={3} className={classes.item}>
                     <TextInput
                         module="policyHolder"
-                        label="Short Name"
+                        label="policyHolder.shortName"
                         value={!!this._filterValue("shortName") ? this._filterValue("shortName") : ""}
                         onChange={v => this._onChangeOtherFilter('shortName', v)}
                     />

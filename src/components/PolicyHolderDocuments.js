@@ -163,8 +163,8 @@ class PolicyHolderDocuments extends PagedDataHandler {
 
 
     headers = [
-        "documentsName",
-        "viewDocuments",
+        "policyholder.DocumentName",
+        "policyholder.ViewDocuments",
     ];
 
     sorter = (attr, asc = true) => [
