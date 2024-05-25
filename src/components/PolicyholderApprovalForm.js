@@ -254,7 +254,7 @@ class PolicyHolderApprovalForm extends Component {
                 /> */}
                 <Form
                     module="policyHolder"
-                    title={`Request No. ${policyHolder?.requestNumber ? policyHolder?.requestNumber : ""}`}
+                    title={`N° de la demande. ${policyHolder?.requestNumber ? policyHolder?.requestNumber : ""}`}
                     // titleParams={this.titleParams()}
                     edited={this.state.policyHolder}
                     back={this.back}

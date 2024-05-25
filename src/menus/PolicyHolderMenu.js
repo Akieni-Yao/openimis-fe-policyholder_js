@@ -52,7 +52,7 @@ class PolicyHolderMenu extends Component {
     }
     if (rights.includes(RIGHT_POLICYHOLDERCONTRACT_SEARCH)) {
       entries.push({
-        text: <FormattedMessage module="policyHolder" id="New PolicyHolder Requests" />,
+        text: <FormattedMessage module="policyHolder" id="menu.newPolicyHolder" />,
         icon: <AssignmentIndIcon />,
         route: "/" + ROUTE_POLICYHOLDER_REQUEST,
       });

@@ -215,5 +215,15 @@
     "policyHolder.policyHolder.rejectComment":"Select Vaild Reason",
     "policyHolder.policyHolder.rejectComment.null": " ",
     "policyHolder.policyHolder.rejectComment.not_clear_docs": "Documents are not clear",
-    "policyHolder.policyHolder.rejectComment.not_valid": "Documents is not valid"
+    "policyHolder.policyHolder.rejectComment.not_valid": "Documents is not valid",
+    "policyHolder.policyHolder.requeststatus.Pending":"En attente",
+    "policyHolder.policyHolder.requeststatus.Approved":"Approved",
+    "policyHolder.policyHolder.requeststatus.Rejected":"Rejected",
+    "policyHolder.policyHolder.requeststatus.Rework":"Sent for Rework",
+    "policyHolder.policyHolder.requeststatus.Created":"Created",
+    "policyHolder.dialog.RequestMissingInformation":"Request Missing Information",
+    "policyHolder.button.SendRequest":"Send Request",
+    "policyholder.DocumentName":"Document Name",
+    "policyholder.ViewDocuments":"View Documents",
+    "menu.newPolicyHolder":"New PolicyHolder Requests"
 }
