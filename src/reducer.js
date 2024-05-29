@@ -447,7 +447,7 @@ function reducer(
         fetchingExceptionPolicyholderById: false,
         errorExceptionPolicyholderById: formatServerError(action.payload),
       };
-    case "INSUREE_DOCUMENTS_REQ":
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_REQ":
       return {
         ...state,
         fetchingDocuments: true,
@@ -455,7 +455,7 @@ function reducer(
         documentsData: null,
         errorDocument: null,
       };
-    case "INSUREE_DOCUMENTS_RESP":
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_RESP":
       return {
         ...state,
         fetchingDocuments: false,
@@ -463,7 +463,7 @@ function reducer(
         documentsData: action.payload.data.insureeDocuments,
         errorDocument: formatGraphQLError(action.payload),
       };
-    case "INSUREE_DOCUMENTS_ERR":
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_ERR":
       return {
         ...state,
         fetchingDocuments: false,

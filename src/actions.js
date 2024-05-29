@@ -1218,7 +1218,7 @@ export const fetchInsureeDocuments = (fosaCode) => {
       "tempCamu",
     ]
   );
-  return graphql(payload, "INSUREE_DOCUMENTS");
+  return graphql(payload, "INSUREE_POLICYHOLDER_DOCUMENTS");
 };
 export function insureeExceptionApproval(mm, jsonData) {
   // console.log("jsonDatas", jsonData)
