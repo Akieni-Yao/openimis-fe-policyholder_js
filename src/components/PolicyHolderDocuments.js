@@ -289,6 +289,7 @@ class PolicyHolderDocuments extends PagedDataHandler {
             documentDetails,
             dataFromAPI,
         } = this.props;
+        console.log("documentDetails", documentDetails)
         let actions =
             !!readOnly || !!checkingCanAddInsuree || !!errorCanAddInsuree
                 ? []
@@ -427,12 +428,11 @@ class PolicyHolderDocuments extends PagedDataHandler {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => (console.log("state",state?.policyHolder?.documentsData),{
     family: state,
-    fetchingDocuments: state.payment.fetchingDocuments,
-    errorDocuments: state.payment.errorDocuments,
-
-    documentDetails: state.payment.documentsData,
+    fetchingDocuments: state?.policyHolder?.fetchingDocuments,
+    errorDocuments: state?.policyHolder?.errorDocuments,
+    documentDetails: state?.policyHolder?.documentsData,
 });
 
 const mapDispatchToProps = (dispatch) => {
