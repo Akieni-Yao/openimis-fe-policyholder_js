@@ -110,6 +110,7 @@
     "policyHolder.CreatePolicyHolder.snackbar": "The registration has been successfully completed",
     "policyHolder.createdAt": "Created At",
     "policyHolder.policyHolderInsuree.import": "Import from Excel",
+    "policyHolder.policyHolder.import": "Import from Excel",
     "policyHolder.tradeNameValidation.regexMsg.en": "Invalid Trade Name",
     "policyHolder.mainActivityValidation.regexMsg.en": "Invalid Main Activity",
     "policyHolder.contactNameValidation.regexMsg.en": "Invalid Contact Name",
