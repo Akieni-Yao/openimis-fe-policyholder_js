@@ -108,6 +108,20 @@ function reducer(
     errorPolicyHolderUsersCode: null,
     fetchedPolicyHolderUsersCode: false,
     policyHolderUsersCode: [],
+
+    fetchingRequestPolicyholder: false,
+    errorRequestPolicyholder: null,
+    fetchedRequestPolicyholder: false,
+    RequestPolicyholder: [],
+    RequestPolicyholderPageInfo: {},
+    RequestPolicyholderTotalCount: 0,
+
+    fetchingRequestPolicyholderById: false,
+    errorRequestPolicyholderById: null,
+    fetchedRequestPolicyholderById: false,
+    RequestPolicyholderById: [],
+    RequestPolicyholderPageInfoById: {},
+    RequestPolicyholderTotalCountById: 0,
   },
   action
 ) {
@@ -330,6 +344,76 @@ function reducer(
         fetchingExceptionPolicyholder: false,
         errorExceptionPolicyholder: formatServerError(action.payload),
       };
+
+    case "POLICYHOLDER_REQUESTPOLICYHOLDER_REQ":
+      return {
+        ...state,
+        fetchingRequestPolicyholder: true,
+        fetchedRequestPolicyholder: false,
+        RequestPolicyholder: [],
+        RequestPolicyholderPageInfo: {},
+        RequestPolicyholderTotalCount: 0,
+        errorRequestPolicyholder: null,
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDER_RESP":
+      return {
+        ...state,
+        fetchingRequestPolicyholder: false,
+        fetchedRequestPolicyholder: true,
+        RequestPolicyholder: parseData(
+          action.payload.data.policyHolder
+        ),
+        RequestPolicyholderPageInfo: pageInfo(
+          action.payload.data.policyHolder
+        ),
+        RequestPolicyholderTotalCount: !!action.payload.data
+          .policyHolder
+          ? action.payload.data.policyHolder.totalCount
+          : null,
+        errorRequestPolicyholder: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDER_ERR":
+      return {
+        ...state,
+        fetchingRequestPolicyholder: false,
+        errorRequestPolicyholder: formatServerError(action.payload),
+      };
+
+
+    case "POLICYHOLDER_REQUESTPOLICYHOLDERBYID_REQ":
+      return {
+        ...state,
+        fetchingRequestPolicyholderById: true,
+        fetchedRequestPolicyholderById: false,
+        RequestPolicyholderById: [],
+        RequestPolicyholderPageInfoById: {},
+        RequestPolicyholderTotalCountById: 0,
+        errorRequestPolicyholderById: null,
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDERBYID_RESP":
+      return {
+        ...state,
+        fetchingRequestPolicyholderById: false,
+        fetchedRequestPolicyholderById: true,
+        RequestPolicyholderById: parseData(
+          action.payload.data.policyHolder
+        ),
+        RequestPolicyholderPageInfoById: pageInfo(
+          action.payload.data.policyHolder
+        ),
+        RequestPolicyholderTotalCountById: !!action.payload.data
+          .policyHolder
+          ? action.payload.data.policyHolder.totalCount
+          : null,
+        errorRequestPolicyholderById: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDERBYID_ERR":
+      return {
+        ...state,
+        fetchingRequestPolicyholderById: false,
+        errorRequestPolicyholderById: formatServerError(action.payload),
+      };
+
     case "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_BY_ID_REQ":
       return {
         ...state,
@@ -363,7 +447,7 @@ function reducer(
         fetchingExceptionPolicyholderById: false,
         errorExceptionPolicyholderById: formatServerError(action.payload),
       };
-    case "INSUREE_DOCUMENTS_REQ":
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_REQ":
       return {
         ...state,
         fetchingDocuments: true,
@@ -371,7 +455,7 @@ function reducer(
         documentsData: null,
         errorDocument: null,
       };
-    case "INSUREE_DOCUMENTS_RESP":
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_RESP":
       return {
         ...state,
         fetchingDocuments: false,
@@ -379,7 +463,7 @@ function reducer(
         documentsData: action.payload.data.insureeDocuments,
         errorDocument: formatGraphQLError(action.payload),
       };
-    case "INSUREE_DOCUMENTS_ERR":
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_ERR":
       return {
         ...state,
         fetchingDocuments: false,

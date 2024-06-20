@@ -609,7 +609,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       policyHolderId,
       approverData,
     } = this.props;
-    console.log("edited",edited)
     // const capitalizeWords = (inputString) => {
     //   let result = "";
 
@@ -807,13 +806,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.dateValidFrom
                   ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
-                      "YYYY-MM-DD"
-                    )
+                    "YYYY-MM-DD"
+                  )
                   : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={false}
-              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+            // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
 
@@ -972,7 +971,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="bank"
               nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-              value={!!edited.bankAccount ? edited.bankAccount.bank : ""}
+              value={!!edited.bankAccount ? parseInt(edited.bankAccount.bank) : ""}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bank: v } })
               }
@@ -987,7 +986,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.bankAccount?.bankCode
                   ? edited.bankAccount.bankCode
-                  : this.bankCode(this.state?.data?.bankAccount?.bank)
+                  : this.bankCode(parseInt(this.state?.data?.bankAccount?.bank))
               }
               error={this.regexError("bankCode", edited?.bankAccount?.bankCode)}
               onChange={(v) =>

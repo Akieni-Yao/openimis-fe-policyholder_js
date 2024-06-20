@@ -10,7 +10,8 @@ import {
     FormattedMessage,
     formatMessage,
     formatMessageWithValues,
-    PublishedComponent
+    PublishedComponent,
+    decodeId
 } from "@openimis/fe-core";
 import { IconButton, Grid, Tooltip } from "@material-ui/core";
 import PolicyHolderPicker from "../pickers/PolicyHolderPicker";
@@ -23,6 +24,7 @@ import {
     ZERO,
     MAX_CLIENTMUTATIONLABEL_LENGTH
 } from "../constants";
+import PolicyHolderPickerNew from "../pickers/PolicyHolderPickerNew";
 
 const styles = theme => ({
     item: theme.paper.item,
@@ -92,7 +94,7 @@ class UpdatePolicyHolderUserDialog extends Component {
     policyHolderLabel = (policyHolder) => `${policyHolder.code} - ${policyHolder.tradeName}`;
 
     render() {
-        const { intl, classes, disabled, isReplacing = false, isPolicyHolderPredefined = false } = this.props;
+        const { intl, classes, disabled, isReplacing = false, isPolicyHolderPredefined = false, policyHolders } = this.props;
         const { open, policyHolderUser } = this.state;
         return (
             <Fragment>
@@ -130,10 +132,11 @@ class UpdatePolicyHolderUserDialog extends Component {
                                     value={!!policyHolderUser.user && policyHolderUser.user}
                                     onChange={(v) => this.updateAttribute("user", v)}
                                     required
+                                    check={"check"}
                                 />
                             </Grid>
                             <Grid item className={classes.item}>
-                                <PolicyHolderPicker
+                                <PolicyHolderPickerNew
                                     module="policyHolder"
                                     withNull
                                     nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}

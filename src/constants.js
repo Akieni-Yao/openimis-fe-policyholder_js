@@ -69,4 +69,5 @@ export const EXCEPTION_REASON = ["not_able_to_pay", "death_of_head_insuree"]
 export const INSUREE_EXCEPTION_REASON = ["Loss_of_Job", "death_of_head_insuree"]
 
 export const EXCEPTION_STATUS = ["PENDING", "APPROVED", "REJECTED"]
+export const REQUEST_STATUS = ["Pending", "Approved", "Rejected","Rework"]
 export const exception_month = [3, 6]
