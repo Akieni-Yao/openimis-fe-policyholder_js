@@ -4,8 +4,9 @@ import Alert from "@material-ui/lab/Alert";
 import IconButton from "@material-ui/core/IconButton";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import CloseIcon from "@material-ui/icons/Close";
+import { formatMessage } from "@openimis/fe-core";
 
-const CommonSnackbar = ({ open, onClose, message, severity, copyText, backgroundColor }) => {
+const CommonSnackbar = ({ open, onClose, message, severity, copyText, backgroundColor,intl }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopyClick = useCallback(() => {
@@ -50,7 +51,8 @@ const CommonSnackbar = ({ open, onClose, message, severity, copyText, background
               {!!copyText ? <IconButton size="small" onClick={handleCopyClick} style={{ marginLeft: "4px" }} color="inherit">
                 <FileCopyIcon />
               </IconButton> : ""}
-              {isCopied ? "Copied!" : !!copyText ? "Copy" : ""}
+              {/* {isCopied ? "Copied!" : !!copyText ? "Copy" : ""} */}
+              {isCopied ? formatMessage(intl, "core", "common.Copied") : formatMessage(intl, "core", "common.Copy")}
             </div>
             <IconButton size="small" onClick={handleClose} style={{ marginLeft: "4px" }} color="inherit">
               <CloseIcon />

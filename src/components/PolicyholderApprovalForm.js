@@ -277,7 +277,7 @@ class PolicyHolderApprovalForm extends Component {
                         {}
                     )}
                     severity="success"
-                    copyText={this.props.resCode && this.props.resCode}
+                    // copyText={this.props.resCode && this.props.resCode}
                     backgroundColor="#00913E"
                 />
                 <PolicyholderPortalApproveReject

@@ -247,6 +247,7 @@ class CreateExceptionDialog extends Component {
           //   {}
           // )}
           message={this.state.snackbarMsg}
+          intl={intl}
           // severity="success"
           severity={this.state.severity} // Use the severity from state
           copyText={!!this.state.camuCode ? this.state.camuCode : ""}
