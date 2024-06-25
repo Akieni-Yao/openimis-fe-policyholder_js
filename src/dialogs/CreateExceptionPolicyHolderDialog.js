@@ -213,6 +213,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
             `CreatePolicyHolder.${this.state.snackbarMsg}`,
             {}
           )}
+          intl={intl}
           // message={this.state.snackbarMsg}
           severity="error"
           // copyText={!!this.state.camuCode ? this.state.camuCode : ""}

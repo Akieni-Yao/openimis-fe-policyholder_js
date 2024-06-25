@@ -279,6 +279,7 @@ class PolicyHolderApprovalForm extends Component {
                     severity="success"
                     // copyText={this.props.resCode && this.props.resCode}
                     backgroundColor="#00913E"
+                    intl={intl}
                 />
                 <PolicyholderPortalApproveReject
                     isOpen={this.state.confirmDialog}
@@ -301,6 +302,7 @@ class PolicyHolderApprovalForm extends Component {
                     onClose={this.handleSnackbarClose}
                     message={this.state.snackbarMsg}
                     severity={this.state.severity}
+                    intl={intl}
                 // copyText={this.props.resCode && this.props.resCode}
                 />
             </Fragment>
