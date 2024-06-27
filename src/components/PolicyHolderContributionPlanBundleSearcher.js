@@ -116,13 +116,13 @@ class PolicyHolderContributionPlanBundleSearcher extends Component {
       "policyHolder.dateValidTo",
     ];
     if (rights.includes(RIGHT_POLICYHOLDERCONTRIBUTIONPLANBUNDLE_REPLACE)) {
-      result.push("policyHolder.emptyLabel");
+      result.push("policyHolder.replace");
     }
     if (rights.includes(RIGHT_POLICYHOLDERCONTRIBUTIONPLANBUNDLE_UPDATE)) {
-      result.push("policyHolder.emptyLabel");
+      result.push("policyHolder.update");
     }
     if (rights.includes(RIGHT_POLICYHOLDERCONTRIBUTIONPLANBUNDLE_DELETE)) {
-      result.push("policyHolder.emptyLabel");
+      result.push("policyHolder.delete");
     }
     return result;
   };

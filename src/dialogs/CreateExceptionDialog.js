@@ -247,6 +247,7 @@ class CreateExceptionDialog extends Component {
           //   {}
           // )}
           message={this.state.snackbarMsg}
+          intl={intl}
           // severity="success"
           severity={this.state.severity} // Use the severity from state
           copyText={!!this.state.camuCode ? this.state.camuCode : ""}
@@ -260,6 +261,7 @@ class CreateExceptionDialog extends Component {
             "InsureeExceptionError.Insuree is not in an active or approved.",
             {}
           )}
+          intl={intl}
           // message={this.state.snackbarMsg}
           // severity="success"
           severity={this.state.severity} // Use the severity from state

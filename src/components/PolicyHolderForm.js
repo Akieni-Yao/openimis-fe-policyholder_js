@@ -383,6 +383,7 @@ class PolicyHolderForm extends Component {
           severity="success"
           copyText={this.props.resCode && this.props.resCode}
           backgroundColor="#00913E"
+          intl={intl}
         />
         {this.state.success && (
           <Dialog open={this.state.success} onClose={this.cancel} maxWidth="md">

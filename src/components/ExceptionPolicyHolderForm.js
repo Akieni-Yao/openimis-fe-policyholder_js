@@ -390,6 +390,7 @@ class ExceptionPolicyHolderForm extends Component {
           //   "policyHolder.CreatePolicyHolder.snackbar",
           //   {}
           // )}
+          intl={intl}
           message={this.state.snackbarMsg}
           severity="success"
           // copyText={this.props.resCode && this.props.resCode}

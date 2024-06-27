@@ -201,6 +201,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
           // )}
           message={this.state.snackbarMsg}
           severity="success"
+          intl={intl}
           copyText={!!this.state.camuCode ? this.state.camuCode : ""}
           backgroundColor="#00913E"
         /> : <CommonSnackbar
@@ -212,6 +213,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
             `CreatePolicyHolder.${this.state.snackbarMsg}`,
             {}
           )}
+          intl={intl}
           // message={this.state.snackbarMsg}
           severity="error"
           // copyText={!!this.state.camuCode ? this.state.camuCode : ""}

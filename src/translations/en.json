@@ -20,6 +20,7 @@
     "policyHolder.delete": "Delete",
     "policyHolder.edit": "Edit",
     "policyHolder.replace": "Replace",
+    "policyHolder.update":"Update",
     "policyHolder.createButton.tooltip": "Create new Policy Holder",
     "policyHolder.editButton.tooltip": "Edit",
     "policyHolder.replaceButton.tooltip": "Replace",
