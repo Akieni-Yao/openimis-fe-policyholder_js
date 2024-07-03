@@ -64,6 +64,7 @@ import PolicyHolderRequestSeacrher from "./components/PolicyHolderRequestSeacrhe
 import RequestStatusPicker from "./pickers/RequestStatusPicker";
 import PolicyholderApprovalForm from "./components/PolicyholderApprovalForm";
 import PolicyHolderDocuments from "./components/PolicyHolderDocuments";
+import { PolicyHolderPenaltyandSactionTabLabel, PolicyHolderPenaltyandSactionTabPanel } from "./components/PenaltyandSactionTab";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
@@ -196,12 +197,14 @@ const DEFAULT_CONFIG = {
     PolicyHolderContributionPlanBundlesTabLabel,
     PolicyHolderPaymentsTabLabel,
     PolicyHolderUsersTabLabel,
+    PolicyHolderPenaltyandSactionTabLabel
   ],
   "policyHolder.TabPanel.panel": [
     PolicyHolderInsureesTabPanel,
     PolicyHolderContributionPlanBundlesTabPanel,
     PolicyHolderPaymentsTabPanel,
     PolicyHolderUsersTabPanel,
+    PolicyHolderPenaltyandSactionTabPanel,
   ],
   "Exception.TabPanel.label": [
     ExceptionInsureeTabLabel,

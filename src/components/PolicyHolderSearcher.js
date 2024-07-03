@@ -251,11 +251,11 @@ class PolicyHolderSearcher extends Component {
     return {
       isDeleted: {
         value: false,
-        filter: "isDeleted: false,isApproved: true",
+        filter: "isDeleted: false",
       },
       applyDefaultValidityFilter: {
         value: true,
-        filter: "applyDefaultValidityFilter: true",
+        filter: "applyDefaultValidityFilter: true,isApproved: true",
       },
     };
   };
