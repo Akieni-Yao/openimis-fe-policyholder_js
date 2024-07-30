@@ -7,6 +7,7 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchPickerPolicyHolderInsurees } from "../actions";
+import { decodeId } from "@openimis/fe-core";
 
 class PolicyHolderInsureePicker extends Component {
   componentDidMount() {
@@ -19,7 +20,11 @@ class PolicyHolderInsureePicker extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.policyHolderId !== this.props.policyHolderId) {
+    if (
+      this.props.policyHolderId &&
+      this.props.contractId &&
+      prevProps.policyHolderId !== this.props.policyHolderId
+    ) {
       this.props.fetchPickerPolicyHolderInsurees(
         this.props.modulesManager,
         this.queryParams()
@@ -29,7 +34,10 @@ class PolicyHolderInsureePicker extends Component {
 
   queryParams = () => {
     const { withDeleted = false } = this.props;
-    let params = [`policyHolder_Id: "${this.props.policyHolderId}"`];
+    let params = [
+      `policyHolder_Id: "${this.props.policyHolderId}"`,
+      `contractId: "${decodeId(this.props.contractId)}"`,
+    ];
     if (!withDeleted) {
       params.push("isDeleted: false");
     }
