@@ -77,14 +77,14 @@ class PaymentForApproverDetails extends Component {
       "Code",
       "payment.payment.receivedDate",
       "payment.payment.requestDate",
-      "payment.payment.expectedAmount",
-      "payment.payment.previousDue",
-      "payment.payment.declarationPenaltyAmount",
-      "payment.payment.paymentPenaltyAmount",
-      "payment.payment.totalAmount",
+      // "payment.payment.expectedAmount",
+      // "payment.payment.previousDue",
+      // "payment.payment.declarationPenaltyAmount",
+      // "payment.payment.paymentPenaltyAmount",
+      // "payment.payment.totalAmount",
       "payment.payment.receivedAmount",
-      "payment.payment.typeOfPayment",
-      "payment.payment.receiptNo",
+      // "payment.payment.typeOfPayment",
+      // "payment.payment.receiptNo",
       "payment.payment.status",
     ];
     return h;
@@ -95,14 +95,14 @@ class PaymentForApproverDetails extends Component {
       ["paymentCode", true],
       ["receivedDate", true],
       ["requestDate", true],
-      ["expectedAmount", true],
-      ["parentPaymentPending", true],
-      ["contractPenaltyAmount", true],
-      ["parentPaymentPenalty", true],
-      ["totalAmount", true],
+      // ["expectedAmount", true],
+      // ["parentPaymentPending", true],
+      // ["contractPenaltyAmount", true],
+      // ["parentPaymentPenalty", true],
+      // ["totalAmount", true],
       ["receivedAmount", true],
-      ["typeOfPayment", true],
-      ["receiptNo", true],
+      // ["typeOfPayment", true],
+      // ["receiptNo", true],
       ["status", true],
       "contribution.openNewTabHead",
     ];
@@ -149,21 +149,21 @@ class PaymentForApproverDetails extends Component {
       (p) => p.paymentCode,
       (p) => formatDateFromISO(modulesManager, intl, p.receivedDate),
       (p) => formatDateFromISO(modulesManager, intl, p.requestDate),
-      (p) => formatAmount(intl, p.expectedAmount),
-      (p) => formatAmount(intl, p.parentPendingPayment),
-      (p) => p.contractPenaltyAmount,
-      (p) => p.parentPaymentPenalty,
-      (p) => formatAmount(intl, p.totalAmount),
+      // (p) => formatAmount(intl, p.expectedAmount),
+      // (p) => formatAmount(intl, p.parentPendingPayment),
+      // (p) => p.contractPenaltyAmount,
+      // (p) => p.parentPaymentPenalty,
+      // (p) => formatAmount(intl, p.totalAmount),
       (p) => formatAmount(intl, p.receivedAmount),
-      (p) => (
-        <PublishedComponent
-          readOnly={true}
-          pubRef="contribution.PremiumPaymentTypePicker"
-          withLabel={false}
-          value={p.typeOfPayment}
-        />
-      ),
-      (p) => p.receiptNo,
+      // (p) => (
+      //   <PublishedComponent
+      //     readOnly={true}
+      //     pubRef="contribution.PremiumPaymentTypePicker"
+      //     withLabel={false}
+      //     value={p.typeOfPayment}
+      //   />
+      // ),
+      // (p) => p.receiptNo,
       (p) => (
         <Grid style={{ display: "flex" }}>
           <PublishedComponent
