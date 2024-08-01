@@ -102,9 +102,10 @@ class ExceptionInsureeSearcher extends Component {
       params.push(`before: "${state.beforeCursor}"`);
       params.push(`last: ${state.pageSize}`);
     }
-    // if (!!state.orderBy) {
-    //   params.push(`orderBy: ["${state.orderBy}"]`);
-    // }
+    console.log(!!state.orderBy,'orderr');
+    if (!!state.orderBy) {
+      params.push(`orderBy: ["${state.orderBy}"]`);
+    }
     this.setState({ queryParams: params });
     return params;
   };
@@ -324,15 +325,20 @@ class ExceptionInsureeSearcher extends Component {
   //   this.state.deleted.includes(policyHolderInsuree.id) &&
   //   !this.isDeletedFilterEnabled(policyHolderInsuree);
 
-  // sorts = () => {
-  //   return [
-  //     ["insuree", true],
-  //     ["contributionPlanBundle", true],
-  //     null,
-  //     ["dateValidFrom", true],
-  //     ["dateValidTo", true],
-  //   ];
-  // };
+
+  sorts = () => {
+    return [
+       ["insuree__chf_id", true],
+       ["insuree__other_names", true],
+       ["insuree__last_name", true],
+       ["insuree__dob", true],
+       ["insuree__phone", true],
+       ["start_date",true],
+       ["end_date",true],
+       null,
+       ["status",true]
+     ];
+   };
 
   // defaultFilters = () => {
   //   return {
@@ -420,7 +426,7 @@ class ExceptionInsureeSearcher extends Component {
           headers={this.headers}
           itemFormatters={this.itemFormatters}
           filtersToQueryParams={this.filtersToQueryParams}
-          // sorts={this.sorts}
+          sorts={this.sorts}
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           defaultPageSize={DEFAULT_PAGE_SIZE}
           defaultOrderBy={DEFAULT_ORDER_BY}
