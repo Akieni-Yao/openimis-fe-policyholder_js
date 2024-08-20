@@ -34,7 +34,7 @@ import ExceptionPolicyHolderFilter from "./ExceptionPolicyHolderFilter";
 import CreateExceptionPolicyHolderDialog from "../dialogs/CreateExceptionPolicyHolderDialog";
 import HelpIcon from "@material-ui/icons/Help";
 
-const DEFAULT_ORDER_BY = "insuree";
+const DEFAULT_ORDER_BY = "policy_holder__code";
 const styles = (theme) => ({
   customArrow: {
     color: "#eeeaea",
@@ -115,9 +115,9 @@ class ExceptionPolicyHolderSearcher extends Component {
       params.push(`before: "${state.beforeCursor}"`);
       params.push(`last: ${state.pageSize}`);
     }
-    // if (!!state.orderBy) {
-    //   params.push(`orderBy: ["${state.orderBy}"]`);
-    // }
+    if (!!state.orderBy) {
+      params.push(`orderBy: ["${state.orderBy}"]`);
+    }
     this.setState({ queryParams: params });
     return params;
   };
@@ -312,15 +312,17 @@ class ExceptionPolicyHolderSearcher extends Component {
     this.state.deleted.includes(policyHolderInsuree.id) &&
     !this.isDeletedFilterEnabled(policyHolderInsuree);
 
-  // sorts = () => {
-  //   return [
-  //     ["insuree", true],
-  //     ["contributionPlanBundle", true],
-  //     null,
-  //     ["dateValidFrom", true],
-  //     ["dateValidTo", true],
-  //   ];
-  // };
+    sorts = () => {
+      return [
+        null,
+         ["policy_holder__code", true],
+         ["policy_holder__trade_name", true],
+        null,
+         ["exception_reason", true],
+         ["month", true],
+         ["status",true],
+       ];
+     };
 
   defaultFilters = () => {
     return {
@@ -359,6 +361,8 @@ class ExceptionPolicyHolderSearcher extends Component {
       newTab
     );
   };
+
+
 
   render() {
     const {
@@ -402,7 +406,7 @@ class ExceptionPolicyHolderSearcher extends Component {
           headers={this.headers}
           itemFormatters={this.itemFormatters}
           filtersToQueryParams={this.filtersToQueryParams}
-          // sorts={this.sorts}
+          sorts={this.sorts}
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           defaultPageSize={DEFAULT_PAGE_SIZE}
           defaultOrderBy={DEFAULT_ORDER_BY}

@@ -86,7 +86,7 @@ class PolicyHolderRequestSeacrher extends Component {
       params.push(`last: ${state.pageSize}`);
     }
     if (!!state.orderBy) {
-      params.push(`isDeleted: false, formPhPortal: true`);
+      params.push(`orderBy: ["${state.orderBy}"]`);
     }
     this.setState({ queryParams: params });
 
@@ -113,6 +113,34 @@ class PolicyHolderRequestSeacrher extends Component {
       `policyHolder.rejectComment.${rejectComment}`
     );
   };
+
+  defaultFilters = () => {
+    const filters = {
+        isDeleted: {
+            value: false,
+            filter: "isDeleted: false",
+        },
+        formPhPortal: {
+            value: true,
+            filter: "formPhPortal: true"
+        }
+    };
+ 
+    return filters;
+};
+
+  sorts = () => {
+    return [
+       ["request_number", true],
+       ["tradeName", true],
+        null,
+        null,
+       ["phone", true],
+       ["email",true],
+       ["status",true]
+     ];
+  
+   };
   itemFormatters = () => {
     const {
       intl,
@@ -227,10 +255,10 @@ class PolicyHolderRequestSeacrher extends Component {
     this.setState({ confirmedAction }, confirm);
   };
 
-  defaultFilters = () => {
-    const filters = {};
-    return filters;
-  };
+  // defaultFilters = () => {
+  //   const filters = {};
+  //   return filters;
+  // };
 
   isDeletedFilterEnabled = (policyHolderUser) => policyHolderUser.isDeleted;
 
@@ -278,7 +306,7 @@ class PolicyHolderRequestSeacrher extends Component {
         filtersToQueryParams={this.filtersToQueryParams}
         headers={this.headers}
         itemFormatters={this.itemFormatters}
-        // sorts={this.sorts}
+        sorts={this.sorts}
         rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         defaultPageSize={DEFAULT_PAGE_SIZE}
         defaultOrderBy={DEFAULT_ORDER_BY}
