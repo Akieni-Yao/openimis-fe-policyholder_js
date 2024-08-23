@@ -309,7 +309,7 @@ class PolicyHolderRequestSeacrher extends Component {
         sorts={this.sorts}
         rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         defaultPageSize={DEFAULT_PAGE_SIZE}
-        defaultOrderBy={DEFAULT_ORDER_BY}
+        defaultOrderBy='-date_created'
         defaultFilters={this.defaultFilters()}
         // rowLocked={this.isRowDisabled}
         // rowDisabled={this.isRowDisabled}
