@@ -293,7 +293,7 @@ class PolicyHolderSearcher extends Component {
           sorts={this.sorts}
           rowsPerPageOptions={this.rowsPerPageOptions}
           defaultPageSize={this.defaultPageSize}
-          defaultOrderBy='code'
+          defaultOrderBy='-date_created'
           onDoubleClick={(policyHolder) =>
             this.isOnDoubleClickEnabled(policyHolder) &&
             onDoubleClick(policyHolder)
