@@ -33,10 +33,11 @@ class PolicyHolderInsureePicker extends Component {
   }
 
   queryParams = () => {
+    
     const { withDeleted = false } = this.props;
     let params = [
-      `policyHolder_Id: "${decodeId(this.props.policyHolderId)}"`,
-      `contractId: "${decodeId(this.props.contractId)}"`,
+      `policyHolder_Id: "${!!this.props.policyHolderId && (this.props.policyHolderId)}"`,
+      `contractId: "${!!this.props.contractId && decodeId(this.props.contractId)}"`,
     ];
     if (!withDeleted) {
       params.push("isDeleted: false");
@@ -73,6 +74,7 @@ class PolicyHolderInsureePicker extends Component {
         ),
       });
     }
+
     return (
       <SelectInput
         module="contract"
