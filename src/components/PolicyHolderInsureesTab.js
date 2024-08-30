@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography, Input, Button } from "@material-ui/core";
+import { Tab, Grid, Typography, Input, Button ,CircularProgress} from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import {
@@ -50,6 +50,7 @@ class PolicyHolderInsureesTabPanel extends Component {
       reset: 0,
       insureeCheck: false,
       downloadError: null,
+      isLoading: false, 
     };
   }
   userlang = localStorage.getItem("userLanguage");
@@ -68,6 +69,8 @@ class PolicyHolderInsureesTabPanel extends Component {
     let encodedCode = encodeURIComponent(policyHolder.code);
     let url_import = `${baseApiUrl}/policyholder/imports/${encodedCode}/policyholderinsurees`;
 
+    this.setState({ isLoading: true });
+
     try {
       const response = await fetch(url_import, {
         headers: apiHeaders,
@@ -81,6 +84,7 @@ class PolicyHolderInsureesTabPanel extends Component {
       if (response.status >= 400) {
         // alert(`Error ${response.status}: ${payload.error}`);
         alert(`Error ${response.status}`);
+        this.setState({ isLoading: false });
         return;
       }
       // alert(`Success: ${payload}`);
@@ -92,9 +96,7 @@ class PolicyHolderInsureesTabPanel extends Component {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      // console.log(`Success: ${payload}`);
-
-      this.setState({ insureeCheck: true });
+      this.setState({ insureeCheck: true, isLoading: false });
     } catch (error) {
       alert(
         error?.message ??
@@ -215,8 +217,15 @@ class PolicyHolderInsureesTabPanel extends Component {
     }
   };
 
+
+  
   render() {
     const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
+    const { isLoading } = this.state;
+
+    console.log(isLoading,'isLoading');
+    
+
     return (
       (rights.includes(RIGHT_POLICYHOLDERINSUREE_SEARCH) ||
         rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_SEARCH)) && (
@@ -226,6 +235,22 @@ class PolicyHolderInsureesTabPanel extends Component {
           index={POLICYHOLDERINSUREE_TAB_VALUE}
           value={value}
         >
+          {isLoading && (
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 9999,
+            }}>
+              <CircularProgress />
+            </div>
+          )}
           {isTabsEnabled ? (
             <Fragment>
               {(rights.includes(RIGHT_POLICYHOLDERINSUREE_CREATE) ||

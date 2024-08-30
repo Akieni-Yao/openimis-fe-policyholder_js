@@ -37,6 +37,7 @@ import {
 } from "../constants";
 import _ from "lodash";
 import moment from "moment";
+import BankPicker from "../pickers/BankAutoPicker";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -48,8 +49,13 @@ const styles = (theme) => ({
 
 const POLICYHOLDER_RIGHTS_PANEL = "policyholder.rightsGeneralInfo";
 class PolicyHolderGeneralInfoPanel extends FormPanel {
+
   constructor(props) {
     super(props);
+
+    this.state = {
+      selectedBank: null,
+    };
     this.phoneValidation = props.modulesManager.getConf(
       "policyHolder",
       "policyHolderForm.phoneValidation",
@@ -514,6 +520,8 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     return false;
   };
 
+  
+
   shouldValidate = (input) => {
     const { savedPolicyHolderCode } = this.props;
     return input !== savedPolicyHolderCode;
@@ -608,6 +616,8 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
       approverData,
+      selectedBank
+
     } = this.props;
     // const capitalizeWords = (inputString) => {
     //   let result = "";
@@ -625,6 +635,17 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     //   }
     //   return result;
     // };
+
+    console.log(edited,'edited');
+    
+
+
+
+
+    const handleBankChange = (option, label) => {
+      this.setState({ selectedBank: option });
+      console.log("Selected Bank:", option, "Label:", label);
+    };
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -930,6 +951,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               }
             />
           </Grid>
+
           {/* <Grid item xs={2} className={classes.item}>
             <TextInput
               module="policyHolder"
@@ -966,7 +988,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               }
               readOnly={isPolicyHolderPortalUser}
             /> */}
-            <PublishedComponent
+            {/* <PublishedComponent
               pubRef="policyHolder.BankPicker"
               module="policyHolder"
               label="bank"
@@ -976,6 +998,17 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                 this.updateAttributes({ bankAccount: { bank: v } })
               }
               readOnly={isPolicyHolderPortalUser}
+            /> */}
+
+            <BankPicker
+              value={selectedBank}
+              onChange={handleBankChange}
+              readOnly={false}
+              required={true}
+              withLabel={true}
+              withPlaceholder={true}
+              placeholder="Select a bank"
+              multiple={false}
             />
           </Grid>
           <Grid item xs={2} className={classes.item}>
@@ -983,11 +1016,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               module="policyHolder"
               label="bankCode"
               inputProps={{ maxLength: MAX_BANK_CODE_LENGTH }}
+              // value={
+              //   !!edited && !!edited.bankAccount?.bankCode
+              //       ? edited.bankAccount.bankCode
+              //     : this.bankCode(parseInt(this.state?.data?.bankAccount?.bank))
+              // }
               value={
                 !!edited && !!edited.bankAccount?.bankCode
-                  ? edited.bankAccount.bankCode
-                  : this.bankCode(parseInt(this.state?.data?.bankAccount?.bank))
-              }
+                    ? edited?.bankAccount?.bank
+                    : this.state.selectedBank?.code || "" // Use the selected bank's code
+            }
               error={this.regexError("bankCode", edited?.bankAccount?.bankCode)}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bankCode: v } })
