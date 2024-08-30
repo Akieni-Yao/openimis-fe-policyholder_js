@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography, Input, Button ,CircularProgress} from "@material-ui/core";
+import { Tab, Grid, Typography, Input, Button, CircularProgress, Snackbar } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import {
@@ -19,6 +19,10 @@ import PolicyHolderInsureeSearcher from "./PolicyHolderInsureeSearcher";
 import { POLICYHOLDERINSUREE_TAB_VALUE } from "../constants";
 import CreatePolicyHolderInsureeDialog from "../dialogs/CreatePolicyHolderInsureeDialog";
 import * as XLSX from "xlsx";
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 class PolicyHolderInsureesTabLabel extends Component {
   render() {
     const { intl, rights, onChange, disabled, tabStyle, isSelected } =
@@ -50,7 +54,8 @@ class PolicyHolderInsureesTabPanel extends Component {
       reset: 0,
       insureeCheck: false,
       downloadError: null,
-      isLoading: false, 
+      isLoading: false,
+      snackbarMessage: '',
     };
   }
   userlang = localStorage.getItem("userLanguage");
@@ -58,6 +63,10 @@ class PolicyHolderInsureesTabPanel extends Component {
     this.setState((state) => ({
       reset: state.reset + 1,
     }));
+  };
+
+  handleCloseSnackbar = () => {
+    this.setState({ snackbarOpen: false });
   };
 
   onUpload = async (event) => {
@@ -79,14 +88,44 @@ class PolicyHolderInsureesTabPanel extends Component {
         credentials: "same-origin",
       });
 
-      // const payload = await response.text();
-
+      if (response.status == 200) {
+        this.setState({ isLoading: false });
+        this.setState({
+          snackbarMessage: 'Upload successfully!',
+          snackbarSeverity: 'success',
+          snackbarOpen: true,
+        });
+        return;
+      }
       if (response.status >= 400) {
         // alert(`Error ${response.status}: ${payload.error}`);
         alert(`Error ${response.status}`);
         this.setState({ isLoading: false });
+        this.setState({
+          snackbarMessage: error?.message ?? formatMessage(`An error occurred. Please contact your administrator.`),
+          snackbarSeverity: 'error',
+          snackbarOpen: true,
+        });
         return;
       }
+      if (response.status == 417) {
+        this.setState({ isLoading: false });
+        this.setState({
+          snackbarMessage: error?.message ?? formatMessage(`Something Wrong with the file, Please check`),
+          snackbarSeverity: 'error',
+          snackbarOpen: true,
+        });
+        return;
+      }
+      this.setState({ isLoading: false });
+      this.setState({
+        snackbarMessage: 'Upload successfully!',
+        snackbarSeverity: 'success',
+        snackbarOpen: true,
+      });
+
+
+
       // alert(`Success: ${payload}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -104,6 +143,13 @@ class PolicyHolderInsureesTabPanel extends Component {
           `An error occurred. Please contact your administrator. ${error?.message}`
         )
       );
+      this.setState({ isLoading: false });
+      this.setState({
+        snackbarMessage: error?.message ?? formatMessage(`An error occurred. Please contact your administrator.`),
+        snackbarSeverity: 'error',
+        snackbarOpen: true,
+      });
+
       this.setState({ downloadError: error });
     }
   };
@@ -218,13 +264,13 @@ class PolicyHolderInsureesTabPanel extends Component {
   };
 
 
-  
+
   render() {
     const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, snackbarOpen, snackbarMessage, snackbarSeverity } = this.state;
 
-    console.log(isLoading,'isLoading');
-    
+    console.log(isLoading, 'isLoading');
+
 
     return (
       (rights.includes(RIGHT_POLICYHOLDERINSUREE_SEARCH) ||
@@ -251,6 +297,11 @@ class PolicyHolderInsureesTabPanel extends Component {
               <CircularProgress />
             </div>
           )}
+          <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={this.handleCloseSnackbar}>
+            <Alert onClose={this.handleCloseSnackbar} severity={snackbarSeverity}>
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
           {isTabsEnabled ? (
             <Fragment>
               {(rights.includes(RIGHT_POLICYHOLDERINSUREE_CREATE) ||
