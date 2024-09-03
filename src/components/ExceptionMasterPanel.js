@@ -102,8 +102,8 @@ class ExceptionMasterPanel extends FormPanel {
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
-          <PublishedComponent
-                  pubRef="policyHolder.ExceptionRegionPicker"
+          {/* <PublishedComponent
+                  pubRef="policyHolder.insureeexceptionReason"
                   module="policyHolder"
                   label="exceptionReason"
                   readOnly={true}
@@ -113,6 +113,14 @@ class ExceptionMasterPanel extends FormPanel {
                   //   // this.updateAttribute({ exceptionReason: v })
                   //   this.updateAttribute("exceptionReason", v)
                   // }
+                /> */}
+                   <PublishedComponent
+                  pubRef="policyHolder.InsureeExceptionRegion"
+                  module="policyHolder"
+                  label="policyHolder.insureeexceptionReason"
+                  readOnly={true}
+                  nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+                  value={!edited ? "" : edited[0]?.exceptionReason}
                 />
             {/* <TextInput
               module="policyHolder"

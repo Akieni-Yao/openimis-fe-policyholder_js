@@ -395,6 +395,7 @@ class PolicyHolderInsureesTabPanel extends Component {
                 reset={this.state.reset}
                 onSave={this.onSave}
                 insureeCheck={this.state.insureeCheck}
+                loading={this.state.isLoading}
               />
             </Fragment>
           ) : (
