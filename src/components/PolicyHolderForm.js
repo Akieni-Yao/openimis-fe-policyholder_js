@@ -22,6 +22,7 @@ import {
   sendEmail,
   printReport,
   havingPAymentApprove,
+  fetchBankList,
 } from "../actions";
 import {
   Dialog,
@@ -129,8 +130,10 @@ class PolicyHolderForm extends Component {
         () =>
           this.props.fetchPolicyHolder(
             this.props.modulesManager,
-            this.props.policyHolderId
-          )
+            this.props.policyHolderId,
+            
+          ),
+          this.props.fetchBankList()
       );
     }
     const userid = localStorage.getItem("userId");
@@ -443,6 +446,7 @@ const mapDispatchToProps = (dispatch) => {
       sendEmail,
       printReport,
       havingPAymentApprove,
+      fetchBankList
     },
     dispatch
   );

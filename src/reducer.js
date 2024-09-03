@@ -122,6 +122,12 @@ function reducer(
     RequestPolicyholderById: [],
     RequestPolicyholderPageInfoById: {},
     RequestPolicyholderTotalCountById: 0,
+
+    fetchingBankList: false,
+    fetchedBankList: false,
+    errorBankList: null,
+    BankList: [],
+    BankListPageInfo: { totalCount: 0 },
   },
   action
 ) {
@@ -797,6 +803,34 @@ function reducer(
       return dispatchMutationResp(state, "insureeApproval", action);
     case "POLICYHOLDER_INSUREE_POLICYHOLDERAPPROVAL_RESP":
       return dispatchMutationResp(state, "policyHolderApproval", action);
+      case "POLICYHOLDER_BANKLIST_REQ":
+        return {
+          ...state,
+          fetchingBankList: true,
+          fetchedBankList: false,
+          BankList: null,
+          errorBankList: null,
+        };
+      case "POLICYHOLDER_BANKLIST_RESP":
+        console.log(action,'actionnn');
+        
+        return {
+          ...state,
+          fetchingBankList: false,
+          fetchedBankList: true,
+          BankList: parseData(
+            action?.payload?.data?.banks
+          ),
+          BankListPageInfo:pageInfo(
+            action?.payload?.data?.banks
+          ),
+        };
+      case "POLICYHOLDER_BANKLIST_ERR":
+        return {
+          ...state,
+          fetchingBankList: false,
+          errorBankList: formatServerError(action.payload),
+};
     default:
       return state;
   }

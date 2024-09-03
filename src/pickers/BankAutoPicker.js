@@ -26,6 +26,7 @@ const BankPicker = (props) => {
     const userHealthFacilityId = useSelector((state) =>
         state?.loc?.userHealthFacilityFullPath?.uuid
     );
+   console.log(value,'valuee');
    
     const modulesManager = useModulesManager();
     const { formatMessage } = useTranslations("location", modulesManager);
