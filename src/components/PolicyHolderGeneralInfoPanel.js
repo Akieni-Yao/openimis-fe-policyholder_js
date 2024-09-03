@@ -499,7 +499,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
           "bankAccountNb",
           edited?.bankAccount?.bankAccountNb
         ) ||
-        !!this.regexError("bankCode", edited?.bankAccount?.bankCode) ||
+        // !!this.regexError("bankCode", edited?.bankAccount?.bankCode) ||
         !!this.regexError("fax", edited.fax) ||
         !!this.regexError("email", edited.email) ||
         !!this.regexError("accountancyAccount", edited.accountancyAccount) ||
@@ -647,8 +647,8 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
 
     const fetchBank = (code) => {
       console.log(bankList,'edited');
-      const filteredBank = bankList?.filter(bank => bank?.code === code);
-      return filteredBank && filteredBank[0];
+      const filteredBank = bankList?.filter(bank => bank?.code == code);
+      return filteredBank?.length > 0 ? filteredBank[0] : null; 
     };
 
     return (
@@ -1022,10 +1022,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               withNull={true}
               required
               value = {!!edited && !!edited.bank ? edited.bank : fetchBank(edited?.bankAccount?.bank)}
-              onChange={(v) => {this.updateAttribute("bank", v)
-                console.log(v,'valueev');
-                
+              onChange={(v) => {
+                this.updateAttribute("bank", v)
+             
                 this.updateAttributes({ bankAccount: { bank: v.code } })
+
+                console.log(edited,'editedd');
+                
               }}
               readOnly={ false}
             />
@@ -1045,7 +1048,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
                   ? edited?.bank?.code// If bank account exists, use bank.code
                   : edited?.bankAccount?.bank // Otherwise, use selectedBank's code or an empty string
               }
-              error={this.regexError("bankCode", edited?.bankAccount?.bank)}
+              // error={this.regexError("bankCode", edited?.bankAccount?.bank)}
               onChange={(v) =>
                 this.updateAttributes({ bankAccount: { bank: v } })
               }
