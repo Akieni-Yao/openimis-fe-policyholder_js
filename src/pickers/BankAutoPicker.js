@@ -67,7 +67,7 @@ const BankPicker = (props) => {
             multiple={multiple}
             required={required}
             // placeholder={placeholder ?? formatMessage("CamuDoctorPicker.placeholder")}
-            label={label ?? formatMessage("bank")}
+            label={label ?? formatMessage("Bank")}
             error={error}
             withLabel={withLabel}
             withPlaceholder={withPlaceholder}
