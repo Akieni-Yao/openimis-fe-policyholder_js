@@ -90,6 +90,15 @@ class PolicyHolderInsureesTabPanel extends Component {
 
       if (response.status == 200) {
         this.setState({ isLoading: false });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        this.setState({ insureeCheck: true });
         this.setState({
           snackbarMessage: 'Upload successfully!',
           snackbarSeverity: 'success',
@@ -123,19 +132,8 @@ class PolicyHolderInsureesTabPanel extends Component {
         snackbarSeverity: 'success',
         snackbarOpen: true,
       });
-
-
-
       // alert(`Success: ${payload}`);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      this.setState({ insureeCheck: true, isLoading: false });
+
     } catch (error) {
       alert(
         error?.message ??
