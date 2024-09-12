@@ -112,7 +112,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         document.body.removeChild(a);
         this.setState({ insureeCheck: true });
         this.setState({
-          snackbarMessage: 'Upload successfully!',
+          snackbarMessage: 'Upload successful!',
           snackbarSeverity: 'success',
           snackbarOpen: true,
         });
@@ -129,7 +129,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         a.click();
         document.body.removeChild(a);
         this.setState({
-          snackbarMessage: formatMessage(`An error occurred. Please contact your administrator.`),
+          snackbarMessage: `An error occurred. Please contact your administrator.`,
           snackbarSeverity: 'error',
           snackbarOpen: true,
         });
@@ -147,7 +147,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         document.body.removeChild(a);
         // this.downloadStatusFile();
         this.setState({
-          snackbarMessage: `Something Wrong with the file, Please check`,
+          snackbarMessage: `Incorrect data in the file. Please check.`,
           snackbarSeverity: 'error',
           snackbarOpen: true,
         });
@@ -165,7 +165,7 @@ class PolicyHolderInsureesTabPanel extends Component {
         document.body.removeChild(a);
         // this.downloadStatusFile();
         this.setState({
-          snackbarMessage: `Something Wrong with the file, Please check`,
+          snackbarMessage: `Something went wrong with the file. Please check.`,
           snackbarSeverity: 'error',
           snackbarOpen: true,
         });
@@ -183,14 +183,22 @@ class PolicyHolderInsureesTabPanel extends Component {
         document.body.removeChild(a);
         // this.downloadStatusFile();
         this.setState({
-          snackbarMessage: `Something Wrong with the file, Please check`,
+          snackbarMessage: `There is an issue with the file. Please check.`,
           snackbarSeverity: 'error',
           snackbarOpen: true,
         });
         return;
       }
       this.setState({ isLoading: false });
-      this.downloadStatusFile();
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // this.downloadStatusFile();
       this.setState({
         snackbarMessage: 'Upload successfully!',
         snackbarSeverity: 'success',
