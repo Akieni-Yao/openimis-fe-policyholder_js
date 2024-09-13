@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Grid, Typography, Input, Button } from "@material-ui/core";
+import { Tab, Grid, Typography, Input, Button, CircularProgress, Snackbar } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import {
@@ -19,6 +19,10 @@ import PolicyHolderInsureeSearcher from "./PolicyHolderInsureeSearcher";
 import { POLICYHOLDERINSUREE_TAB_VALUE } from "../constants";
 import CreatePolicyHolderInsureeDialog from "../dialogs/CreatePolicyHolderInsureeDialog";
 import * as XLSX from "xlsx";
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 class PolicyHolderInsureesTabLabel extends Component {
   render() {
     const { intl, rights, onChange, disabled, tabStyle, isSelected } =
@@ -50,6 +54,8 @@ class PolicyHolderInsureesTabPanel extends Component {
       reset: 0,
       insureeCheck: false,
       downloadError: null,
+      isLoading: false,
+      snackbarMessage: '',
     };
   }
   userlang = localStorage.getItem("userLanguage");
@@ -58,6 +64,21 @@ class PolicyHolderInsureesTabPanel extends Component {
       reset: state.reset + 1,
     }));
   };
+
+  handleCloseSnackbar = () => {
+    this.setState({ snackbarOpen: false });
+  };
+
+  downloadStatusFile = async () => {
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 
   onUpload = async (event) => {
     const { policyHolder } = this.props;
@@ -68,6 +89,8 @@ class PolicyHolderInsureesTabPanel extends Component {
     let encodedCode = encodeURIComponent(policyHolder.code);
     let url_import = `${baseApiUrl}/policyholder/imports/${encodedCode}/policyholderinsurees`;
 
+    this.setState({ isLoading: true });
+
     try {
       const response = await fetch(url_import, {
         headers: apiHeaders,
@@ -75,15 +98,98 @@ class PolicyHolderInsureesTabPanel extends Component {
         method: "POST",
         credentials: "same-origin",
       });
+      console.log(response.status, 'responsee');
 
-      // const payload = await response.text();
-
-      if (response.status >= 400) {
-        // alert(`Error ${response.status}: ${payload.error}`);
-        alert(`Error ${response.status}`);
+      if (response.status == 200) {
+        this.setState({ isLoading: false });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        this.setState({ insureeCheck: true });
+        this.setState({
+          snackbarMessage: 'Upload successful!',
+          snackbarSeverity: 'success',
+          snackbarOpen: true,
+        });
         return;
       }
-      // alert(`Success: ${payload}`);
+      if (response.status == 400) {
+        this.setState({ isLoading: false });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        this.setState({
+          snackbarMessage: `An error occurred. Please contact your administrator.`,
+          snackbarSeverity: 'error',
+          snackbarOpen: true,
+        });
+        return;
+      }
+      if (response.status == 417) {
+        this.setState({ isLoading: false });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // this.downloadStatusFile();
+        this.setState({
+          snackbarMessage: `Incorrect data in the file. Please check.`,
+          snackbarSeverity: 'error',
+          snackbarOpen: true,
+        });
+        return;
+      }
+      if (response.status == 500) {
+        this.setState({ isLoading: false });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // this.downloadStatusFile();
+        this.setState({
+          snackbarMessage: `Something went wrong with the file. Please check.`,
+          snackbarSeverity: 'error',
+          snackbarOpen: true,
+        });
+        return;
+      }
+      if (response.status == 422) {
+        this.setState({ isLoading: false });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.userlang === "fr" ? "Titulaires de polices_assurés" : "policyholder_insurees.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // this.downloadStatusFile();
+        this.setState({
+          snackbarMessage: `There is an issue with the file. Please check.`,
+          snackbarSeverity: 'error',
+          snackbarOpen: true,
+        });
+        return;
+      }
+      this.setState({ isLoading: false });
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -92,17 +198,23 @@ class PolicyHolderInsureesTabPanel extends Component {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      // console.log(`Success: ${payload}`);
+      // this.downloadStatusFile();
+      this.setState({
+        snackbarMessage: 'Upload successfully!',
+        snackbarSeverity: 'success',
+        snackbarOpen: true,
+      });
+      // alert(`Success: ${payload}`);
 
-      this.setState({ insureeCheck: true });
     } catch (error) {
-      alert(
-        error?.message ??
-        formatMessage(
-          `An error occurred. Please contact your administrator. ${error?.message}`
-        )
-      );
-      this.setState({ downloadError: error });
+      this.setState({ isLoading: false });
+      this.setState({
+        snackbarMessage: `An error occurred. Please contact your administrator.`,
+        snackbarSeverity: 'error',
+        snackbarOpen: true,
+      });
+
+      // this.setState({ downloadError: error });
     }
   };
 
@@ -215,8 +327,15 @@ class PolicyHolderInsureesTabPanel extends Component {
     }
   };
 
+
+
   render() {
     const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
+    const { isLoading, snackbarOpen, snackbarMessage, snackbarSeverity } = this.state;
+
+    console.log(isLoading, 'isLoading');
+
+
     return (
       (rights.includes(RIGHT_POLICYHOLDERINSUREE_SEARCH) ||
         rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_SEARCH)) && (
@@ -226,6 +345,27 @@ class PolicyHolderInsureesTabPanel extends Component {
           index={POLICYHOLDERINSUREE_TAB_VALUE}
           value={value}
         >
+          {isLoading && (
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 9999,
+            }}>
+              <CircularProgress />
+            </div>
+          )}
+          <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={this.handleCloseSnackbar}>
+            <Alert onClose={this.handleCloseSnackbar} severity={snackbarSeverity}>
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
           {isTabsEnabled ? (
             <Fragment>
               {(rights.includes(RIGHT_POLICYHOLDERINSUREE_CREATE) ||
@@ -319,6 +459,7 @@ class PolicyHolderInsureesTabPanel extends Component {
                 reset={this.state.reset}
                 onSave={this.onSave}
                 insureeCheck={this.state.insureeCheck}
+                loading={this.state.isLoading}
               />
             </Fragment>
           ) : (

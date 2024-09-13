@@ -38,7 +38,7 @@ import {
   PolicyHolderUsersTabPanel,
 } from "./components/PolicyHolderUsersTab";
 import { POLICYHOLDER_PICKER_PROJECTION } from "./actions";
-import BankPicker from "./pickers/BankPicker";
+
 import DeclarationPage from "./pages/DeclarationPage";
 import PaymentForApproval from "./pages/PaymentForApproval";
 import RightsGeneralInfoPanel from "./components/RightsGeneralInfoPanel";
@@ -65,6 +65,7 @@ import RequestStatusPicker from "./pickers/RequestStatusPicker";
 import PolicyholderApprovalForm from "./components/PolicyholderApprovalForm";
 import PolicyHolderDocuments from "./components/PolicyHolderDocuments";
 import { PolicyHolderPenaltyandSactionTabLabel, PolicyHolderPenaltyandSactionTabPanel } from "./components/PenaltyandSactionTab";
+import BankPicker from "./pickers/BankAutoPicker";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";

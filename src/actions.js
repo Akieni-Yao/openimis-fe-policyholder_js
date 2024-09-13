@@ -290,6 +290,7 @@ function formatPolicyHolderGQL(policyHolder) {
       ? `bankAccount: ${JSON.stringify(policyHolder.bankAccount)}`
       : ""
     }
+   
         ${!!policyHolder.paymentReference
       ? `paymentReference: "${formatGQLString(
         policyHolder.paymentReference
@@ -402,6 +403,34 @@ function formatPolicyHolderContributionPlanBundleGQL(
       : ""
     }
     `;
+}
+
+export function fetchBankList() {
+  return graphql(
+    ` query Banks {
+    banks {
+        totalCount
+        edgeCount
+        edges {
+            cursor
+            node {
+                id
+                isDeleted
+                jsonExt
+                dateCreated
+                dateUpdated
+                version
+                name
+                altLangName
+                code
+                erpId
+                journauxId
+            }
+        }
+    }
+}`,
+    `POLICYHOLDER_BANKLIST`,
+  );
 }
 
 function formatPolicyHolderUserGQL(

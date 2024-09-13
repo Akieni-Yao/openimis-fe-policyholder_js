@@ -76,7 +76,7 @@ class PolicyHolderInsureeSearcher extends Component {
       }));
     } else if (
       prevState.deleted !== this.state.deleted ||
-      prevProps.reset !== this.props.reset
+      prevProps.reset !== this.props.reset || prevProps.loading !== this.props.loading
     ) {
       this.refetch();
     }
@@ -183,23 +183,23 @@ class PolicyHolderInsureeSearcher extends Component {
         !!policyHolderInsuree.insuree
           ? `${policyHolderInsuree.insuree.lastName}-${policyHolderInsuree.insuree.otherNames}`
           : // policyHolderInsuree.insuree.lastName + "-" + policyHolderInsuree.insuree.otherNames
-            // Comment for perform issue
-            // ? <PolicyHolderInsureePicker
-            //     value={policyHolderInsuree.insuree}
-            //     withLabel={false}
-            //     policyHolderId={decodeId(policyHolder.id)}
-            //     readOnly />
-            "",
+          // Comment for perform issue
+          // ? <PolicyHolderInsureePicker
+          //     value={policyHolderInsuree.insuree}
+          //     withLabel={false}
+          //     policyHolderId={decodeId(policyHolder.id)}
+          //     readOnly />
+          "",
       (policyHolderInsuree) =>
         !!policyHolderInsuree.contributionPlanBundle
           ? `${policyHolderInsuree.contributionPlanBundle?.code} - ${policyHolderInsuree.contributionPlanBundle?.name}`
           : // Comment for perform issue
-            //  <PolicyHolderContributionPlanBundlePicker
-            //     value={policyHolderInsuree.contributionPlanBundle}
-            //     withLabel={false}
-            //     policyHolderId={decodeId(policyHolder.id)}
-            //     readOnly />
-            "",
+          //  <PolicyHolderContributionPlanBundlePicker
+          //     value={policyHolderInsuree.contributionPlanBundle}
+          //     withLabel={false}
+          //     policyHolderId={decodeId(policyHolder.id)}
+          //     readOnly />
+          "",
       (policyHolderInsuree) => {
         /**
          * Mapping @see lastPolicy property into @see policy property is required
@@ -213,14 +213,14 @@ class PolicyHolderInsureeSearcher extends Component {
         return !!policyHolderInsuree.jsonExt
           ? income
           : // Comment for perform issue
-            //  <Contributions
-            //     contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
-            //     intl={this.props.intl}
-            //     className={POLICYHOLDERINSUREE_CLASSNAME}
-            //     entity={{ policy, ...others }}
-            //     value={policyHolderInsuree.jsonExt}
-            //     readOnly />
-            "";
+          //  <Contributions
+          //     contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
+          //     intl={this.props.intl}
+          //     className={POLICYHOLDERINSUREE_CLASSNAME}
+          //     entity={{ policy, ...others }}
+          //     value={policyHolderInsuree.jsonExt}
+          //     readOnly />
+          "";
       },
       (policyHolderInsuree) =>
         policyHolderInsuree?.employerNumber
@@ -229,18 +229,18 @@ class PolicyHolderInsureeSearcher extends Component {
       (policyHolderInsuree) =>
         !!policyHolderInsuree.dateValidFrom
           ? formatDateFromISO(
-              modulesManager,
-              intl,
-              policyHolderInsuree.dateValidFrom
-            )
+            modulesManager,
+            intl,
+            policyHolderInsuree.dateValidFrom
+          )
           : "",
       (policyHolderInsuree) =>
         !!policyHolderInsuree.dateValidTo
           ? formatDateFromISO(
-              modulesManager,
-              intl,
-              policyHolderInsuree.dateValidTo
-            )
+            modulesManager,
+            intl,
+            policyHolderInsuree.dateValidTo
+          )
           : "",
     ];
     result.push((policyHolderInsuree) =>

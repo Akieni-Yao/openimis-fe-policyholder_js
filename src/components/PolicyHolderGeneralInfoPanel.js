@@ -499,7 +499,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
           "bankAccountNb",
           edited?.bankAccount?.bankAccountNb
         ) ||
-        !!this.regexError("bankCode", edited?.bankAccount?.bankCode) ||
+        // !!this.regexError("bankCode", edited?.bankAccount?.bankCode) ||
         !!this.regexError("fax", edited.fax) ||
         !!this.regexError("email", edited.email) ||
         !!this.regexError("accountancyAccount", edited.accountancyAccount) ||
@@ -616,6 +616,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       validationError,
       policyHolderId,
       approverData,
+      bankList,
       selectedBank
 
     } = this.props;
@@ -646,6 +647,12 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       this.setState({ selectedBank: option });
       console.log("Selected Bank:", option, "Label:", label);
     };
+    const fetchBank = (code) => {
+      console.log(bankList,'edited');
+      const filteredBank = bankList?.filter(bank => bank?.code == code);
+      return filteredBank?.length > 0 ? filteredBank[0] : null; 
+    };
+
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -1000,7 +1007,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             /> */}
 
-            <BankPicker
+            {/* <BankPicker
               value={selectedBank}
               onChange={handleBankChange}
               readOnly={false}
@@ -1009,6 +1016,23 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               withPlaceholder={true}
               placeholder="Select a bank"
               multiple={false}
+            /> */}
+              <PublishedComponent
+              pubRef="policyHolder.BankPicker"
+              module="policyHolder"
+              label="bank"  
+              withNull={true}
+              required
+              value = {!!edited && !!edited.bank ? edited.bank : fetchBank(edited?.bankAccount?.bank)}
+              onChange={(v) => {
+                this.updateAttribute("bank", v)
+             
+                this.updateAttributes({ bankAccount: { bank: v.code } })
+
+                console.log(edited,'editedd');
+                
+              }}
+              readOnly={ false}
             />
           </Grid>
           <Grid item xs={2} className={classes.item}>
@@ -1022,13 +1046,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               //     : this.bankCode(parseInt(this.state?.data?.bankAccount?.bank))
               // }
               value={
-                !!edited && !!edited.bankAccount?.bankCode
-                    ? edited?.bankAccount?.bank
-                    : this.state.selectedBank?.code || "" // Use the selected bank's code
-            }
-              error={this.regexError("bankCode", edited?.bankAccount?.bankCode)}
+                !!edited?.bank?.code
+                  ? edited?.bank?.code// If bank account exists, use bank.code
+                  : edited?.bankAccount?.bank // Otherwise, use selectedBank's code or an empty string
+              }
+              // error={this.regexError("bankCode", edited?.bankAccount?.bank)}
               onChange={(v) =>
-                this.updateAttributes({ bankAccount: { bankCode: v } })
+                this.updateAttributes({ bankAccount: { bank: v } })
               }
               readOnly={isPolicyHolderPortalUser}
             />
@@ -1119,16 +1143,21 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
   }
 }
 
-const mapStateToProps = (store, props) => ({
-  // isCodeValid: store.policyHolder?.validationFields?.policyHolderCode?.isValid,
-  // isCodeValidating:
-  //   store.policyHolder?.validationFields?.policyHolderCode?.isValidating,
-  policyHolderId: props?.edited?.id,
-  validationError:
-    store.policyHolder?.validationFields?.policyHolderCode?.validationError,
-  savedPolicyHolderCode: store.policyHolder?.policyHolder?.code,
-  approverData: store.policyHolder.approverData,
-});
+const mapStateToProps = (store, props) => {
+  // Log the store and props to the console for debugging
+  console.log('Store:', store);
+
+  return {
+    // isCodeValid: store.policyHolder?.validationFields?.policyHolderCode?.isValid,
+    // isCodeValidating:
+    //   store.policyHolder?.validationFields?.policyHolderCode?.isValidating,
+    bankList:store.policyHolder.BankList,
+    policyHolderId: props?.edited?.id,
+    validationError: store.policyHolder?.validationFields?.policyHolderCode?.validationError,
+    savedPolicyHolderCode: store.policyHolder?.policyHolder?.code,
+    approverData: store.policyHolder.approverData,
+  };
+};
 
 export default withModulesManager(
   injectIntl(
