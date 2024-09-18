@@ -66,9 +66,11 @@ import PolicyholderApprovalForm from "./components/PolicyholderApprovalForm";
 import PolicyHolderDocuments from "./components/PolicyHolderDocuments";
 import { PolicyHolderPenaltyandSactionTabLabel, PolicyHolderPenaltyandSactionTabPanel } from "./components/PenaltyandSactionTab";
 import BankPicker from "./pickers/BankAutoPicker";
+import UnlockPolicyholderPage from "./pages/UnlockPolicyholderPage";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
+const ROUTE_POLICY_HOLDER_UNLOCK = "policyHolders/unlock";
 const ROUTE_POLICY_HOLDER_USERS = "policyHolderUsers";
 const ROUTE_DECLARATION = "declaration";
 const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
@@ -120,6 +122,7 @@ const DEFAULT_CONFIG = {
     },
     { key: "policyHolder.route.policyHolders", ref: ROUTE_POLICY_HOLDERS },
     { key: "policyHolder.route.policyHolder", ref: ROUTE_POLICY_HOLDER },
+    { key: "policyHolder.route.policyHolder.unlock", ref: ROUTE_POLICY_HOLDER_UNLOCK  },
     {
       key: "policyHolder.route.exception",
       ref: EXCEPTION__PENDING_APPROVAL_PANELS,
@@ -139,6 +142,7 @@ const DEFAULT_CONFIG = {
   ],
   "core.Router": [
     { path: ROUTE_POLICY_HOLDERS, component: PolicyHoldersPage },
+    { path: ROUTE_POLICY_HOLDER_UNLOCK + "/:policyholder_id?", component: UnlockPolicyholderPage },
     {
       path: ROUTE_POLICY_HOLDER + "/:policyholder_id?",
       component: PolicyHolderPage,

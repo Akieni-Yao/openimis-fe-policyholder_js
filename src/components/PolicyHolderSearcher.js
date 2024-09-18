@@ -74,6 +74,7 @@ class PolicyHolderSearcher extends Component {
       "policyHolder.activityCode",
       "policyHolder.dateValidFrom",
       "policyHolder.dateValidTo",
+      "policyholder.status",
     ];
     if (rights.includes(RIGHT_POLICYHOLDER_UPDATE)) {
       result.push("policyHolder.emptyLabel");
@@ -142,6 +143,10 @@ class PolicyHolderSearcher extends Component {
       (policyHolder) =>
         !!policyHolder.dateValidTo
           ? formatDateFromISO(modulesManager, intl, policyHolder.dateValidTo)
+          : "",
+      (policyHolder) =>
+        !!policyHolder.status
+          ? policyHolder.status
           : "",
     ];
     if (
@@ -244,6 +249,7 @@ class PolicyHolderSearcher extends Component {
       ["activityCode", true],
       ["dateValidFrom", true],
       ["dateValidTo", true],
+      ["status", true],
     ];
   };
 

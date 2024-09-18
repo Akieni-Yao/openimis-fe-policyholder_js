@@ -128,6 +128,11 @@ function reducer(
     errorBankList: null,
     BankList: [],
     BankListPageInfo: { totalCount: 0 },
+
+    fetchingPolicyHoldersUnpaid: false,
+    fetchedPolicyHoldersUnpaid: false,
+    policyHoldersUnpaid: [],
+    errorPolicyHoldersUnpaid: null,
   },
   action
 ) {
@@ -265,14 +270,11 @@ function reducer(
         ...state,
         fetchingExceptionInsurees: false,
         fetchedExceptionInsurees: true,
-        ExceptionInsurees: parseData(
-          action.payload.data.allInsureeExceptions
-        ),
+        ExceptionInsurees: parseData(action.payload.data.allInsureeExceptions),
         ExceptionInsureesPageInfo: pageInfo(
           action.payload.data.allInsureeExceptions
         ),
-        ExceptionInsureesTotalCount: !!action.payload.data
-          .allInsureeExceptions
+        ExceptionInsureesTotalCount: !!action.payload.data.allInsureeExceptions
           ? action.payload.data.allInsureeExceptions.totalCount
           : null,
         errorExceptionInsurees: formatGraphQLError(action.payload),
@@ -366,14 +368,9 @@ function reducer(
         ...state,
         fetchingRequestPolicyholder: false,
         fetchedRequestPolicyholder: true,
-        RequestPolicyholder: parseData(
-          action.payload.data.policyHolder
-        ),
-        RequestPolicyholderPageInfo: pageInfo(
-          action.payload.data.policyHolder
-        ),
-        RequestPolicyholderTotalCount: !!action.payload.data
-          .policyHolder
+        RequestPolicyholder: parseData(action.payload.data.policyHolder),
+        RequestPolicyholderPageInfo: pageInfo(action.payload.data.policyHolder),
+        RequestPolicyholderTotalCount: !!action.payload.data.policyHolder
           ? action.payload.data.policyHolder.totalCount
           : null,
         errorRequestPolicyholder: formatGraphQLError(action.payload),
@@ -384,7 +381,6 @@ function reducer(
         fetchingRequestPolicyholder: false,
         errorRequestPolicyholder: formatServerError(action.payload),
       };
-
 
     case "POLICYHOLDER_REQUESTPOLICYHOLDERBYID_REQ":
       return {
@@ -401,14 +397,11 @@ function reducer(
         ...state,
         fetchingRequestPolicyholderById: false,
         fetchedRequestPolicyholderById: true,
-        RequestPolicyholderById: parseData(
-          action.payload.data.policyHolder
-        ),
+        RequestPolicyholderById: parseData(action.payload.data.policyHolder),
         RequestPolicyholderPageInfoById: pageInfo(
           action.payload.data.policyHolder
         ),
-        RequestPolicyholderTotalCountById: !!action.payload.data
-          .policyHolder
+        RequestPolicyholderTotalCountById: !!action.payload.data.policyHolder
           ? action.payload.data.policyHolder.totalCount
           : null,
         errorRequestPolicyholderById: formatGraphQLError(action.payload),
@@ -722,7 +715,7 @@ function reducer(
         fetchedPayment: true,
         payment: payments,
         errorPayment: formatGraphQLError(action.payload),
-        paymentsPageInfo: pageInfo(action.payload.data.payments)
+        paymentsPageInfo: pageInfo(action.payload.data.payments),
       };
     case "PAYMENT_OVERVIEW_ERR":
       return {
@@ -803,34 +796,51 @@ function reducer(
       return dispatchMutationResp(state, "insureeApproval", action);
     case "POLICYHOLDER_INSUREE_POLICYHOLDERAPPROVAL_RESP":
       return dispatchMutationResp(state, "policyHolderApproval", action);
-      case "POLICYHOLDER_BANKLIST_REQ":
-        return {
-          ...state,
-          fetchingBankList: true,
-          fetchedBankList: false,
-          BankList: null,
-          errorBankList: null,
-        };
-      case "POLICYHOLDER_BANKLIST_RESP":
-        console.log(action,'actionnn');
-        
-        return {
-          ...state,
-          fetchingBankList: false,
-          fetchedBankList: true,
-          BankList: parseData(
-            action?.payload?.data?.banks
-          ),
-          BankListPageInfo:pageInfo(
-            action?.payload?.data?.banks
-          ),
-        };
-      case "POLICYHOLDER_BANKLIST_ERR":
-        return {
-          ...state,
-          fetchingBankList: false,
-          errorBankList: formatServerError(action.payload),
-};
+    case "POLICYHOLDER_BANKLIST_REQ":
+      return {
+        ...state,
+        fetchingBankList: true,
+        fetchedBankList: false,
+        BankList: null,
+        errorBankList: null,
+      };
+    case "POLICYHOLDER_BANKLIST_RESP":
+      return {
+        ...state,
+        fetchingBankList: false,
+        fetchedBankList: true,
+        BankList: parseData(action?.payload?.data?.banks),
+        BankListPageInfo: pageInfo(action?.payload?.data?.banks),
+      };
+    case "POLICYHOLDER_BANKLIST_ERR":
+      return {
+        ...state,
+        fetchingBankList: false,
+        errorBankList: formatServerError(action.payload),
+      };
+    case "POLICYHOLDER_UNPAID_DECLARATION_REQ":
+      return {
+        ...state,
+        fetchingPolicyHoldersUnpaid: true,
+        fetchedPolicyHoldersUnpaid: false,
+        policyHoldersUnpaid: [],
+        errorPolicyHoldersUnpaid: null,
+      };
+    case "POLICYHOLDER_UNPAID_DECLARATION_RESP":
+      return {
+        ...state,
+        fetchingPolicyHoldersUnpaid: false,
+        fetchedPolicyHoldersUnpaid: true,
+        policyHoldersUnpaid:
+          action.payload.data.unpaidDeclarationByPolicyholder,
+        errorPolicyHoldersUnpaid: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_UNPAID_DECLARATION_ERR":
+      return {
+        ...state,
+        fetchingPolicyHoldersUnpaid: false,
+        errorPolicyHoldersUnpaid: formatServerError(action.payload),
+      };
     default:
       return state;
   }

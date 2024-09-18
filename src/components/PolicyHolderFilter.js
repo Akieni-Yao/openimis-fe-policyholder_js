@@ -20,15 +20,6 @@ class PolicyHolderFilter extends Component {
         return !!filters[k] ? filters[k].value : null
     }
 
-    _onChangeFilter = (k, v) => {
-        this.props.onChangeFilters([
-            {
-                id: k,
-                value: v,
-                filter: `${k}: ${v}`
-            }
-        ])
-    }
 
     _onChangeStringFilter = (k, v, lookup) => {
         this.props.onChangeFilters([
