@@ -351,27 +351,34 @@ class PolicyHolderForm extends Component {
         newTab
       );
 
-    let actions = [
-      {
-        button: (
-          <Typography component="span" className={classes.spanPadding}>
-            {formatMessage(intl, "policyholder", "policyholder.status")}
-            :unlock
-          </Typography>
-        ),
-      },
-      {
-        button: (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => unlockPolicyholder(policyHolderId)}
-          >
-            Unlock Policyholder
-          </Button>
-        ),
-      },
-    ];
+
+    let actions = [];
+    if (
+      !!this.state.policyHolder &&
+      this.state.policyHolder.status == "Locked"
+    ) {
+      actions.push(
+        {
+          button: (
+            <Typography component="span" className={classes.spanPadding}>
+              {formatMessage(intl, "policyholder", "policyholder.status")}
+              :unlock
+            </Typography>
+          ),
+        },
+        {
+          button: (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => unlockPolicyholder(policyHolderId)}
+            >
+              Unlock Policyholder
+            </Button>
+          ),
+        }
+      );
+    }
     return (
       <Fragment>
         <Helmet

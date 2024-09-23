@@ -8,7 +8,8 @@ import {
   Paper,
   Grid,
 } from "@material-ui/core";
-
+import { formatMessage } from "@openimis/fe-core";
+import { injectIntl } from "react-intl";
 const styles = (theme) => ({
   paper: theme.paper.paper,
   headerDetails: { ...theme.paper.header, padding: theme.spacing(2) },
@@ -40,7 +41,7 @@ class UnlockPaymentDetails extends Component {
     this.props.unlockPolicyholder(this.props.policyHolderId);
   };
   render() {
-    const { classes, policyHoldersUnpaid } = this.props;
+    const { classes, policyHoldersUnpaid, intl } = this.props;
 
     // Calculate declarationAmount (sum of amountDue from contract)
     const declarationAmount = policyHoldersUnpaid.reduce((total, payment) => {
@@ -81,25 +82,34 @@ class UnlockPaymentDetails extends Component {
             direction="row"
             className={classes.headerDetails}
           >
-            <Typography variant="h6">Payment Details</Typography>
+            <Typography variant="h6">
+              {formatMessage(intl, "payment", `PaymentOverview.title`)}
+            </Typography>
           </Box>
           <Divider />
           <Grid item xs={12} className={classes.container}>
             <Box className={classes.amountContainer}>
-              <Typography>Declaration Amount:</Typography>
+              <Typography>
+                {/* Declaration Amount: */}
+              {formatMessage(intl, "payment", `payment.DeclarationAmount`)}:
+              </Typography>
               <Typography>XAF {declarationAmount}</Typography>
             </Box>
             <Box className={classes.amountContainer}>
-              <Typography>Penalty Amount:</Typography>
+              <Typography>
+              {formatMessage(intl, "payment", `penaltyAmount`)}:
+              </Typography>
               <Typography>XAF {penaltyAmount}</Typography>
             </Box>
             <Box className={classes.amountContainer}>
-              <Typography>Sanction Amount:</Typography>
+              <Typography>
+              {formatMessage(intl, "payment", `SanctionAmount`)}:
+              </Typography>
               <Typography>XAF {sanctionAmount}</Typography>
             </Box>
             <Divider />
             <Box className={classes.amountContainer}>
-              <Typography>Total Amount to be Paid:</Typography>
+              <Typography>{formatMessage(intl, "payment", `TotalAmt`)}:</Typography>
               <Typography className={classes.totalAmount}>
                 XAF {declarationAmount + penaltyAmount + sanctionAmount}
               </Typography>
@@ -116,7 +126,7 @@ class UnlockPaymentDetails extends Component {
                 }
                 onClick={this.handleUnlockPolicyholder}
               >
-                Unlock Policy Holder
+                {formatMessage(intl, "policyHolder", `policyHolder.unlockPolicyholder`)}
               </Button>
             </Box>
           </Grid>
@@ -126,4 +136,4 @@ class UnlockPaymentDetails extends Component {
   }
 }
 
-export default withStyles(styles)(UnlockPaymentDetails);
+export default injectIntl(withStyles(styles)(UnlockPaymentDetails));

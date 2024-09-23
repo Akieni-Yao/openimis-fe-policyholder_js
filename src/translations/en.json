@@ -234,5 +234,6 @@
   "policyholder.appliedPenalties.title": "Applied Penalties",
   "policyholder.openSanction.title": "Open Sanction",
   "policyholder.openSanction.btn": "Pay",
-  "policyholder.openSanction.paidStatus": "Paid"
+  "policyholder.openSanction.paidStatus": "Paid",
+  "policyHolder.policyHolder.unlockPolicyholder": "Unlock Policy Holder"
 }

@@ -265,6 +265,9 @@ class UnlockPolicyHolderForm extends Component {
       "policyHolder.route.policyHolders"
     );
   };
+  handleBack=()=>{
+    this.props.history.goBack();
+  }
 
   render() {
     const { intl, rights, back, save, policyHolderId, classes, } = this.props;    
@@ -284,7 +287,7 @@ class UnlockPolicyHolderForm extends Component {
           title="policyHolder.unlockPage.title"
           titleParams={this.titleParams()}
           edited={this.state.policyHolder}
-          back={back}
+          back={this.handleBack}
           canSave={this.canSave}
           save={this.save}
           onEditedChanged={this.onEditedChanged}
