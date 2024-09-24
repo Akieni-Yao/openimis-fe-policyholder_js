@@ -91,8 +91,7 @@ const styles = (theme) => ({
     },
   },
   spanPadding: {
-    paddingTop: "2rem",
-    // paddingTop: theme.spacing(2),
+    paddingTop: "4rem",
     marginRight: "2rem",
   },
 });
@@ -362,7 +361,7 @@ class PolicyHolderForm extends Component {
           button: (
             <Typography component="span" className={classes.spanPadding}>
               {formatMessage(intl, "policyholder", "policyholder.status")}
-              :unlock
+              :{this.state.policyHolder.status}
             </Typography>
           ),
         },
@@ -373,7 +372,7 @@ class PolicyHolderForm extends Component {
               color="primary"
               onClick={() => unlockPolicyholder(policyHolderId)}
             >
-              Unlock Policyholder
+              {formatMessage(intl, "policyHolder", "policyHolder.unlockPolicyholder")}
             </Button>
           ),
         }

@@ -86,7 +86,9 @@ class AppliedPenaltiesSearcher extends Component {
     let result = [
       "payment.payment.PenaltyPeriod",
       "payment.payment.Amount",
+      "",
       "policyholder.action",
+      ""
     ];
     return result;
   };
@@ -191,6 +193,7 @@ class AppliedPenaltiesSearcher extends Component {
           policyholder?.dateValidTo
         ),
       (policyholder) => (!!policyholder?.amount ? policyholder?.amount : ""),
+      (policyholder) =>"",
       (policyholder) => {
         const { color } = this.getPaymentStatusDetails(
           this.props.intl,
@@ -307,7 +310,7 @@ class AppliedPenaltiesSearcher extends Component {
     });
 
     return (
-      <Grid container>
+      <Grid container style={{width:"100%"}}>
         <Searcher
           module="policyHolder"
           fetch={this.fetch}

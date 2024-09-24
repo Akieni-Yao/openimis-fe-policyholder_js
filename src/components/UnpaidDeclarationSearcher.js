@@ -21,15 +21,22 @@ import {
   MAX_CLIENTMUTATIONLABEL_LENGTH,
 } from "../constants";
 import PolicyHolderRequestSearcherPane from "./PolicyHolderRequestSearcherPane";
-import { Grid, IconButton, Tooltip, Button,Typography } from "@material-ui/core";
+import {
+  Grid,
+  IconButton,
+  Tooltip,
+  Button,
+  Typography,
+} from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
 import AppliedPenaltiesSearcher from "./AppliedPenaltiesSearcher";
 import SanctionOpenSearcher from "./SanctionOpenSearcher";
 import UnlockPaymentDetails from "./UnlockPaymentDetails";
 import moment from "moment";
+import { withTheme, withStyles } from "@material-ui/core/styles";
 
 const DEFAULT_ORDER_BY = "id";
-
+const styles = (theme) => ({ item: theme.paper.item, marginLeft: 30 });
 class UnpaidDeclarationSearcher extends Component {
   state = {
     queryParams: null,
@@ -141,8 +148,10 @@ class UnpaidDeclarationSearcher extends Component {
         (startDate.isSame(endDate, "month") &&
           startDate.isSame(endDate, "year"))
       ) {
+
         return startMonthYear;
       } else {
+
         return `${startMonthYear} - ${endMonthYear}`;
       }
     } else {
@@ -186,22 +195,25 @@ class UnpaidDeclarationSearcher extends Component {
     return { color };
   };
 
-
   itemFormatters = () => {
     const result = [
       (policyholder) =>
         !!policyholder.contract.code && policyholder.contract.code,
-      // (policyholder) =>
-      //   !!policyholder.contract?.dateValidFrom &&
-      //   this.formatDateRange(
-      //     policyholder.contract?.dateValidFrom,
-      //     policyholder.contract?.dateValidTo
-      //   ),
-      // ,
+      (policyholder) =>
+        !!policyholder.contract &&
+        !!policyholder.contract?.dateValidFrom &&
+        this.formatDateRange(
+          policyholder.contract?.dateValidFrom,
+          policyholder.contract?.dateValidTo
+        ),
+
       (policyholder) =>
         !!policyholder.contract.amountDue && policyholder.contract.amountDue,
       (policyholder) => {
-        const { color } = this.getPaymentStatusDetails(this.props.intl, policyholder.status);
+        const { color } = this.getPaymentStatusDetails(
+          this.props.intl,
+          policyholder.status
+        );
         if (policyholder.status == 1) {
           return (
             <Button
@@ -225,15 +237,15 @@ class UnpaidDeclarationSearcher extends Component {
             //     `payment.status.${policyholder.status}`
             //   )}
             // </Typography>
-              <Grid style={{ display: "flex" }}>
-              <span style={{ color,fontWeight:"bold" }}>
+            <Grid style={{ display: "flex" }}>
+              <span style={{ color, fontWeight: "bold" }}>
                 {policyholder.status !== null &&
                   formatMessage(
                     this.props.intl,
                     "payment",
                     `payment.status.${policyholder.status}`
                   )}
-  
+
                 {policyholder.status == -1 ? (
                   <Tooltip
                     placement="right"
@@ -301,10 +313,11 @@ class UnpaidDeclarationSearcher extends Component {
       errorPolicyHoldersUnpaid,
       predefinedPolicyHolderId,
       policyHoldersUnpaid,
+      classes,
     } = this.props;
     return (
       <Grid container>
-        <Grid item xs={6}>
+        <Grid item xs={6} className={classes.item}>
           <Searcher
             module="policyHolder"
             fetch={this.fetch}
@@ -332,8 +345,10 @@ class UnpaidDeclarationSearcher extends Component {
           <SanctionOpenSearcher policyHoldersUnpaid={policyHoldersUnpaid} />
         </Grid>
         <Grid item xs={6}>
-          <UnlockPaymentDetails policyHoldersUnpaid={policyHoldersUnpaid} 
-          policyHolderId={this.props.policyHolderId}/>
+          <UnlockPaymentDetails
+            policyHoldersUnpaid={policyHoldersUnpaid}
+            policyHolderId={this.props.policyHolderId}
+          />
         </Grid>
       </Grid>
     );
@@ -365,7 +380,14 @@ const mapDispatchToProps = (dispatch) => {
 export default withModulesManager(
   withHistory(
     injectIntl(
-      connect(mapStateToProps, mapDispatchToProps)(UnpaidDeclarationSearcher)
+      withTheme(
+        withStyles(styles)(
+          connect(
+            mapStateToProps,
+            mapDispatchToProps
+          )(UnpaidDeclarationSearcher)
+        )
+      )
     )
   )
 );

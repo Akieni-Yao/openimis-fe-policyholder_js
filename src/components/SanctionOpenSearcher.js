@@ -21,7 +21,7 @@ import {
   MAX_CLIENTMUTATIONLABEL_LENGTH,
 } from "../constants";
 import PolicyHolderRequestSearcherPane from "./PolicyHolderRequestSearcherPane";
-import { Grid, IconButton, Tooltip,Button } from "@material-ui/core";
+import { Grid, IconButton, Tooltip, Button } from "@material-ui/core";
 import moment from "moment";
 
 const DEFAULT_ORDER_BY = "id";
@@ -86,7 +86,9 @@ class SanctionOpenSearcher extends Component {
     let result = [
       "payment.payment.PenaltyPeriod",
       "payment.payment.Amount",
+      "",
       "policyholder.action",
+      "",
     ];
     return result;
   };
@@ -195,12 +197,13 @@ class SanctionOpenSearcher extends Component {
           policyholder?.dateValidTo
         ),
       (policyholder) => (!!policyholder?.amount ? policyholder?.amount : ""),
+      (policyholder) => "",
       (policyholder) => {
         const { color } = this.getPaymentStatusDetails(
           this.props.intl,
           policyholder.status
         );
-        if (policyholder.status == 1 ||policyholder.status == 9) {
+        if (policyholder.status == 1 || policyholder.status == 9) {
           return (
             <Button
               variant="contained"
@@ -215,35 +218,38 @@ class SanctionOpenSearcher extends Component {
             </Button>
           );
         } else {
-          return (  <Grid style={{ display: "flex" }}>
-            <span style={{ color, fontWeight: "bold" }}>
-              {policyholder.status !== null &&
-                formatMessage(
-                  this.props.intl,
-                  "payment",
-                  `penalty.status.${policyholder.status}`
-                )}
-
-              {policyholder.status == -1 ? (
-                <Tooltip
-                  placement="right"
-                  arrow
-                  //   classes={{ tooltip: this.props.classes.tooltip }}
-                  title={formatMessage(
+          return (
+            <Grid style={{ display: "flex" }}>
+              <span style={{ color, fontWeight: "bold" }}>
+                {policyholder.status !== null &&
+                  formatMessage(
                     this.props.intl,
                     "payment",
-                    `payment.rejectComment.${policyholder.rejectedReason}`
+                    `penalty.status.${policyholder.status}`
                   )}
-                >
-                  <IconButton>
-                    <HelpIcon />
-                  </IconButton>
-                </Tooltip>
-              ) : null}
-            </span>
-          </Grid>);
+
+                {policyholder.status == -1 ? (
+                  <Tooltip
+                    placement="right"
+                    arrow
+                    //   classes={{ tooltip: this.props.classes.tooltip }}
+                    title={formatMessage(
+                      this.props.intl,
+                      "payment",
+                      `payment.rejectComment.${policyholder.rejectedReason}`
+                    )}
+                  >
+                    <IconButton>
+                      <HelpIcon />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
+              </span>
+            </Grid>
+          );
         }
       },
+      (policyholder) => "",
     ];
 
     return result;
@@ -309,7 +315,7 @@ class SanctionOpenSearcher extends Component {
     });
 
     return (
-      <Grid container>
+      <Grid container style={{ width: "100%" }}>
         <Searcher
           module="policyHolder"
           fetch={this.fetch}
@@ -362,5 +368,8 @@ const mapDispatchToProps = (dispatch) => {
 
 export default withModulesManager(
   withHistory(
-  injectIntl(connect(mapStateToProps, mapDispatchToProps)(SanctionOpenSearcher)))
+    injectIntl(
+      connect(mapStateToProps, mapDispatchToProps)(SanctionOpenSearcher)
+    )
+  )
 );
