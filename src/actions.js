@@ -27,7 +27,7 @@ const UNLOCK_POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
   // "dateValidTo",
   // "jsonExt",
   "contract{id,dateValidFrom,dateValidTo,amountDue,code}",
-  "paymentsPenalty { edges {cursor node {id, dateValidFrom,dateValidTo, isSubmitted,isOutstanding,isApproved,isRejected,  isCanceled,isReduced,isReducedApproved,isReducedRejected, reducedRejectedReason,amount,revisedAmount,   penaltyLevel,penaltyType,status}}}",
+  "paymentsPenalty { edges {cursor node {id, dateValidFrom,dateValidTo, isSubmitted,isOutstanding,isApproved,isRejected,  isCanceled,isReduced,isReducedApproved,isReducedRejected, reducedRejectedReason,amount,revisedAmount,   penaltyLevel,penaltyType,status,payment{contract{id,dateValidFrom,dateValidTo}}}}}",
 ];
 
 const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
@@ -1548,7 +1548,6 @@ export function fetchPolicyholderRequestById(mm, uuid) {
 }
 
 export function fetchUnpaidDeclaration(modulesManager, params) {
-  console.log("checkparams", params);
 
   const payload = formatQuery(
     "unpaidDeclarationByPolicyholder",
@@ -1558,21 +1557,22 @@ export function fetchUnpaidDeclaration(modulesManager, params) {
   return graphql(payload, "POLICYHOLDER_UNPAID_DECLARATION");
 }
 
-export function unlockPolicyholder(phId){
-  const mutation=`mutation UnlockPolicyholder {
+export function unlockPolicyholder(phId) {
+  const mutation = `mutation UnlockPolicyholder {
     unlockPolicyholder(policyHolder: "${phId}") {
         success
         message
     }
 }
 `;
-return graphql(
-  mutation,
-  [
-    "INSUREE_MUTATION_REQ",
-    "INSUREE_UPDATE_EXTERNAL_DOCUMENT_RESP",
-    "INSUREE_MUTATION_ERR",
-  ],
-  "success message responses"
-);
+
+  return graphql(
+    mutation,
+    [
+      "INSUREE_MUTATION_REQ",
+      "INSUREE_UPDATE_EXTERNAL_DOCUMENT_RESP",
+      "INSUREE_MUTATION_ERR",
+    ],
+    "success message responses"
+  );
 }

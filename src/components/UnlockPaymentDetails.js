@@ -8,8 +8,12 @@ import {
   Paper,
   Grid,
 } from "@material-ui/core";
-import { formatMessage } from "@openimis/fe-core";
+import { formatMessage, journalize, coreConfirm } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { unlockPolicyholder } from "../actions";
+
 const styles = (theme) => ({
   paper: theme.paper.paper,
   headerDetails: { ...theme.paper.header, padding: theme.spacing(2) },
@@ -74,6 +78,15 @@ class UnlockPaymentDetails extends Component {
       return total + sanctionSum;
     }, 0);
 
+    const allContractsStatusFive = policyHoldersUnpaid.every(
+      (item) => item.status === 5
+    );
+
+    const allPenaltiesStatusValid = policyHoldersUnpaid.every((item) =>
+      item.paymentsPenalty.edges.every(
+        (edge) => edge.node.status === 3 || edge.node.status === 11
+      )
+    );
     return (
       <Box className={classes.container}>
         <Paper className={classes.paper}>
@@ -91,25 +104,27 @@ class UnlockPaymentDetails extends Component {
             <Box className={classes.amountContainer}>
               <Typography>
                 {/* Declaration Amount: */}
-              {formatMessage(intl, "payment", `payment.DeclarationAmount`)}:
+                {formatMessage(intl, "payment", `payment.DeclarationAmount`)}:
               </Typography>
               <Typography>XAF {declarationAmount}</Typography>
             </Box>
             <Box className={classes.amountContainer}>
               <Typography>
-              {formatMessage(intl, "payment", `penaltyAmount`)}:
+                {formatMessage(intl, "payment", `penaltyAmount`)}:
               </Typography>
               <Typography>XAF {penaltyAmount}</Typography>
             </Box>
             <Box className={classes.amountContainer}>
               <Typography>
-              {formatMessage(intl, "payment", `SanctionAmount`)}:
+                {formatMessage(intl, "payment", `SanctionAmount`)}:
               </Typography>
               <Typography>XAF {sanctionAmount}</Typography>
             </Box>
             <Divider />
             <Box className={classes.amountContainer}>
-              <Typography>{formatMessage(intl, "payment", `TotalAmt`)}:</Typography>
+              <Typography>
+                {formatMessage(intl, "payment", `TotalAmt`)}:
+              </Typography>
               <Typography className={classes.totalAmount}>
                 XAF {declarationAmount + penaltyAmount + sanctionAmount}
               </Typography>
@@ -119,14 +134,17 @@ class UnlockPaymentDetails extends Component {
                 variant="contained"
                 color="primary"
                 disabled={
-                  policyHoldersUnpaid?.status == 5 &&
-                  policyHoldersUnpaid?.paymentsPenalty?.status == 7
+                  allContractsStatusFive && allPenaltiesStatusValid
                     ? false
                     : true
                 }
                 onClick={this.handleUnlockPolicyholder}
               >
-                {formatMessage(intl, "policyHolder", `policyHolder.unlockPolicyholder`)}
+                {formatMessage(
+                  intl,
+                  "policyHolder",
+                  `policyHolder.unlockPolicyholder`
+                )}
               </Button>
             </Box>
           </Grid>
@@ -135,5 +153,22 @@ class UnlockPaymentDetails extends Component {
     );
   }
 }
+const mapStateToProps = (state, props) => ({
+  fetchingPolicyHoldersUnpaid: state.policyHolder.fetchingPolicyHoldersUnpaid,
+});
 
-export default injectIntl(withStyles(styles)(UnlockPaymentDetails));
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      unlockPolicyholder,
+      journalize,
+      coreConfirm,
+    },
+    dispatch
+  );
+};
+export default injectIntl(
+  withStyles(styles)(
+    connect(mapStateToProps, mapDispatchToProps)(UnlockPaymentDetails)
+  )
+);

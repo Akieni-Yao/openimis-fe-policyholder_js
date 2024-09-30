@@ -191,10 +191,10 @@ class SanctionOpenSearcher extends Component {
   itemFormatters = () => {
     const result = [
       (policyholder) =>
-        !!policyholder?.dateValidFrom &&
+        !!policyholder?.payment.contract &&
         this.formatDateRange(
-          policyholder?.dateValidFrom,
-          policyholder?.dateValidTo
+          policyholder?.payment.contract?.dateValidFrom,
+          policyholder?.payment.contract.dateValidTo
         ),
       (policyholder) => (!!policyholder?.amount ? policyholder?.amount : ""),
       (policyholder) => "",
