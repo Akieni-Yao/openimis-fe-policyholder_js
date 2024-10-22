@@ -15,15 +15,15 @@ import {
   Helmet,
   FormattedMessage,
   historyPush,
-  decodeId,
 } from "@openimis/fe-core";
 import {
-  fetchPolicyHolder,
+  fetchUnpaidDeclaration,
   clearPolicyHolder,
   sendEmail,
   printReport,
   havingPAymentApprove,
   fetchBankList,
+  fetchPolicyHolder
 } from "../actions";
 import {
   Dialog,
@@ -32,7 +32,7 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-  Typography,
+  Typography
 } from "@material-ui/core";
 
 import {
@@ -40,11 +40,11 @@ import {
   RIGHT_POLICYHOLDER_CREATE,
   RIGHT_POLICYHOLDER_UPDATE,
 } from "../constants";
-import PolicyHolderGeneralInfoPanel from "./PolicyHolderGeneralInfoPanel";
-import PolicyHolderTabPanel from "./PolicyHolderTabPanel";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import CommonSnackbar from "./CommonSnackbar";
+import UnlockPolicyHolderMasterPanel from "./UnlockPolicyHolderMasterPanel";
+import UnpaidDeclarationSearcher from "./UnpaidDeclarationSearcher";
 const styles = (theme) => ({
   paper: theme.paper.paper,
   paperHeader: theme.paper.header,
@@ -91,14 +91,15 @@ const styles = (theme) => ({
     },
   },
   spanPadding: {
-    paddingTop: "4rem",
+    paddingTop: "2rem",
+    // paddingTop: theme.spacing(2),
     marginRight: "2rem",
   },
 });
 
 const jsonFields = ["address", "contactName", "bankAccount", "jsonExt"];
 
-class PolicyHolderForm extends Component {
+class UnlockPolicyHolderForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -166,8 +167,6 @@ class PolicyHolderForm extends Component {
   }
   isMandatoryFieldsEmpty = () => {
     const { policyHolder } = this.state;
-    //  console.log("this.state",this.state)
-    // Check if rccm has a value
     const rccmHasValue = !!policyHolder?.jsonExt?.rccm;
 
     // Define the list of mandatory fields based on the value of rccm
@@ -216,87 +215,8 @@ class PolicyHolderForm extends Component {
 
     return isEmpty; // Returns true if any mandatory field is undefined or empty, otherwise returns false
   };
-  // isMandatoryFieldsEmpty = () => {
-  //   const { policyHolder } = this.state;
-  //   console.log("this.state", this.state)
-  //   if (
-  //     // !!policyHolder.code &&
-  //     !!policyHolder.tradeName &&
-  //     !!policyHolder.locations &&
-  //     !!policyHolder.jsonExt.mainActivity &&
-  //     // !!policyHolder.dateValidFrom &&
-  //     !!policyHolder.activityCode &&
-  //     !!policyHolder.contactName &&
-  //     !!policyHolder.address &&
-  //     !!policyHolder.phone &&
-  //     !!policyHolder.legalForm
-  //     // &&
-  //     // !!policyHolder.jsonExt.createdAt
-  //   ) {
-  //     return false;
-  //   }
-  //   if (!!policyHolder?.jsonExt?.rccm && !!policyHolder?.jsonExt?.nbEmployees &&
-  //     !!policyHolder?.jsonExt?.createdAt &&
-  //     !!policyHolder?.dateValidFrom) {
-  //     return false
-  //   }
-  //   return true;
-  // };
 
-  emailButton = async (edited) => {
-    const message = await this.props.sendEmail(
-      this.props.modulesManager,
-      edited
-    );
-    if (message?.payload?.data?.sentNotification?.message) {
-      // If the email was sent successfully, update the success state and message
-      this.setState({
-        success: true,
-        successMessage: "Email sent successfully",
-      });
-    } else {
-      // If the email send was not successful, you can also set success to false here
-      // and provide an appropriate error message.
-      this.setState({
-        success: false,
-        successMessage: "Email sending failed",
-      });
-    }
-  };
-  displayPrintWindow = (base64Data, contentType) => {
-    const printWindow = window.open(
-      "",
-      "Print Window",
-      "width=600, height=400"
-    );
-    printWindow.document.open();
 
-    if (contentType === "pdf") {
-      // printWindow.print(`<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`);
-      printWindow.document.write(
-        `<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`
-      );
-    } else {
-      printWindow.document.write(
-        `<img src="data:image/png;base64,${base64Data}" />`
-      );
-    }
-
-    printWindow.document.close();
-    // printWindow.print();
-  };
-  printReport = async (edited) => {
-    const data = await this.props.printReport(
-      this.props.modulesManager,
-      edited
-    );
-
-    const base64Data = data?.payload?.data?.sentNotification?.data;
-    const contentType = "pdf";
-    if (base64Data) {
-      this.displayPrintWindow(base64Data, contentType);
-    }
-  };
   cancel = () => {
     this.setState({
       success: false,
@@ -338,66 +258,40 @@ class PolicyHolderForm extends Component {
     !this.props.rights.includes(RIGHT_POLICYHOLDER_CREATE) &&
     !this.props.rights.includes(RIGHT_POLICYHOLDER_UPDATE);
 
+  unlockPolicyholder = (policyHolderId) => {
+    historyPush(
+      this.props.modulesManager,
+      this.props.history,
+      "policyHolder.route.policyHolders"
+    );
+  };
+  handleBack=()=>{
+    this.props.history.goBack();
+  }
+
   render() {
-    const { intl, rights, back, save, policyHolderId, classes } = this.props;
+    const { intl, rights, back, save, policyHolderId, classes, } = this.props;    
 
-    const unlockPolicyholder = (policyHolderId, newTab = false) =>
-      historyPush(
-        this.props.modulesManager,
-        this.props.history,
-        "policyHolder.route.policyHolder.unlock",
-        [policyHolderId],
-        newTab
-      );
-
-
-    let actions = [];
-    if (
-      !!this.state.policyHolder &&
-      this.state.policyHolder.status == "Locked"
-    ) {
-      actions.push(
-        {
-          button: (
-            <Typography component="span" className={classes.spanPadding}>
-              {formatMessage(intl, "policyholder", "policyholder.status")}
-              :{this.state.policyHolder.status}
-            </Typography>
-          ),
-        },
-        {
-          button: (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => unlockPolicyholder(policyHolderId)}
-            >
-              {formatMessage(intl, "policyHolder", "policyHolder.unlockPolicyholder")}
-            </Button>
-          ),
-        }
-      );
-    }
     return (
       <Fragment>
         <Helmet
           title={formatMessageWithValues(
             this.props.intl,
             "policyHolder",
-            "policyHolder.page.title",
+            "policyHolder.unlockPage.title",
             this.titleParams()
           )}
         />
         <Form
           module="policyHolder"
-          title="policyHolder.page.title"
+          title="policyHolder.unlockPage.title"
           titleParams={this.titleParams()}
           edited={this.state.policyHolder}
-          back={back}
+          back={this.handleBack}
           canSave={this.canSave}
           save={this.save}
           onEditedChanged={this.onEditedChanged}
-          HeadPanel={PolicyHolderGeneralInfoPanel}
+          HeadPanel={UnlockPolicyHolderMasterPanel}
           mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
           saveTooltip={formatMessage(
             intl,
@@ -407,15 +301,11 @@ class PolicyHolderForm extends Component {
             }`
           )}
           onValidation={this.onValidation}
-          Panels={[PolicyHolderTabPanel]}
+          policyHolderId={policyHolderId}
+          Panels={[UnpaidDeclarationSearcher]}
           rights={rights}
           isPolicyHolderPortalUser={this.isPolicyHolderPortalUser()}
           openDirty={save}
-          emailButton={this.emailButton}
-          email={policyHolderId}
-          print={policyHolderId}
-          printButton={this.printReport}
-          actions={actions}
           success={this.state.success}
         />
         <CommonSnackbar
@@ -450,27 +340,13 @@ class PolicyHolderForm extends Component {
             </DialogActions>
           </Dialog>
         )}
-        {/* {this.state.success && (
-          <Snackbar
-            open={this.state.success}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
-            }}
-            style={{ marginRight: "50px", color: "white" }}
-            onClose={this.onHandlerClose}
-          >
-            <Alert variant="filled" severity="success">
-              {this.state.successMessage}
-            </Alert>
-          </Snackbar>
-        )} */}
+
       </Fragment>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state,props) => ({
   fetchingPolicyHolder: state.policyHolder.fetchingPolicyHolder,
   errorPolicyHolder: state.policyHolder.errorPolicyHolder,
   fetchedPolicyHolder: state.policyHolder.fetchedPolicyHolder,
@@ -479,18 +355,20 @@ const mapStateToProps = (state) => ({
     state.policyHolder?.validationFields?.policyHolderCode?.isValid,
   submittingMutation: state.policyHolder.submittingMutation,
   mutation: state.policyHolder.mutation,
+   policyHoldersUnpaid: state.policyHolder.policyHoldersUnpaid,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      fetchPolicyHolder,
+      fetchUnpaidDeclaration,
       clearPolicyHolder,
       journalize,
       sendEmail,
       printReport,
       havingPAymentApprove,
       fetchBankList,
+      fetchPolicyHolder
     },
     dispatch
   );
@@ -501,7 +379,7 @@ export default withHistory(
     injectIntl(
       withTheme(
         withStyles(styles)(
-          connect(mapStateToProps, mapDispatchToProps)(PolicyHolderForm)
+          connect(mapStateToProps, mapDispatchToProps)(UnlockPolicyHolderForm)
         )
       )
     )
