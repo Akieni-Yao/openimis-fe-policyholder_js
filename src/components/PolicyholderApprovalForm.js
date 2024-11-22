@@ -193,9 +193,6 @@ class PolicyHolderApprovalForm extends Component {
               {}
             );
       this.showSnackbar(severity, message);
-      setTimeout(() => {
-        this.reload();
-      }, 3000);
     } catch (error) {
       this.showSnackbar("error", error.message);
     } finally {
