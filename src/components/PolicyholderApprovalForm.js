@@ -197,6 +197,7 @@ class PolicyHolderApprovalForm extends Component {
       this.showSnackbar("error", error.message);
     } finally {
       this.handleDialogClose();
+      this.reload();
     }
   };
   _rework = async (paymentData) => {
