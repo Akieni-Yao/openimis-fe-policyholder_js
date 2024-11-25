@@ -14,6 +14,7 @@ import {
   IconButton,
   Typography,
 } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   PublishedComponent,
   TextInput,
@@ -57,6 +58,7 @@ const PolicyholderPortalApproveReject = (props) => {
     intl,
   } = props;
   const approverData = useSelector((store) => store);
+  const [isLoading, setIsLoading] = useState(false);
   const { formatMessage, formatMessageWithValues } = useTranslations(
     "policyHolder",
     modulesManager
@@ -145,13 +147,19 @@ const PolicyholderPortalApproveReject = (props) => {
           <Button
             onClick={() => onClose()}
             variant="outlined"
+            disabled={isLoading}
             className={classes.primaryButton}
           >
             {formatMessage("dialog.cancel")}
           </Button>
           <Button
-            onClick={() => approveorreject(updatedPayload)}
+            onClick={async () => {
+              setIsLoading(true);
+              await approveorreject(updatedPayload);
+              setIsLoading(false);
+            }}
             variant="contained"
+            disabled={isLoading}
             className={
               statusCheck == "5" ? newClasses.approveBtn : newClasses.rejectBtn
             }
@@ -159,6 +167,14 @@ const PolicyholderPortalApproveReject = (props) => {
             {statusCheck == "5"
               ? formatMessage("button.approved")
               : formatMessage("button.reject")}
+
+            {isLoading && (
+              <CircularProgress
+                color="inherit"
+                size={25}
+                style={{ marginLeft: 10 }}
+              />
+            )}
           </Button>
         </DialogActions>
       </Dialog>
