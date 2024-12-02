@@ -20,6 +20,7 @@ import {
   ZERO,
   MAX_CLIENTMUTATIONLABEL_LENGTH,
 } from "../constants";
+import HelpIcon from "@material-ui/icons/Help";
 import PolicyHolderRequestSearcherPane from "./PolicyHolderRequestSearcherPane";
 import { Grid, IconButton, Tooltip, Button } from "@material-ui/core";
 import moment from "moment";

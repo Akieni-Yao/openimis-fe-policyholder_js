@@ -11,6 +11,7 @@ import {
   historyPush,
   withHistory,
 } from "@openimis/fe-core";
+import HelpIcon from "@material-ui/icons/Help";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { fetchUnpaidDeclaration, deletePolicyHolderUser } from "../actions";
