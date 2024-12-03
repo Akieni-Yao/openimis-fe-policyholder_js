@@ -35,7 +35,7 @@ const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
   "code",
   "tradeName",
   "locations" +
-    modulesManager.getProjection("location.Location.FlatProjection"),
+  modulesManager.getProjection("location.Location.FlatProjection"),
   "address",
   "phone",
   "fax",
@@ -65,9 +65,9 @@ const POLICYHOLDERINSUREE_FULL_PROJECTION = (modulesManager) => [
   "policyHolder{id}",
   "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
   "contributionPlanBundle" +
-    modulesManager.getProjection(
-      "contributionPlan.ContributionPlanBundlePicker.projection"
-    ),
+  modulesManager.getProjection(
+    "contributionPlan.ContributionPlanBundlePicker.projection"
+  ),
   "isDeleted",
   "replacementUuid",
 ];
@@ -76,9 +76,9 @@ const POLICYHOLDERINSUREE_PICKER_PROJECTION = (modulesManager) => [
   "id",
   "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
   "contributionPlanBundle" +
-    modulesManager.getProjection(
-      "contributionPlan.ContributionPlanBundlePicker.projection"
-    ),
+  modulesManager.getProjection(
+    "contributionPlan.ContributionPlanBundlePicker.projection"
+  ),
 ];
 
 const POLICYHOLDERCONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = (modulesManager) => [
@@ -90,9 +90,9 @@ const POLICYHOLDERCONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = (modulesManager) => [
   "replacementUuid",
   "policyHolder{id}",
   "contributionPlanBundle" +
-    modulesManager.getProjection(
-      "contributionPlan.ContributionPlanBundlePicker.projection"
-    ),
+  modulesManager.getProjection(
+    "contributionPlan.ContributionPlanBundlePicker.projection"
+  ),
 ];
 
 const POLICYHOLDERCONTRIBUTIONPLANBUNDLE_PICKER_PROJECTION = (
@@ -100,9 +100,9 @@ const POLICYHOLDERCONTRIBUTIONPLANBUNDLE_PICKER_PROJECTION = (
 ) => [
   "id",
   "contributionPlanBundle" +
-    modulesManager.getProjection(
-      "contributionPlan.ContributionPlanBundlePicker.projection"
-    ),
+  modulesManager.getProjection(
+    "contributionPlan.ContributionPlanBundlePicker.projection"
+  ),
 ];
 
 const POLICYHOLDERUSER_FULL_PROJECTION = (modulesManager) => [
@@ -198,7 +198,7 @@ export function fetchPolicyHolderCode(modulesManager, policyHolderCode) {
 
 export function clearPolicyHolder() {
   return (dispatch) => {
-    dispatch({ type: "POLICYHOLDER_POLICYHOLDER_CLEAR" });
+    dispatch({type: "POLICYHOLDER_POLICYHOLDER_CLEAR"});
   };
 }
 
@@ -260,94 +260,94 @@ function formatPolicyHolderGQL(policyHolder) {
   return `
         ${!!policyHolder.id ? `id: "${decodeId(policyHolder.id)}"` : ""}
         ${
-          !!policyHolder.code
-            ? `code: "${formatGQLString(policyHolder.code)}"`
-            : ""
-        }
+    !!policyHolder.code
+      ? `code: "${formatGQLString(policyHolder.code)}"`
+      : ""
+  }
         ${
-          !!policyHolder.tradeName
-            ? `tradeName: "${formatGQLString(policyHolder.tradeName)}"`
-            : ""
-        }
+    !!policyHolder.tradeName
+      ? `tradeName: "${formatGQLString(policyHolder.tradeName)}"`
+      : ""
+  }
         ${
-          !!policyHolder.locations
-            ? `locationsId: ${decodeId(policyHolder.locations.id)}`
-            : ""
-        }
+    !!policyHolder.locations
+      ? `locationsId: ${decodeId(policyHolder.locations.id)}`
+      : ""
+  }
         ${
-          !!policyHolder.address
-            ? `address: ${JSON.stringify(policyHolder.address).replace(
-                /\\n/g,
-                "\\n"
-              )}`
-            : ""
-        }
+    !!policyHolder.address
+      ? `address: ${JSON.stringify(policyHolder.address).replace(
+        /\\n/g,
+        "\\n"
+      )}`
+      : ""
+  }
         ${
-          !!policyHolder.phone
-            ? `phone: "${formatGQLString(policyHolder.phone)}"`
-            : ""
-        }
+    !!policyHolder.phone
+      ? `phone: "${formatGQLString(policyHolder.phone)}"`
+      : ""
+  }
         ${
-          !!policyHolder.fax
-            ? `fax: "${formatGQLString(policyHolder.fax)}"`
-            : ""
-        }
+    !!policyHolder.fax
+      ? `fax: "${formatGQLString(policyHolder.fax)}"`
+      : ""
+  }
         ${
-          !!policyHolder.email
-            ? `email: "${formatGQLString(policyHolder.email)}"`
-            : ""
-        }
+    !!policyHolder.email
+      ? `email: "${formatGQLString(policyHolder.email)}"`
+      : ""
+  }
         ${
-          !!policyHolder.contactName
-            ? `contactName: ${JSON.stringify(policyHolder.contactName)}`
-            : ""
-        }
+    !!policyHolder.contactName
+      ? `contactName: ${JSON.stringify(policyHolder.contactName)}`
+      : ""
+  }
         ${
-          !!policyHolder.legalForm ? `legalForm: ${policyHolder.legalForm}` : ""
-        }
+    !!policyHolder.legalForm ? `legalForm: ${policyHolder.legalForm}` : ""
+  }
         ${
-          !!policyHolder.activityCode
-            ? `activityCode: ${policyHolder.activityCode}`
-            : ""
-        }
+    !!policyHolder.activityCode
+      ? `activityCode: ${policyHolder.activityCode}`
+      : ""
+  }
         ${
-          !!policyHolder.accountancyAccount
-            ? `accountancyAccount: "${formatGQLString(
-                policyHolder.accountancyAccount
-              )}"`
-            : ""
-        }
+    !!policyHolder.accountancyAccount
+      ? `accountancyAccount: "${formatGQLString(
+        policyHolder.accountancyAccount
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolder.bankAccount
-            ? `bankAccount: ${JSON.stringify(policyHolder.bankAccount)}`
-            : ""
-        }
+    !!policyHolder.bankAccount
+      ? `bankAccount: ${JSON.stringify(policyHolder.bankAccount)}`
+      : ""
+  }
    
         ${
-          !!policyHolder.paymentReference
-            ? `paymentReference: "${formatGQLString(
-                policyHolder.paymentReference
-              )}"`
-            : ""
-        }
+    !!policyHolder.paymentReference
+      ? `paymentReference: "${formatGQLString(
+        policyHolder.paymentReference
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolder.dateValidFrom
-            ? `dateValidFrom: "${dateTimeToDate(policyHolder.dateValidFrom)}"`
-            : ""
-        }
+    !!policyHolder.dateValidFrom
+      ? `dateValidFrom: "${dateTimeToDate(policyHolder.dateValidFrom)}"`
+      : ""
+  }
         ${
-          !!policyHolder.dateValidTo
-            ? `dateValidTo: "${dateTimeToDate(policyHolder.dateValidTo)}"`
-            : ""
-        }
+    !!policyHolder.dateValidTo
+      ? `dateValidTo: "${dateTimeToDate(policyHolder.dateValidTo)}"`
+      : ""
+  }
         ${
-          !!policyHolder.jsonExt
-            ? `jsonExt: ${JSON.stringify(policyHolder.jsonExt).replace(
-                /\\n/g,
-                "\\n"
-              )}`
-            : ""
-        }
+    !!policyHolder.jsonExt
+      ? `jsonExt: ${JSON.stringify(policyHolder.jsonExt).replace(
+        /\\n/g,
+        "\\n"
+      )}`
+      : ""
+  }
     `;
 }
 
@@ -357,55 +357,55 @@ function formatPolicyHolderInsureeGQL(
 ) {
   return `
         ${
-          !!policyHolderInsuree.id
-            ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
-                policyHolderInsuree.id
-              )}"`
-            : ""
-        }
+    !!policyHolderInsuree.id
+      ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
+        policyHolderInsuree.id
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderInsuree.policyHolder && !isReplaceMutation
-            ? `policyHolderId: "${decodeId(
-                policyHolderInsuree.policyHolder.id
-              )}"`
-            : ""
-        }
+    !!policyHolderInsuree.policyHolder && !isReplaceMutation
+      ? `policyHolderId: "${decodeId(
+        policyHolderInsuree.policyHolder.id
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderInsuree.insuree
-            ? `insureeId: ${decodeId(policyHolderInsuree.insuree.id)}`
-            : ""
-        }
+    !!policyHolderInsuree.insuree
+      ? `insureeId: ${decodeId(policyHolderInsuree.insuree.id)}`
+      : ""
+  }
         ${
-          !!policyHolderInsuree.contributionPlanBundle
-            ? `contributionPlanBundleId: "${decodeId(
-                policyHolderInsuree.contributionPlanBundle.id
-              )}"`
-            : ""
-        }
+    !!policyHolderInsuree.contributionPlanBundle
+      ? `contributionPlanBundleId: "${decodeId(
+        policyHolderInsuree.contributionPlanBundle.id
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderInsuree.jsonExt
-            ? `jsonExt: ${JSON.stringify(policyHolderInsuree.jsonExt)}`
-            : ""
-        }
+    !!policyHolderInsuree.jsonExt
+      ? `jsonExt: ${JSON.stringify(policyHolderInsuree.jsonExt)}`
+      : ""
+  }
     ${
-      !!policyHolderInsuree.employerNumber
-        ? `employerNumber: "${policyHolderInsuree.employerNumber}"`
-        : ""
-    }
+    !!policyHolderInsuree.employerNumber
+      ? `employerNumber: "${policyHolderInsuree.employerNumber}"`
+      : ""
+  }
         ${
-          !!policyHolderInsuree.dateValidFrom
-            ? `dateValidFrom: "${dateTimeToDate(
-                policyHolderInsuree.dateValidFrom
-              )}"`
-            : ""
-        }
+    !!policyHolderInsuree.dateValidFrom
+      ? `dateValidFrom: "${dateTimeToDate(
+        policyHolderInsuree.dateValidFrom
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderInsuree.dateValidTo
-            ? `dateValidTo: "${dateTimeToDate(
-                policyHolderInsuree.dateValidTo
-              )}"`
-            : ""
-        }
+    !!policyHolderInsuree.dateValidTo
+      ? `dateValidTo: "${dateTimeToDate(
+        policyHolderInsuree.dateValidTo
+      )}"`
+      : ""
+  }
     `;
 }
 
@@ -415,41 +415,41 @@ function formatPolicyHolderContributionPlanBundleGQL(
 ) {
   return `
         ${
-          !!policyHolderContributionPlanBundle.id
-            ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
-                policyHolderContributionPlanBundle.id
-              )}"`
-            : ""
-        }
+    !!policyHolderContributionPlanBundle.id
+      ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
+        policyHolderContributionPlanBundle.id
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderContributionPlanBundle.policyHolder &&
-          !isReplaceMutation
-            ? `policyHolderId: "${decodeId(
-                policyHolderContributionPlanBundle.policyHolder.id
-              )}"`
-            : ""
-        }
+    !!policyHolderContributionPlanBundle.policyHolder &&
+    !isReplaceMutation
+      ? `policyHolderId: "${decodeId(
+        policyHolderContributionPlanBundle.policyHolder.id
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderContributionPlanBundle.contributionPlanBundle
-            ? `contributionPlanBundleId: "${decodeId(
-                policyHolderContributionPlanBundle.contributionPlanBundle.id
-              )}"`
-            : ""
-        }
+    !!policyHolderContributionPlanBundle.contributionPlanBundle
+      ? `contributionPlanBundleId: "${decodeId(
+        policyHolderContributionPlanBundle.contributionPlanBundle.id
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderContributionPlanBundle.dateValidFrom
-            ? `dateValidFrom: "${dateTimeToDate(
-                policyHolderContributionPlanBundle.dateValidFrom
-              )}"`
-            : ""
-        }
+    !!policyHolderContributionPlanBundle.dateValidFrom
+      ? `dateValidFrom: "${dateTimeToDate(
+        policyHolderContributionPlanBundle.dateValidFrom
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderContributionPlanBundle.dateValidTo
-            ? `dateValidTo: "${dateTimeToDate(
-                policyHolderContributionPlanBundle.dateValidTo
-              )}"`
-            : ""
-        }
+    !!policyHolderContributionPlanBundle.dateValidTo
+      ? `dateValidTo: "${dateTimeToDate(
+        policyHolderContributionPlanBundle.dateValidTo
+      )}"`
+      : ""
+  }
     `;
 }
 
@@ -489,34 +489,34 @@ function formatPolicyHolderUserGQL(
 ) {
   return `
         ${
-          !!policyHolderUser.id
-            ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
-                policyHolderUser.id
-              )}"`
-            : ""
-        }
+    !!policyHolderUser.id
+      ? `${isReplaceMutation ? "uuid" : "id"}: "${decodeId(
+        policyHolderUser.id
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderUser.user
-            ? `userId: "${decodeId(policyHolderUser.user.id)}"`
-            : ""
-        }
+    !!policyHolderUser.user
+      ? `userId: "${decodeId(policyHolderUser.user.id)}"`
+      : ""
+  }
         ${
-          !!policyHolderUser.policyHolder
-            ? `policyHolderId: "${policyHolderUser.policyHolder.id}"`
-            : ""
-        }
+    !!policyHolderUser.policyHolder
+      ? `policyHolderId: "${policyHolderUser.policyHolder.id}"`
+      : ""
+  }
         ${
-          !!policyHolderUser.dateValidFrom
-            ? `dateValidFrom: "${dateTimeToDate(
-                policyHolderUser.dateValidFrom
-              )}"`
-            : ""
-        }
+    !!policyHolderUser.dateValidFrom
+      ? `dateValidFrom: "${dateTimeToDate(
+        policyHolderUser.dateValidFrom
+      )}"`
+      : ""
+  }
         ${
-          !!policyHolderUser.dateValidTo
-            ? `dateValidTo: "${dateTimeToDate(policyHolderUser.dateValidTo)}"`
-            : ""
-        }
+    !!policyHolderUser.dateValidTo
+      ? `dateValidTo: "${dateTimeToDate(policyHolderUser.dateValidTo)}"`
+      : ""
+  }
     `;
 }
 
@@ -929,7 +929,7 @@ export const policyHolderCodeSetValid = () => {
 
 export const policyHolderCodeClear = () => {
   return (dispatch) => {
-    dispatch({ type: "POLICYHOLDER_CODE_FIELDS_VALIDATION_CLEAR" });
+    dispatch({type: "POLICYHOLDER_CODE_FIELDS_VALIDATION_CLEAR"});
   };
 };
 
@@ -983,7 +983,7 @@ const DECLARATION_FULL_PROJECTION = (modulesManager) => [
   "email",
   "contactName",
   "locations" +
-    modulesManager.getProjection("location.Location.FlatProjection"),
+  modulesManager.getProjection("location.Location.FlatProjection"),
 
   ,
 ];
@@ -999,7 +999,7 @@ export function fetchDeclarationReport(modulesManager, params) {
 
 export function selectRegion(region) {
   return (dispatch) => {
-    dispatch({ type: "CLAIM_CLAIM_REGION_SELECTED", payload: region });
+    dispatch({type: "CLAIM_CLAIM_REGION_SELECTED", payload: region});
   };
 }
 
@@ -1046,6 +1046,7 @@ export const havingPAymentApprove = (uuid) => {
   const payload = formatQuery("havingPaymentApproveRight", [`uuid:"${uuid}"`]);
   return graphql(payload, "HAVING_APPROVER");
 };
+
 export function createException(mm, jsonData) {
   const raisedById =
     jsonData?.exceptionMonth == 6
@@ -1080,6 +1081,7 @@ export function createException(mm, jsonData) {
     {}
   );
 }
+
 export function createPolicyHolderException(mm, jsonData) {
   let mutation = `mutation CreatePolicyHolderException  {
     createPolicyHolderException(
@@ -1112,6 +1114,7 @@ export function createPolicyHolderException(mm, jsonData) {
     {}
   );
 }
+
 export function fetchInsureeException(mm, filters) {
   return graphql(
     `query AllInsureeExceptions{
@@ -1152,6 +1155,7 @@ export function fetchInsureeException(mm, filters) {
     "POLICYHOLDER_EXCEPTIONINSUREES"
   );
 }
+
 export function fetchInsureeExceptionByID(mm, id) {
   return graphql(
     `query AllInsureeExceptions{
@@ -1193,6 +1197,7 @@ export function fetchInsureeExceptionByID(mm, id) {
     "POLICYHOLDER_EXCEPTIONINSUREES_BY_ID"
   );
 }
+
 export function fetchPolicyHolderException(mm, filters) {
   return graphql(
     `query AllPolicyholderExceptions {
@@ -1244,6 +1249,7 @@ export function fetchPolicyHolderException(mm, filters) {
     "POLICYHOLDER_EXCEPTIONPOLICYHOLDER"
   );
 }
+
 export function fetchPolicyHolderExceptionBYId(mm, id) {
   return graphql(
     `query AllPolicyholderExceptions {
@@ -1294,6 +1300,7 @@ export function fetchPolicyHolderExceptionBYId(mm, id) {
     "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_BY_ID"
   );
 }
+
 export const fetchInsureeDocuments = (fosaCode) => {
   const payload = formatQuery(
     "insureeDocuments",
@@ -1310,6 +1317,7 @@ export const fetchInsureeDocuments = (fosaCode) => {
   );
   return graphql(payload, "INSUREE_POLICYHOLDER_DOCUMENTS");
 };
+
 export function insureeExceptionApproval(mm, jsonData) {
   // console.log("jsonDatas", jsonData)
   // console.log("jsonData", jsonData['0']['id'])
@@ -1335,6 +1343,7 @@ export function insureeExceptionApproval(mm, jsonData) {
     {}
   );
 }
+
 export function PolicyholderApproval(mm, jsonData) {
   let mutation = `mutation PolicyholderApproval  {
     policyholderApproval( 
@@ -1345,10 +1354,10 @@ export function PolicyholderApproval(mm, jsonData) {
     jsonData?.status === 5 ? true : false
   },isRework: false, 
       ${
-        !!jsonData?.statusComment
-          ? `rejectedReason:"${jsonData?.statusComment}"`
-          : ""
-      }
+    !!jsonData?.statusComment
+      ? `rejectedReason:"${jsonData?.statusComment}"`
+      : ""
+  }
     }
   ) {
         success
@@ -1366,6 +1375,7 @@ export function PolicyholderApproval(mm, jsonData) {
     {}
   );
 }
+
 export function PolicyholderReworkAction(mm, jsonData) {
   let mutation = `mutation PolicyholderApproval  {
     policyholderApproval( 
@@ -1374,10 +1384,10 @@ export function PolicyholderReworkAction(mm, jsonData) {
     jsonData?.requestNumber
   }",isRejected:false ,isApproved:false,isRework:true, 
       ${
-        !!jsonData?.statusComment
-          ? `reworkOption:"${jsonData?.statusComment}"`
-          : ""
-      }
+    !!jsonData?.statusComment
+      ? `reworkOption:"${jsonData?.statusComment}"`
+      : ""
+  }
       ${!!jsonData?.reason ? `reworkComment:"${jsonData?.reason}"` : ""}
     }
   ) {
@@ -1396,6 +1406,7 @@ export function PolicyholderReworkAction(mm, jsonData) {
     {}
   );
 }
+
 export function policyHolderExceptionApproval(mm, jsonData) {
   // console.log("jsonDatas", jsonData)
   // console.log("jsonData", jsonData['0']['id'])
@@ -1441,15 +1452,16 @@ function formatExternalDocument(docs, tempCamu, isApprove) {
     isApproved:${result.isApproved},
     documentUpdates: [
     ${result?.documentUpdates
-      ?.map(
-        (update) =>
-          `{ documentId: "${update.documentId}", status: "${update.status}", comments: "${update.comments}" },`
-      )
-      .join("\n")}
+    ?.map(
+      (update) =>
+        `{ documentId: "${update.documentId}", status: "${update.status}", comments: "${update.comments}" },`
+    )
+    .join("\n")}
     ]
   `;
   return formattedResult;
 }
+
 export function updateExternalDocuments(mm, docs, tempCamu, isApprove) {
   let mutation = `mutation UpdateStatusInExternalEndpoint {
   updateStatusInExternalEndpoint(${formatExternalDocument(
@@ -1502,6 +1514,7 @@ export function fetchPolicyholderRequest(mm, filters) {
     "POLICYHOLDER_REQUESTPOLICYHOLDER"
   );
 }
+
 export function fetchPolicyholderRequestById(mm, uuid) {
   return graphql(
     `query PolicyHolder {
@@ -1569,10 +1582,16 @@ export function unlockPolicyholder(phId) {
   return graphql(
     mutation,
     [
-      "INSUREE_MUTATION_REQ",
-      "INSUREE_UPDATE_EXTERNAL_DOCUMENT_RESP",
-      "INSUREE_MUTATION_ERR",
+      "POLICYHOLDER_INLOCK_MUTATION_REQ",
+      "POLICYHOLDER_INLOCK_MUTATION_RESP",
+      "POLICYHOLDER_INLOCK_MUTATION_ERR",
     ],
     "success message responses"
   );
+}
+
+export function resetPolicyholderUnlock() {
+  return {
+    type: 'POLICYHOLDER_INLOCK_MUTATION_RESET'
+  }
 }

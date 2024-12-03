@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
+import React, {Component, Fragment} from "react";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {injectIntl} from "react-intl";
 import _ from "lodash";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import {withTheme, withStyles} from "@material-ui/core/styles";
 
 import {
   Form,
@@ -45,6 +45,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import CommonSnackbar from "./CommonSnackbar";
 import UnlockPolicyHolderMasterPanel from "./UnlockPolicyHolderMasterPanel";
 import UnpaidDeclarationSearcher from "./UnpaidDeclarationSearcher";
+
 const styles = (theme) => ({
   paper: theme.paper.paper,
   paperHeader: theme.paper.header,
@@ -109,6 +110,7 @@ class UnlockPolicyHolderForm extends Component {
       successMessage: "",
     };
   }
+
   wrapJSONFields = (policyHolder) => {
     jsonFields.forEach((item) => {
       if (!!policyHolder[item]) {
@@ -133,7 +135,7 @@ class UnlockPolicyHolderForm extends Component {
   componentDidMount() {
     if (!!this.props.policyHolderId) {
       this.setState(
-        (_, props) => ({ policyHolderId: props.policyHolderId }),
+        (_, props) => ({policyHolderId: props.policyHolderId}),
         () =>
           this.props.fetchPolicyHolder(
             this.props.modulesManager,
@@ -165,36 +167,37 @@ class UnlockPolicyHolderForm extends Component {
   componentWillUnmount() {
     this.props.clearPolicyHolder();
   }
+
   isMandatoryFieldsEmpty = () => {
-    const { policyHolder } = this.state;
+    const {policyHolder} = this.state;
     const rccmHasValue = !!policyHolder?.jsonExt?.rccm;
 
     // Define the list of mandatory fields based on the value of rccm
     const mandatoryFields = rccmHasValue
       ? [
-          "tradeName",
-          "locations",
-          "jsonExt.mainActivity",
-          "activityCode",
-          "contactName",
-          "address",
-          "phone",
-          "legalForm",
-          "jsonExt.rccm",
-          "jsonExt.nbEmployees",
-          "jsonExt.createdAt",
-          "dateValidFrom",
-        ]
+        "tradeName",
+        "locations",
+        "jsonExt.mainActivity",
+        "activityCode",
+        "contactName",
+        "address",
+        "phone",
+        "legalForm",
+        "jsonExt.rccm",
+        "jsonExt.nbEmployees",
+        "jsonExt.createdAt",
+        "dateValidFrom",
+      ]
       : [
-          "tradeName",
-          "locations",
-          "jsonExt.mainActivity",
-          "activityCode",
-          "contactName",
-          "address",
-          "phone",
-          "legalForm",
-        ];
+        "tradeName",
+        "locations",
+        "jsonExt.mainActivity",
+        "activityCode",
+        "contactName",
+        "address",
+        "phone",
+        "legalForm",
+      ];
 
     // Check if any mandatory field is undefined or empty
     const isEmpty = mandatoryFields.some((fieldPath) => {
@@ -223,7 +226,7 @@ class UnlockPolicyHolderForm extends Component {
     });
   };
   doesPolicyHolderChange = () => {
-    const { policyHolder } = this.props;
+    const {policyHolder} = this.props;
     if (_.isEqual(policyHolder, this.state.policyHolder)) {
       return false;
     }
@@ -242,14 +245,14 @@ class UnlockPolicyHolderForm extends Component {
     this.unwrapJSONFields(policyHolder);
   };
 
-  onEditedChanged = (policyHolder) => this.setState({ policyHolder });
+  onEditedChanged = (policyHolder) => this.setState({policyHolder});
 
   titleParams = () =>
     this.state.policyHolder && this.props.titleParams(this.state.policyHolder);
 
   onValidation = (isFormValid) => {
     if (this.state.isFormValid !== isFormValid) {
-      this.setState({ isFormValid });
+      this.setState({isFormValid});
     }
   };
 
@@ -265,12 +268,12 @@ class UnlockPolicyHolderForm extends Component {
       "policyHolder.route.policyHolders"
     );
   };
-  handleBack=()=>{
+  handleBack = () => {
     this.props.history.goBack();
   }
 
   render() {
-    const { intl, rights, back, save, policyHolderId, classes, } = this.props;    
+    const {intl, rights, back, save, policyHolderId, classes,} = this.props;
 
     return (
       <Fragment>
@@ -335,7 +338,7 @@ class UnlockPolicyHolderForm extends Component {
             </DialogContent>
             <DialogActions className={classes.dialogBg}>
               <Button onClick={this.cancel} className={classes.secondaryButton}>
-                <FormattedMessage module="core" id="ok" />
+                <FormattedMessage module="core" id="ok"/>
               </Button>
             </DialogActions>
           </Dialog>
@@ -346,16 +349,16 @@ class UnlockPolicyHolderForm extends Component {
   }
 }
 
-const mapStateToProps = (state,props) => ({
+const mapStateToProps = (state, props) => ({
   fetchingPolicyHolder: state.policyHolder.fetchingPolicyHolder,
   errorPolicyHolder: state.policyHolder.errorPolicyHolder,
   fetchedPolicyHolder: state.policyHolder.fetchedPolicyHolder,
   policyHolder: state.policyHolder.policyHolder,
   isPolicyHolderCodeValid:
-    state.policyHolder?.validationFields?.policyHolderCode?.isValid,
+  state.policyHolder?.validationFields?.policyHolderCode?.isValid,
   submittingMutation: state.policyHolder.submittingMutation,
   mutation: state.policyHolder.mutation,
-   policyHoldersUnpaid: state.policyHolder.policyHoldersUnpaid,
+  policyHoldersUnpaid: state.policyHolder.policyHoldersUnpaid,
 });
 
 const mapDispatchToProps = (dispatch) => {

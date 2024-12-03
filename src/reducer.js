@@ -8,132 +8,141 @@ import {
   dispatchMutationErr,
 } from "@openimis/fe-core";
 
+const initialState = {
+  fetchingPolicyHolders: false,
+  errorPolicyHolders: null,
+  fetchedPolicyHolders: false,
+  policyHolders: [],
+  policyHoldersPageInfo: {},
+  policyHoldersTotalCount: 0,
+  submittingMutation: false,
+  mutation: {},
+  fetchingPolicyHolder: false,
+  errorPolicyHolder: null,
+  fetchedPolicyHolder: false,
+  policyHolder: {},
+  fetchingPolicyHolderInsurees: false,
+  errorPolicyHolderInsurees: null,
+  fetchedPolicyHolderInsurees: false,
+  policyHolderInsurees: [],
+  policyHolderInsureesPageInfo: {},
+  policyHolderInsureesTotalCount: 0,
+  fetchingPickerPolicyHolderInsurees: false,
+  errorPickerPolicyHolderInsurees: null,
+  fetchedPickerPolicyHolderInsurees: false,
+  pickerPolicyHolderInsurees: [],
+  pickerPolicyHolderInsureesPageInfo: {},
+  pickerPolicyHolderInsureesTotalCount: 0,
+  fetchingPolicyHolderContributionPlanBundles: false,
+  errorPolicyHolderContributionPlanBundles: null,
+  fetchedPolicyHolderContributionPlanBundles: false,
+  policyHolderContributionPlanBundles: [],
+  policyHolderContributionPlanBundlesPageInfo: {},
+  policyHolderContributionPlanBundlesTotalCount: 0,
+  fetchingPickerPolicyHolderContributionPlanBundles: false,
+  errorPickerPolicyHolderContributionPlanBundles: null,
+  fetchedPickerPolicyHolderContributionPlanBundles: false,
+  pickerPolicyHolderContributionPlanBundles: [],
+  pickerPolicyHolderContributionPlanBundlesPageInfo: {},
+  pickerPolicyHolderContributionPlanBundlesTotalCount: 0,
+  fetchingPolicyHolderUsers: false,
+  errorPolicyHolderUsers: null,
+  fetchedPolicyHolderUsers: false,
+  policyHolderUsers: [],
+  policyHolderUsersPageInfo: {},
+  policyHolderUsersTotalCount: 0,
+  fetchingDeclarationReport: false,
+  fetchedDeclarationReport: false,
+  declarationReport: [],
+  declarationReportPageInfo: {},
+  declarationReportTotalCount: 0,
+  errorDeclarationReport: null,
+  fetchingPayments: false,
+  fetchedPayment: false,
+  errorPayments: null,
+  payment: null,
+  paymentsPageInfo: {totalCount: 0},
+  fetchingapprover: false,
+  fetchedapprover: false,
+  approverData: null,
+  errorapprover: null,
+  fetchingExceptionInsurees: false,
+  errorExceptionInsurees: null,
+  fetchedExceptionInsurees: false,
+  ExceptionInsurees: [],
+  ExceptionInsureesPageInfo: {},
+  ExceptionInsureesTotalCount: 0,
+  fetchingExceptionPolicyholder: false,
+  errorExceptionPolicyholder: null,
+  fetchedExceptionPolicyholder: false,
+  ExceptionPolicyholder: [],
+  ExceptionPolicyholderPageInfo: {},
+  ExceptionPolicyholderTotalCount: 0,
+
+  fetchingExceptionPolicyholderById: false,
+  errorExceptionPolicyholderById: null,
+  fetchedExceptionPolicyholderById: false,
+  ExceptionPolicyholderById: [],
+  ExceptionPolicyholderPageInfoById: {},
+  ExceptionPolicyholderTotalCountById: 0,
+
+  fetchingExceptionInsureesByID: false,
+  errorExceptionInsureesByID: null,
+  fetchedExceptionInsureesByID: false,
+  ExceptionInsureesByID: [],
+  ExceptionInsureesPageInfoByID: {},
+  ExceptionInsureesTotalCountByID: 0,
+
+  fetchingDocuments: false,
+  fetchedDocuments: false,
+  documentsData: null,
+  errorDocument: null,
+
+  fetchingPolicyExcp: false,
+  fetchedPolicyExcp: false,
+  PolicyExcp: null,
+  errorPolicyExcp: null,
+
+  fetchingPolicyHolderCode: false,
+  errorPolicyHolderUsersCode: null,
+  fetchedPolicyHolderUsersCode: false,
+  policyHolderUsersCode: [],
+
+  fetchingRequestPolicyholder: false,
+  errorRequestPolicyholder: null,
+  fetchedRequestPolicyholder: false,
+  RequestPolicyholder: [],
+  RequestPolicyholderPageInfo: {},
+  RequestPolicyholderTotalCount: 0,
+
+  fetchingRequestPolicyholderById: false,
+  errorRequestPolicyholderById: null,
+  fetchedRequestPolicyholderById: false,
+  RequestPolicyholderById: [],
+  RequestPolicyholderPageInfoById: {},
+  RequestPolicyholderTotalCountById: 0,
+
+  fetchingBankList: false,
+  fetchedBankList: false,
+  errorBankList: null,
+  BankList: [],
+  BankListPageInfo: {totalCount: 0},
+
+  fetchingPolicyHoldersUnpaid: false,
+  fetchedPolicyHoldersUnpaid: false,
+  policyHoldersUnpaid: [],
+  errorPolicyHoldersUnpaid: null,
+
+  unlockState: {
+    loading: false,
+    success: false,
+    error: false,
+    message: null,
+  }
+}
+
 function reducer(
-  state = {
-    fetchingPolicyHolders: false,
-    errorPolicyHolders: null,
-    fetchedPolicyHolders: false,
-    policyHolders: [],
-    policyHoldersPageInfo: {},
-    policyHoldersTotalCount: 0,
-    submittingMutation: false,
-    mutation: {},
-    fetchingPolicyHolder: false,
-    errorPolicyHolder: null,
-    fetchedPolicyHolder: false,
-    policyHolder: {},
-    fetchingPolicyHolderInsurees: false,
-    errorPolicyHolderInsurees: null,
-    fetchedPolicyHolderInsurees: false,
-    policyHolderInsurees: [],
-    policyHolderInsureesPageInfo: {},
-    policyHolderInsureesTotalCount: 0,
-    fetchingPickerPolicyHolderInsurees: false,
-    errorPickerPolicyHolderInsurees: null,
-    fetchedPickerPolicyHolderInsurees: false,
-    pickerPolicyHolderInsurees: [],
-    pickerPolicyHolderInsureesPageInfo: {},
-    pickerPolicyHolderInsureesTotalCount: 0,
-    fetchingPolicyHolderContributionPlanBundles: false,
-    errorPolicyHolderContributionPlanBundles: null,
-    fetchedPolicyHolderContributionPlanBundles: false,
-    policyHolderContributionPlanBundles: [],
-    policyHolderContributionPlanBundlesPageInfo: {},
-    policyHolderContributionPlanBundlesTotalCount: 0,
-    fetchingPickerPolicyHolderContributionPlanBundles: false,
-    errorPickerPolicyHolderContributionPlanBundles: null,
-    fetchedPickerPolicyHolderContributionPlanBundles: false,
-    pickerPolicyHolderContributionPlanBundles: [],
-    pickerPolicyHolderContributionPlanBundlesPageInfo: {},
-    pickerPolicyHolderContributionPlanBundlesTotalCount: 0,
-    fetchingPolicyHolderUsers: false,
-    errorPolicyHolderUsers: null,
-    fetchedPolicyHolderUsers: false,
-    policyHolderUsers: [],
-    policyHolderUsersPageInfo: {},
-    policyHolderUsersTotalCount: 0,
-    fetchingDeclarationReport: false,
-    fetchedDeclarationReport: false,
-    declarationReport: [],
-    declarationReportPageInfo: {},
-    declarationReportTotalCount: 0,
-    errorDeclarationReport: null,
-    fetchingPayments: false,
-    fetchedPayment: false,
-    errorPayments: null,
-    payment: null,
-    paymentsPageInfo: { totalCount: 0 },
-    fetchingapprover: false,
-    fetchedapprover: false,
-    approverData: null,
-    errorapprover: null,
-    fetchingExceptionInsurees: false,
-    errorExceptionInsurees: null,
-    fetchedExceptionInsurees: false,
-    ExceptionInsurees: [],
-    ExceptionInsureesPageInfo: {},
-    ExceptionInsureesTotalCount: 0,
-    fetchingExceptionPolicyholder: false,
-    errorExceptionPolicyholder: null,
-    fetchedExceptionPolicyholder: false,
-    ExceptionPolicyholder: [],
-    ExceptionPolicyholderPageInfo: {},
-    ExceptionPolicyholderTotalCount: 0,
-
-    fetchingExceptionPolicyholderById: false,
-    errorExceptionPolicyholderById: null,
-    fetchedExceptionPolicyholderById: false,
-    ExceptionPolicyholderById: [],
-    ExceptionPolicyholderPageInfoById: {},
-    ExceptionPolicyholderTotalCountById: 0,
-
-    fetchingExceptionInsureesByID: false,
-    errorExceptionInsureesByID: null,
-    fetchedExceptionInsureesByID: false,
-    ExceptionInsureesByID: [],
-    ExceptionInsureesPageInfoByID: {},
-    ExceptionInsureesTotalCountByID: 0,
-
-    fetchingDocuments: false,
-    fetchedDocuments: false,
-    documentsData: null,
-    errorDocument: null,
-
-    fetchingPolicyExcp: false,
-    fetchedPolicyExcp: false,
-    PolicyExcp: null,
-    errorPolicyExcp: null,
-
-    fetchingPolicyHolderCode: false,
-    errorPolicyHolderUsersCode: null,
-    fetchedPolicyHolderUsersCode: false,
-    policyHolderUsersCode: [],
-
-    fetchingRequestPolicyholder: false,
-    errorRequestPolicyholder: null,
-    fetchedRequestPolicyholder: false,
-    RequestPolicyholder: [],
-    RequestPolicyholderPageInfo: {},
-    RequestPolicyholderTotalCount: 0,
-
-    fetchingRequestPolicyholderById: false,
-    errorRequestPolicyholderById: null,
-    fetchedRequestPolicyholderById: false,
-    RequestPolicyholderById: [],
-    RequestPolicyholderPageInfoById: {},
-    RequestPolicyholderTotalCountById: 0,
-
-    fetchingBankList: false,
-    fetchedBankList: false,
-    errorBankList: null,
-    BankList: [],
-    BankListPageInfo: { totalCount: 0 },
-
-    fetchingPolicyHoldersUnpaid: false,
-    fetchedPolicyHoldersUnpaid: false,
-    policyHoldersUnpaid: [],
-    errorPolicyHoldersUnpaid: null,
-  },
+  state = initialState,
   action
 ) {
   switch (action.type) {
@@ -705,7 +714,7 @@ function reducer(
         fetchedPayment: false,
         payment: null,
         errorPayment: null,
-        paymentsPageInfo: { totalCount: 0 },
+        paymentsPageInfo: {totalCount: 0},
       };
     case "PAYMENT_OVERVIEW_RESP":
       var payments = parseData(action.payload.data.payments);
@@ -832,7 +841,7 @@ function reducer(
         fetchingPolicyHoldersUnpaid: false,
         fetchedPolicyHoldersUnpaid: true,
         policyHoldersUnpaid:
-          action.payload.data.unpaidDeclarationByPolicyholder,
+        action.payload.data.unpaidDeclarationByPolicyholder,
         errorPolicyHoldersUnpaid: formatGraphQLError(action.payload),
       };
     case "POLICYHOLDER_UNPAID_DECLARATION_ERR":
@@ -841,6 +850,48 @@ function reducer(
         fetchingPolicyHoldersUnpaid: false,
         errorPolicyHoldersUnpaid: formatServerError(action.payload),
       };
+
+    case "POLICYHOLDER_INLOCK_MUTATION_REQ":
+      return {
+        ...state,
+        unlockState: {
+          loading: true,
+          success: false,
+          error: false,
+           message: null,
+        }
+      };
+    case "POLICYHOLDER_INLOCK_MUTATION_RESP":
+      return {
+        ...state,
+        unlockState: {
+          loading: false,
+          success: true,
+          error: false,
+          message: "Le souscripteur à bien été débloqué!",
+        }
+      };
+    case "POLICYHOLDER_INLOCK_MUTATION_ERR":
+      return {
+        ...state,
+        unlockState: {
+          loading: false,
+          success: false,
+          error: true,
+          message: "Une erreur s'est produite, veuillez réessayer!",
+        }
+      }
+    case "POLICYHOLDER_INLOCK_MUTATION_RESET": {
+      return {
+        ...state,
+        unlockState: {
+          loading: false,
+          success: false,
+          error: false,
+          message: null,
+        }
+      }
+    }
     default:
       return state;
   }

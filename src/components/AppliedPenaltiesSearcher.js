@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { injectIntl } from "react-intl";
+import React, {Component} from "react";
+import {injectIntl} from "react-intl";
 import {
   withModulesManager,
   formatMessageWithValues,
@@ -12,9 +12,9 @@ import {
   withHistory,
 } from "@openimis/fe-core";
 import HelpIcon from "@material-ui/icons/Help";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { fetchUnpaidDeclaration, deletePolicyHolderUser } from "../actions";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {fetchUnpaidDeclaration, deletePolicyHolderUser} from "../actions";
 import {
   DEFAULT_PAGE_SIZE,
   ROWS_PER_PAGE_OPTIONS,
@@ -22,8 +22,9 @@ import {
   MAX_CLIENTMUTATIONLABEL_LENGTH,
 } from "../constants";
 import PolicyHolderRequestSearcherPane from "./PolicyHolderRequestSearcherPane";
-import { Grid, IconButton, Tooltip, Button } from "@material-ui/core";
+import {Grid, IconButton, Tooltip, Button} from "@material-ui/core";
 import moment from "moment";
+import {formatNumber} from "../utils";
 
 const DEFAULT_ORDER_BY = "id";
 
@@ -33,6 +34,7 @@ class AppliedPenaltiesSearcher extends Component {
     toDelete: null,
     deleted: [],
   };
+
   constructor(props) {
     super(props);
     this.locationLevels = this.props.modulesManager.getConf(
@@ -41,6 +43,7 @@ class AppliedPenaltiesSearcher extends Component {
       4
     );
   }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.submittingMutation && !this.props.submittingMutation) {
       this.props.journalize(this.props.mutation);
@@ -78,12 +81,12 @@ class AppliedPenaltiesSearcher extends Component {
     if (!!state.orderBy) {
       params.push(`orderBy: ["${state.orderBy}"]`);
     }
-    this.setState({ queryParams: params });
+    this.setState({queryParams: params});
     return params;
   };
 
   headers = () => {
-    const { rights, predefinedPolicyHolderId = null } = this.props;
+    const {rights, predefinedPolicyHolderId = null} = this.props;
     let result = [
       "payment.payment.PenaltyPeriod",
       "payment.payment.Amount",
@@ -102,7 +105,7 @@ class AppliedPenaltiesSearcher extends Component {
   };
 
   defaultFilters = () => {
-    const { policyHolderId } = this.props;
+    const {policyHolderId} = this.props;
     const filters = {
       policyHolderId: {
         value: true,
@@ -182,7 +185,7 @@ class AppliedPenaltiesSearcher extends Component {
         break;
     }
 
-    return { color };
+    return {color};
   };
 
   itemFormatters = () => {
@@ -193,10 +196,10 @@ class AppliedPenaltiesSearcher extends Component {
           policyholder?.payment.contract?.dateValidFrom,
           policyholder?.payment.contract.dateValidTo
         ),
-      (policyholder) => (!!policyholder?.amount ? policyholder?.amount : ""),
+      (policyholder) => formatNumber(!!policyholder?.amount ? policyholder?.amount : ""),
       (policyholder) => "",
       (policyholder) => {
-        const { color } = this.getPaymentStatusDetails(
+        const {color} = this.getPaymentStatusDetails(
           this.props.intl,
           policyholder.status
         );
@@ -216,8 +219,8 @@ class AppliedPenaltiesSearcher extends Component {
           );
         } else {
           return (
-            <Grid style={{ display: "flex" }}>
-              <span style={{ color, fontWeight: "bold" }}>
+            <Grid style={{display: "flex"}}>
+              <span style={{color, fontWeight: "bold"}}>
                 {policyholder.status !== null &&
                   formatMessage(
                     this.props.intl,
@@ -237,7 +240,7 @@ class AppliedPenaltiesSearcher extends Component {
                     )}
                   >
                     <IconButton>
-                      <HelpIcon />
+                      <HelpIcon/>
                     </IconButton>
                   </Tooltip>
                 ) : null}
@@ -252,7 +255,7 @@ class AppliedPenaltiesSearcher extends Component {
   };
 
   onDelete = (policyHolderUser) => {
-    const { intl, coreConfirm, deletePolicyHolderUser } = this.props;
+    const {intl, coreConfirm, deletePolicyHolderUser} = this.props;
     let confirm = () =>
       coreConfirm(
         formatMessageWithValues(
@@ -265,6 +268,7 @@ class AppliedPenaltiesSearcher extends Component {
         ),
         formatMessage(intl, "policyHolder", "dialog.delete.message")
       );
+
     let confirmedAction = () => {
       deletePolicyHolderUser(
         policyHolderUser,
@@ -278,9 +282,9 @@ class AppliedPenaltiesSearcher extends Component {
           }
         ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
       );
-      this.setState({ toDelete: policyHolderUser.id });
+      this.setState({toDelete: policyHolderUser.id});
     };
-    this.setState({ confirmedAction }, confirm);
+    this.setState({confirmedAction}, confirm);
   };
 
   isDeletedFilterEnabled = (policyHolderUser) => policyHolderUser.isDeleted;
@@ -311,7 +315,7 @@ class AppliedPenaltiesSearcher extends Component {
     });
 
     return (
-      <Grid container style={{ width: "100%" }}>
+      <Grid container style={{width: "100%"}}>
         <Searcher
           module="policyHolder"
           fetch={this.fetch}
