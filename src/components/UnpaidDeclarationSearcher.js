@@ -1,77 +1,51 @@
-import React, { Component } from "react";
-import { injectIntl } from "react-intl";
+import React, {Component} from "react";
+import {injectIntl} from "react-intl";
 import {
-  withModulesManager,
-  formatMessageWithValues,
-  Searcher,
-  journalize,
   coreConfirm,
   formatMessage,
-  decodeId,
+  formatMessageWithValues,
   historyPush,
+  journalize,
+  Searcher,
   withHistory,
+  withModulesManager,
 } from "@openimis/fe-core";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { fetchUnpaidDeclaration, deletePolicyHolderUser } from "../actions";
-import {
-  DEFAULT_PAGE_SIZE,
-  ROWS_PER_PAGE_OPTIONS,
-  ZERO,
-  MAX_CLIENTMUTATIONLABEL_LENGTH,
-} from "../constants";
-import PolicyHolderRequestSearcherPane from "./PolicyHolderRequestSearcherPane";
-import {
-  Grid,
-  IconButton,
-  Tooltip,
-  Button,
-  Typography,
-} from "@material-ui/core";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {deletePolicyHolderUser, fetchUnpaidDeclaration} from "../actions";
+import {DEFAULT_PAGE_SIZE, MAX_CLIENTMUTATIONLABEL_LENGTH, ROWS_PER_PAGE_OPTIONS, ZERO,} from "../constants";
+import {Button, Grid, IconButton, Tooltip,} from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
 import AppliedPenaltiesSearcher from "./AppliedPenaltiesSearcher";
 import SanctionOpenSearcher from "./SanctionOpenSearcher";
 import UnlockPaymentDetails from "./UnlockPaymentDetails";
 import moment from "moment";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import {withStyles, withTheme} from "@material-ui/core/styles";
+import {formatNumber} from "../utils";
 
 const DEFAULT_ORDER_BY = "id";
-const styles = (theme) => ({ item: theme.paper.item, marginLeft: 30 });
+const styles = (theme) => ({item: theme.paper.item, marginLeft: 30});
+
 class UnpaidDeclarationSearcher extends Component {
   state = {
-    queryParams: null,
-    toDelete: null,
-    deleted: [],
+    queryParams: null, toDelete: null, deleted: [],
   };
+
   constructor(props) {
     super(props);
-    this.locationLevels = this.props.modulesManager.getConf(
-      "fe-location",
-      "location.Location.MaxLevels",
-      4
-    );
+    this.locationLevels = this.props.modulesManager.getConf("fe-location", "location.Location.MaxLevels", 4);
   }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.submittingMutation && !this.props.submittingMutation) {
       this.props.journalize(this.props.mutation);
-    } else if (
-      prevProps.confirmed !== this.props.confirmed &&
-      !!this.props.confirmed &&
-      !!this.state.confirmedAction
-    ) {
+    } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
       this.state.confirmedAction();
-    } else if (
-      prevState.toDelete !== this.state.toDelete &&
-      !!this.state.toDelete
-    ) {
+    } else if (prevState.toDelete !== this.state.toDelete && !!this.state.toDelete) {
       this.setState((state) => ({
-        deleted: state.deleted.concat(state.toDelete),
-        toDelete: null,
+        deleted: state.deleted.concat(state.toDelete), toDelete: null,
       }));
-    } else if (
-      prevState.deleted !== this.state.deleted ||
-      prevProps.reset !== this.props.reset
-    ) {
+    } else if (prevState.deleted !== this.state.deleted || prevProps.reset !== this.props.reset) {
       this.refetch();
     }
   }
@@ -88,38 +62,25 @@ class UnpaidDeclarationSearcher extends Component {
     if (!!state.orderBy) {
       params.push(`orderBy: ["${state.orderBy}"]`);
     }
-    this.setState({ queryParams: params });
+    this.setState({queryParams: params});
     return params;
   };
 
   headers = () => {
-    const { rights, predefinedPolicyHolderId = null } = this.props;
-    let result = [
-      "contract.declarationId",
-      "contract.declarationPeriod",
-      "contract.amount",
-      "policyholder.action",
-    ];
-    return result;
+    const {rights, predefinedPolicyHolderId = null} = this.props;
+    return ["contract.declarationId", "contract.declarationPeriod", "contract.amount", "policyholder.action",];
   };
   rejectedCommentsTooltip = (rejectComment) => {
-    return formatMessage(
-      this.props.intl,
-      "policyHolder",
-      `policyHolder.rejectComment.${rejectComment}`
-    );
+    return formatMessage(this.props.intl, "policyHolder", `policyHolder.rejectComment.${rejectComment}`);
   };
 
   defaultFilters = () => {
-    const { policyHolderId } = this.props;
-    const filters = {
+    const {policyHolderId} = this.props;
+    return {
       policyHolderId: {
-        value: true,
-        filter: `policyHolderId: "${policyHolderId}"`,
+        value: true, filter: `policyHolderId: "${policyHolderId}"`,
       },
     };
-
-    return filters;
   };
 
   sorts = () => {
@@ -127,13 +88,7 @@ class UnpaidDeclarationSearcher extends Component {
   };
 
   onDoubleClick = (contract, newTab = false) => {
-    historyPush(
-      this.props.modulesManager,
-      this.props.history,
-      "payment.paymentOverview",
-      [contract.uuid],
-      newTab
-    );
+    historyPush(this.props.modulesManager, this.props.history, "payment.paymentOverview", [contract.uuid], newTab);
   };
 
   formatDateRange = (dateFrom, dateTo) => {
@@ -143,11 +98,7 @@ class UnpaidDeclarationSearcher extends Component {
     const startMonthYear = startDate.format("MMM YYYY");
     const endMonthYear = endDate ? endDate.format("MMM YYYY") : null;
     if (dateFrom) {
-      if (
-        !endDate ||
-        (startDate.isSame(endDate, "month") &&
-          startDate.isSame(endDate, "year"))
-      ) {
+      if (!endDate || (startDate.isSame(endDate, "month") && startDate.isSame(endDate, "year"))) {
 
         return startMonthYear;
       } else {
@@ -192,73 +143,40 @@ class UnpaidDeclarationSearcher extends Component {
         break;
     }
 
-    return { color };
+    return {color};
   };
 
   itemFormatters = () => {
-    const result = [
-      (policyholder) =>
-        !!policyholder.contract.code && policyholder.contract.code,
-      (policyholder) =>
-        !!policyholder.contract &&
-        !!policyholder.contract?.dateValidFrom &&
-        this.formatDateRange(
-          policyholder.contract?.dateValidFrom,
-          policyholder.contract?.dateValidTo
-        ),
+    return [
+      (policyholder) => !!policyholder.contract.code && policyholder.contract.code,
+      (policyholder) => !!policyholder.contract && !!policyholder.contract?.dateValidFrom && this.formatDateRange(policyholder.contract?.dateValidFrom, policyholder.contract?.dateValidTo),
 
-      (policyholder) =>
-        !!policyholder.contract.amountDue && policyholder.contract.amountDue,
+      (policyholder) => !!policyholder.contract.amountDue && formatNumber(policyholder.contract.amountDue),
       (policyholder) => {
-        const { color } = this.getPaymentStatusDetails(
-          this.props.intl,
-          policyholder.status
-        );
+        const {color} = this.getPaymentStatusDetails(this.props.intl, policyholder.status);
         if (policyholder.status == 1) {
-          return (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={(e) => this.onDoubleClick(policyholder)}
-            >
-              {formatMessage(
-                this.props.intl,
-                "policyholder",
-                "openSanction.btn"
-              )}
-            </Button>
-          );
+          return (<Button
+            variant="contained"
+            color="primary"
+            onClick={(e) => this.onDoubleClick(policyholder)}
+          >
+            {formatMessage(this.props.intl, "policyholder", "openSanction.btn")}
+          </Button>);
         } else {
           return (
-            // <Typography>
-            //   {formatMessage(
-            //     this.props.intl,
-            //     "payment",
-            //     `payment.status.${policyholder.status}`
-            //   )}
-            // </Typography>
-            <Grid style={{ display: "flex" }}>
-              <span style={{ color, fontWeight: "bold" }}>
-                {policyholder.status !== null &&
-                  formatMessage(
-                    this.props.intl,
-                    "payment",
-                    `payment.status.${policyholder.status}`
-                  )}
+            <Grid style={{display: "flex"}}>
+              <span style={{color, fontWeight: "bold"}}>
+                {policyholder.status !== null && formatMessage(this.props.intl, "payment", `payment.status.${policyholder.status}`)}
 
                 {policyholder.status == -1 ? (
                   <Tooltip
                     placement="right"
                     arrow
                     //   classes={{ tooltip: this.props.classes.tooltip }}
-                    title={formatMessage(
-                      this.props.intl,
-                      "payment",
-                      `payment.rejectComment.${policyholder.rejectedReason}`
-                    )}
+                    title={formatMessage(this.props.intl, "payment", `payment.rejectComment.${policyholder.rejectedReason}`)}
                   >
                     <IconButton>
-                      <HelpIcon />
+                      <HelpIcon/>
                     </IconButton>
                   </Tooltip>
                 ) : null}
@@ -266,41 +184,22 @@ class UnpaidDeclarationSearcher extends Component {
             </Grid>
           );
         }
-      },
-    ];
-    return result;
+      },];
   };
 
   onDelete = (policyHolderUser) => {
-    const { intl, coreConfirm, deletePolicyHolderUser } = this.props;
-    let confirm = () =>
-      coreConfirm(
-        formatMessageWithValues(
-          intl,
-          "policyHolder",
-          "policyHolderUser.dialog.delete.title",
-          {
-            user: policyHolderUser.user.username,
-          }
-        ),
-        formatMessage(intl, "policyHolder", "dialog.delete.message")
-      );
+    const {intl, coreConfirm, deletePolicyHolderUser} = this.props;
+    let confirm = () => coreConfirm(formatMessageWithValues(intl, "policyHolder", "policyHolderUser.dialog.delete.title", {
+      user: policyHolderUser.user.username,
+    }), formatMessage(intl, "policyHolder", "dialog.delete.message"));
     let confirmedAction = () => {
-      deletePolicyHolderUser(
-        policyHolderUser,
-        formatMessageWithValues(
-          intl,
-          "policyHolder",
-          "DeletePolicyHolderUser.mutationLabel",
-          {
-            user: policyHolderUser.user.username,
-            policyHolder: `${policyHolderUser.policyHolder.code} - ${policyHolderUser.policyHolder.tradeName}`,
-          }
-        ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
-      );
-      this.setState({ toDelete: policyHolderUser.id });
+      deletePolicyHolderUser(policyHolderUser, formatMessageWithValues(intl, "policyHolder", "DeletePolicyHolderUser.mutationLabel", {
+        user: policyHolderUser.user.username,
+        policyHolder: `${policyHolderUser.policyHolder.code} - ${policyHolderUser.policyHolder.tradeName}`,
+      }).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH));
+      this.setState({toDelete: policyHolderUser.id});
     };
-    this.setState({ confirmedAction }, confirm);
+    this.setState({confirmedAction}, confirm);
   };
 
   isDeletedFilterEnabled = (policyHolderUser) => policyHolderUser.isDeleted;
@@ -315,6 +214,7 @@ class UnpaidDeclarationSearcher extends Component {
       policyHoldersUnpaid,
       classes,
     } = this.props;
+
     return (
       <Grid container>
         <Grid item xs={6} className={classes.item}>
@@ -326,11 +226,7 @@ class UnpaidDeclarationSearcher extends Component {
             fetchingItems={fetchingPolicyHoldersUnpaid}
             fetchedItems={fetchedPolicyHoldersUnpaid}
             errorItems={errorPolicyHoldersUnpaid}
-            tableTitle={formatMessage(
-              intl,
-              "policyHolder",
-              "policyholder.unpdaidDeclaration.title"
-            )}
+            tableTitle={formatMessage(intl, "policyHolder", "policyholder.unpdaidDeclaration.title")}
             filtersToQueryParams={this.filtersToQueryParams}
             headers={this.headers}
             itemFormatters={this.itemFormatters}
@@ -341,8 +237,8 @@ class UnpaidDeclarationSearcher extends Component {
             FilterExt={predefinedPolicyHolderId}
             onDoubleClick={(policyHolder) => this.onDoubleClick(policyHolder)}
           />
-          <AppliedPenaltiesSearcher policyHoldersUnpaid={policyHoldersUnpaid} />
-          <SanctionOpenSearcher policyHoldersUnpaid={policyHoldersUnpaid} />
+          <AppliedPenaltiesSearcher policyHoldersUnpaid={policyHoldersUnpaid}/>
+          <SanctionOpenSearcher policyHoldersUnpaid={policyHoldersUnpaid}/>
         </Grid>
         <Grid item xs={6}>
           <UnlockPaymentDetails
@@ -350,8 +246,7 @@ class UnpaidDeclarationSearcher extends Component {
             policyHolderId={this.props.policyHolderId}
           />
         </Grid>
-      </Grid>
-    );
+      </Grid>);
   }
 }
 
@@ -366,28 +261,9 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    {
-      fetchUnpaidDeclaration,
-      deletePolicyHolderUser,
-      journalize,
-      coreConfirm,
-    },
-    dispatch
-  );
+  return bindActionCreators({
+    fetchUnpaidDeclaration, deletePolicyHolderUser, journalize, coreConfirm,
+  }, dispatch);
 };
 
-export default withModulesManager(
-  withHistory(
-    injectIntl(
-      withTheme(
-        withStyles(styles)(
-          connect(
-            mapStateToProps,
-            mapDispatchToProps
-          )(UnpaidDeclarationSearcher)
-        )
-      )
-    )
-  )
-);
+export default withModulesManager(withHistory(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(UnpaidDeclarationSearcher))))));

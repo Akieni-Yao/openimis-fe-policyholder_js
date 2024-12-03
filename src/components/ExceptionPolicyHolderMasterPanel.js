@@ -42,7 +42,7 @@ class ExceptionPolicyHolderMasterPanel extends FormPanel {
   render() {
     const { intl, classes, edited, readOnly, overview, userName, paymentData } =
       this.props;
-    console.log("edited", edited);
+
     return (
       <Fragment>
         <Grid container className={classes.item}>

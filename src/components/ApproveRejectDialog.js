@@ -56,7 +56,7 @@ const RejectDialog = (props) => {
     modulesManager,
     intl,
   } = props;
-  console.log("payload",payload,"approveorreject",approveorreject)
+
   const approverData = useSelector((store) => store);
   const { formatMessage, formatMessageWithValues } = useTranslations(
     "policyHolder",
