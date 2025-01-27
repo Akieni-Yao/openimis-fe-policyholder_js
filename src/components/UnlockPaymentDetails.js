@@ -65,8 +65,6 @@ class UnlockPaymentDetails extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { unlockState: prevUnlockState } = prevProps;
 
-    console.log('.....................', this.props.checkUnlockStatus);
-
     if (prevUnlockState.loading === true && this.props.unlockState.success) {
       this.props.resetPolicyholderUnlock();
       historyPush(
