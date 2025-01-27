@@ -61,7 +61,7 @@ const initialState = {
   fetchedPayment: false,
   errorPayments: null,
   payment: null,
-  paymentsPageInfo: {totalCount: 0},
+  paymentsPageInfo: { totalCount: 0 },
   fetchingapprover: false,
   fetchedapprover: false,
   approverData: null,
@@ -126,7 +126,7 @@ const initialState = {
   fetchedBankList: false,
   errorBankList: null,
   BankList: [],
-  BankListPageInfo: {totalCount: 0},
+  BankListPageInfo: { totalCount: 0 },
 
   fetchingPolicyHoldersUnpaid: false,
   fetchedPolicyHoldersUnpaid: false,
@@ -138,13 +138,11 @@ const initialState = {
     success: false,
     error: false,
     message: null,
-  }
-}
+  },
+  checkUnlockStatus: false,
+};
 
-function reducer(
-  state = initialState,
-  action
-) {
+function reducer(state = initialState, action) {
   switch (action.type) {
     case "POLICYHOLDER_POLICYHOLDERS_REQ":
       return {
@@ -714,7 +712,7 @@ function reducer(
         fetchedPayment: false,
         payment: null,
         errorPayment: null,
-        paymentsPageInfo: {totalCount: 0},
+        paymentsPageInfo: { totalCount: 0 },
       };
     case "PAYMENT_OVERVIEW_RESP":
       var payments = parseData(action.payload.data.payments);
@@ -841,7 +839,7 @@ function reducer(
         fetchingPolicyHoldersUnpaid: false,
         fetchedPolicyHoldersUnpaid: true,
         policyHoldersUnpaid:
-        action.payload.data.unpaidDeclarationByPolicyholder,
+          action.payload.data.unpaidDeclarationByPolicyholder,
         errorPolicyHoldersUnpaid: formatGraphQLError(action.payload),
       };
     case "POLICYHOLDER_UNPAID_DECLARATION_ERR":
@@ -851,6 +849,21 @@ function reducer(
         errorPolicyHoldersUnpaid: formatServerError(action.payload),
       };
 
+    case "POLICYHOLDER_CHECK_UNLOCK_STATUS_REQ":
+      return {
+        ...state,
+        checkUnlockStatus: false,
+      };
+    case "POLICYHOLDER_CHECK_UNLOCK_STATUS_RESP":
+      return {
+        ...state,
+        checkUnlockStatus: action.payload?.data?.unlockPolicyholder?.success,
+      };
+    case "POLICYHOLDER_CHECK_UNLOCK_STATUS_ERR":
+      return {
+        ...state,
+        checkUnlockStatus: false,
+      };
     case "POLICYHOLDER_INLOCK_MUTATION_REQ":
       return {
         ...state,
@@ -858,8 +871,8 @@ function reducer(
           loading: true,
           success: false,
           error: false,
-           message: null,
-        }
+          message: null,
+        },
       };
     case "POLICYHOLDER_INLOCK_MUTATION_RESP":
       return {
@@ -869,7 +882,7 @@ function reducer(
           success: true,
           error: false,
           message: "Le souscripteur à bien été débloqué!",
-        }
+        },
       };
     case "POLICYHOLDER_INLOCK_MUTATION_ERR":
       return {
@@ -879,8 +892,8 @@ function reducer(
           success: false,
           error: true,
           message: "Une erreur s'est produite, veuillez réessayer!",
-        }
-      }
+        },
+      };
     case "POLICYHOLDER_INLOCK_MUTATION_RESET": {
       return {
         ...state,
@@ -889,8 +902,8 @@ function reducer(
           success: false,
           error: false,
           message: null,
-        }
-      }
+        },
+      };
     }
     default:
       return state;
