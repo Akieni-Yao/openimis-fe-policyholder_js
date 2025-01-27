@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from "react";
-import {withStyles} from "@material-ui/core/styles";
+import React, { Component, Fragment } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Typography,
   Box,
@@ -9,19 +9,23 @@ import {
   Grid,
 } from "@material-ui/core";
 import {
-  formatMessage, journalize, coreConfirm, historyPush, withModulesManager,
+  formatMessage,
+  journalize,
+  coreConfirm,
+  historyPush,
+  withModulesManager,
   withHistory,
 } from "@openimis/fe-core";
-import {injectIntl} from "react-intl";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import {unlockPolicyholder, resetPolicyholderUnlock} from "../actions";
-import {formatNumber} from "../utils";
+import { injectIntl } from "react-intl";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { unlockPolicyholder, resetPolicyholderUnlock } from "../actions";
+import { formatNumber } from "../utils";
 import CommonSnackbar from "./CommonSnackbar";
 
 const styles = (theme) => ({
   paper: theme.paper.paper,
-  headerDetails: {...theme.paper.header, padding: theme.spacing(2)},
+  headerDetails: { ...theme.paper.header, padding: theme.spacing(2) },
   container: {
     // border: "1px solid #b2dfdb",
     borderRadius: theme.shape.borderRadius,
@@ -46,16 +50,23 @@ const styles = (theme) => ({
 });
 
 class UnlockPaymentDetails extends Component {
-
   handleUnlockPolicyholder = () => {
     this.props.unlockPolicyholder(this.props.policyHolderId);
   };
 
+  handleCheckUnlockPolicyholder = () => {
+    this.props.unlockPolicyholder(this.props.policyHolderId, true);
+  };
+
+  componentDidMount() {
+    this.handleCheckUnlockPolicyholder();
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const {unlockState: prevUnlockState} = prevProps;
+    const { unlockState: prevUnlockState } = prevProps;
 
     if (prevUnlockState.loading === true && this.props.unlockState.success) {
-      this.props.resetPolicyholderUnlock()
+      this.props.resetPolicyholderUnlock();
       historyPush(
         this.props.modulesManager,
         this.props.history,
@@ -66,12 +77,11 @@ class UnlockPaymentDetails extends Component {
   }
 
   handleSnackbarClose = () => {
-    this.props.resetPolicyholderUnlock()
-  }
-
+    this.props.resetPolicyholderUnlock();
+  };
 
   render() {
-    const {classes, policyHoldersUnpaid, intl, unlockState} = this.props;
+    const { classes, policyHoldersUnpaid, intl, unlockState } = this.props;
 
     // Calculate declarationAmount (sum of amountDue from contract)
     const declarationAmount = policyHoldersUnpaid.reduce((total, payment) => {
@@ -114,7 +124,9 @@ class UnlockPaymentDetails extends Component {
       )
     );
 
-    const items = policyHoldersUnpaid.map((item) => item.paymentsPenalty.edges).flat()
+    const items = policyHoldersUnpaid
+      .map((item) => item.paymentsPenalty.edges)
+      .flat();
 
     return (
       <Fragment>
@@ -129,7 +141,7 @@ class UnlockPaymentDetails extends Component {
                 {formatMessage(intl, "payment", `PaymentOverview.title`)}
               </Typography>
             </Box>
-            <Divider/>
+            <Divider />
             <Grid item xs={12} className={classes.container}>
               <Box className={classes.amountContainer}>
                 <Typography>
@@ -150,21 +162,27 @@ class UnlockPaymentDetails extends Component {
                 </Typography>
                 <Typography>XAF {formatNumber(sanctionAmount)}</Typography>
               </Box>
-              <Divider/>
+              <Divider />
               <Box className={classes.amountContainer}>
                 <Typography>
                   {formatMessage(intl, "payment", `TotalAmt`)}:
                 </Typography>
                 <Typography className={classes.totalAmount}>
-                  XAF {formatNumber(declarationAmount + penaltyAmount + sanctionAmount)}
+                  XAF{" "}
+                  {formatNumber(
+                    declarationAmount + penaltyAmount + sanctionAmount
+                  )}
                 </Typography>
               </Box>
               <Box className={classes.buttonContainer}>
                 <Button
                   variant="contained"
                   color="primary"
+                  // disabled={
+                  //   !(allContractsStatusFive && allPenaltiesStatusValid) || unlockState.loading
+                  // }
                   disabled={
-                    !(allContractsStatusFive && allPenaltiesStatusValid) || unlockState.loading
+                    !this.props.checkUnlockStatus || unlockState.loading
                   }
                   onClick={this.handleUnlockPolicyholder}
                 >
@@ -188,7 +206,6 @@ class UnlockPaymentDetails extends Component {
           backgroundColor="#00913E"
         />
       </Fragment>
-
     );
   }
 }
@@ -196,6 +213,7 @@ class UnlockPaymentDetails extends Component {
 const mapStateToProps = (state, props) => ({
   fetchingPolicyHoldersUnpaid: state.policyHolder.fetchingPolicyHoldersUnpaid,
   unlockState: state.policyHolder.unlockState,
+  checkUnlockStatus: state.policyHolder.checkUnlockStatus,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -209,7 +227,6 @@ const mapDispatchToProps = (dispatch) => {
     dispatch
   );
 };
-
 
 export default withHistory(
   withModulesManager(
