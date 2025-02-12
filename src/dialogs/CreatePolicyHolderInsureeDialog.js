@@ -124,7 +124,7 @@ class CreatePolicyHolderInsureeDialog extends Component {
                                     onChange={v => this.updateAttribute('contributionPlanBundle', v)}
                                 />
                             </Grid>
-                            <Contributions
+                            {/* <Contributions
                                 contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
                                 intl={intl}
                                 className={POLICYHOLDERINSUREE_CLASSNAME}
@@ -134,7 +134,7 @@ class CreatePolicyHolderInsureeDialog extends Component {
                                 onChange={this.updateAttribute}
                                 gridItemStyle={classes.item}
                                 setJsonExtValid={this.setJsonExtValid}
-                            />
+                            /> */}
                             <Grid item className={classes.item}>
                                 <TextInput
                                     module="insuree"
