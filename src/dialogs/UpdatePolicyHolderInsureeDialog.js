@@ -166,7 +166,7 @@ class UpdatePolicyHolderInsureeDialog extends Component {
                                     readOnly={!isReplacing}
                                 />
                             </Grid>
-                            <Contributions
+                            {/* <Contributions
                                 contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
                                 intl={intl}
                                 className={POLICYHOLDERINSUREE_CLASSNAME}
@@ -176,7 +176,7 @@ class UpdatePolicyHolderInsureeDialog extends Component {
                                 onChange={this.updateAttribute}
                                 gridItemStyle={classes.item}
                                 setJsonExtValid={this.setJsonExtValid}
-                            />
+                            /> */}
                             <Grid item className={classes.item}>
                                 <TextInput
                                     module="insuree"
