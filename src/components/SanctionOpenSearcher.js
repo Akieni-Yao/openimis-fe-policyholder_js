@@ -179,6 +179,10 @@ class SanctionOpenSearcher extends Component {
         color = "green";
         break;
 
+      case 7:
+        color = "green";
+        break;
+
       case 9:
         color = "orange";
         break;
