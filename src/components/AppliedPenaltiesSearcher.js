@@ -318,9 +318,7 @@ class AppliedPenaltiesSearcher extends Component {
         paymentsPenalty.forEach((edge) => {
           if (edge.node && edge.node.penaltyType == "Penalty") {
             const index = combinedPenalties.findIndex(
-              (penalty) =>
-                penalty?.amount === edge?.node?.amount &&
-                penalty?.dateValidFrom === edge?.node?.dateValidFrom
+              (penalty) => penalty?.payment?.id === edge?.node?.payment?.id
             );
             if (index === -1) {
               combinedPenalties.push(edge.node);
