@@ -27,7 +27,7 @@ const UNLOCK_POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
   // "dateValidTo",
   // "jsonExt",
   "contract{id,dateValidFrom,dateValidTo,amountDue,code}",
-  "paymentsPenalty { edges {cursor node {id, dateValidFrom,dateValidTo, isSubmitted,isOutstanding,isApproved,isRejected,  isCanceled,isReduced,isReducedApproved,isReducedRejected, reducedRejectedReason,amount,revisedAmount,   penaltyLevel,penaltyType,status,payment{contract{id,dateValidFrom,dateValidTo}}}}}",
+  "paymentsPenalty { edges {cursor node {id, dateValidFrom,dateValidTo, isSubmitted,isOutstanding,isApproved,isRejected,  isCanceled,isReduced,isReducedApproved,isReducedRejected, reducedRejectedReason,amount,revisedAmount,   penaltyLevel,penaltyType,status, dateCreated, dateUpdated,payment{contract{id,dateValidFrom,dateValidTo}}}}}",
 ];
 
 const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [

@@ -217,7 +217,7 @@ class AppliedPenaltiesSearcher extends Component {
               {formatMessage(
                 this.props.intl,
                 "policyholder",
-                "openSanction.btn"
+                "_openSanction.btn"
               )}
             </Button>
           );
@@ -229,7 +229,7 @@ class AppliedPenaltiesSearcher extends Component {
                   formatMessage(
                     this.props.intl,
                     "payment",
-                    `penalty.status.${policyholder.status}`
+                    `_penalty.status.${policyholder.status}`
                   )}
 
                 {policyholder.status == -1 ? (
@@ -310,9 +310,23 @@ class AppliedPenaltiesSearcher extends Component {
       // Check if paymentsPenalty and edges are present
       if (item.paymentsPenalty && Array.isArray(item.paymentsPenalty.edges)) {
         // For each item in edges, push its node into combinedPenalties array
-        item.paymentsPenalty.edges.forEach((edge) => {
+        // dateCreated
+        const paymentsPenalty = item.paymentsPenalty.edges.sort(
+          (a, b) => new Date(b.node.dateCreated) - new Date(a.node.dateCreated)
+        );
+
+        paymentsPenalty.forEach((edge) => {
           if (edge.node && edge.node.penaltyType == "Penalty") {
-            combinedPenalties.push(edge.node);
+            const index = combinedPenalties.findIndex(
+              (penalty) =>
+                penalty?.amount === edge?.node?.amount &&
+                penalty?.dateValidFrom === edge?.node?.dateValidFrom
+            );
+            if (index === -1) {
+              combinedPenalties.push(edge.node);
+            } else {
+              combinedPenalties[index] = edge.node;
+            }
           }
         });
       }
