@@ -3,6 +3,7 @@ import BusinessIcon from "@material-ui/icons/Business";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import { FormattedMessage } from "@openimis/fe-core";
 import messages_en from "./translations/en.json";
+import messages_fr from "./translations/fr.json";
 import PolicyHoldersPage from "./pages/PolicyHoldersPage";
 import PolicyHolderPage from "./pages/PolicyHolderPage";
 import LegalFormPicker from "./pickers/LegalFormPicker";
@@ -64,7 +65,10 @@ import PolicyHolderRequestSeacrher from "./components/PolicyHolderRequestSeacrhe
 import RequestStatusPicker from "./pickers/RequestStatusPicker";
 import PolicyholderApprovalForm from "./components/PolicyholderApprovalForm";
 import PolicyHolderDocuments from "./components/PolicyHolderDocuments";
-import { PolicyHolderPenaltyandSactionTabLabel, PolicyHolderPenaltyandSactionTabPanel } from "./components/PenaltyandSactionTab";
+import {
+  PolicyHolderPenaltyandSactionTabLabel,
+  PolicyHolderPenaltyandSactionTabPanel,
+} from "./components/PenaltyandSactionTab";
 import BankPicker from "./pickers/BankAutoPicker";
 import UnlockPolicyholderPage from "./pages/UnlockPolicyholderPage";
 
@@ -77,11 +81,15 @@ const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
 const EXCEPTION_PANELS = "exception";
 const EXCEPTION_PANELS_POLICYHOLDER = "exception/policyholder";
 const EXCEPTION__PENDING_APPROVAL_PANELS = "exception/pendingapproval";
-const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS = "exception/pendingapproval/policyholder";
-const POLICYHOLDER_APPROVAL = "policyholder/approval"
+const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS =
+  "exception/pendingapproval/policyholder";
+const POLICYHOLDER_APPROVAL = "policyholder/approval";
 const ROUTE_POLICYHOLDER_REQUEST = "policyholderRequest";
 const DEFAULT_CONFIG = {
-  translations: [{ key: "en", messages: messages_en }],
+  translations: [
+    { key: "en", messages: messages_en },
+    { key: "fr", messages: messages_fr },
+  ],
   reducers: [{ key: "policyHolder", reducer }],
   refs: [
     { key: "policyHolder.LegalFormPicker", ref: LegalFormPicker },
@@ -122,7 +130,10 @@ const DEFAULT_CONFIG = {
     },
     { key: "policyHolder.route.policyHolders", ref: ROUTE_POLICY_HOLDERS },
     { key: "policyHolder.route.policyHolder", ref: ROUTE_POLICY_HOLDER },
-    { key: "policyHolder.route.policyHolder.unlock", ref: ROUTE_POLICY_HOLDER_UNLOCK  },
+    {
+      key: "policyHolder.route.policyHolder.unlock",
+      ref: ROUTE_POLICY_HOLDER_UNLOCK,
+    },
     {
       key: "policyHolder.route.exception",
       ref: EXCEPTION__PENDING_APPROVAL_PANELS,
@@ -142,14 +153,20 @@ const DEFAULT_CONFIG = {
   ],
   "core.Router": [
     { path: ROUTE_POLICY_HOLDERS, component: PolicyHoldersPage },
-    { path: ROUTE_POLICY_HOLDER_UNLOCK + "/:policyholder_id?", component: UnlockPolicyholderPage },
+    {
+      path: ROUTE_POLICY_HOLDER_UNLOCK + "/:policyholder_id?",
+      component: UnlockPolicyholderPage,
+    },
     {
       path: ROUTE_POLICY_HOLDER + "/:policyholder_id?",
       component: PolicyHolderPage,
     },
     { path: ROUTE_POLICY_HOLDER_USERS, component: PolicyHolderUsersPage },
     { path: ROUTE_DECLARATION, component: DeclarationPage },
-    { path: ROUTE_POLICYHOLDER_REQUEST, component: PolicyHolderRequestSeacrher },
+    {
+      path: ROUTE_POLICYHOLDER_REQUEST,
+      component: PolicyHolderRequestSeacrher,
+    },
     { path: ROUTE_PAYMENT_FOR_APPROVAL, component: PaymentForApproval },
     { path: EXCEPTION_PANELS, component: ExceptionTabPanel },
     { path: EXCEPTION_PANELS_POLICYHOLDER, component: ExceptionTabPanel },
@@ -162,7 +179,8 @@ const DEFAULT_CONFIG = {
       component: ExceptionInsureesFormPage,
     },
     {
-      path: EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS + "/:policyholder_id?",
+      path:
+        EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS + "/:policyholder_id?",
       component: ExceptionPolicyHolderFormPage,
     },
     {
@@ -202,7 +220,7 @@ const DEFAULT_CONFIG = {
     PolicyHolderContributionPlanBundlesTabLabel,
     PolicyHolderPaymentsTabLabel,
     PolicyHolderUsersTabLabel,
-    PolicyHolderPenaltyandSactionTabLabel
+    PolicyHolderPenaltyandSactionTabLabel,
   ],
   "policyHolder.TabPanel.panel": [
     PolicyHolderInsureesTabPanel,
@@ -219,7 +237,7 @@ const DEFAULT_CONFIG = {
     ExceptionInsureeTabPanel,
     ExceptionPolicyholderTabPanel,
   ],
-  "policyholder.policyholder.documents":[PolicyHolderDocuments],
+  "policyholder.policyholder.documents": [PolicyHolderDocuments],
   "invoice.SubjectAndThirdpartyPicker": [
     {
       type: "policy holder",
