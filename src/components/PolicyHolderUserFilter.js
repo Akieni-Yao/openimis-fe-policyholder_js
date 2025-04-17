@@ -82,6 +82,7 @@ class PolicyHolderUserFilter extends Component {
                             value: v,
                             filter: `user_Id: "${!!v && decodeId(v.id)}"`
                         }])}
+                        check={"check"}
                     />
                 </Grid>
                 {!this.isFilteredByDefaultPolicyHolder && (
@@ -120,6 +121,7 @@ class PolicyHolderUserFilter extends Component {
                     <FormControlLabel
                         control={<Checkbox 
                             checked={!!this._filterValue("isDeleted")}
+                            color="primary"
                             onChange={event => this._onChangeFilter("isDeleted", event.target.checked)}
                             name="isDeleted" 
                         />}

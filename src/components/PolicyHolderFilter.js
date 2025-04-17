@@ -25,15 +25,6 @@ class PolicyHolderFilter extends Component {
         return !!filters[key] ? filters[key].value : "";
     }
 
-    _onChangeFilter = (k, v) => {
-        this.props.onChangeFilters([
-            {
-                id: k,
-                value: v,
-                filter: `${k}: ${v}`
-            }
-        ])
-    }
 
     _onChangeStringFilter = (k, v, lookup) => {
         this.props.onChangeFilters([
@@ -126,10 +117,11 @@ class PolicyHolderFilter extends Component {
                 </Grid>
                 <Grid item xs={2} className={classes.item}>
                     <FormControlLabel
-                        control={<Checkbox 
+                        control={<Checkbox
+                            color="primary"
                             checked={!!this._filterValue('isDeleted')}
                             onChange={event => this._onChangeFilter('isDeleted', event.target.checked)}
-                            name="isDeleted" 
+                            name="isDeleted"
                         />}
                         label={formatMessage(intl, "policyHolder", "isDeleted")}
                     />

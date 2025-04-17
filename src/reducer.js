@@ -8,53 +8,141 @@ import {
   dispatchMutationErr,
 } from "@openimis/fe-core";
 
-function reducer(
-  state = {
-    fetchingPolicyHolders: false,
-    errorPolicyHolders: null,
-    fetchedPolicyHolders: false,
-    policyHolders: [],
-    policyHoldersPageInfo: {},
-    policyHoldersTotalCount: 0,
-    submittingMutation: false,
-    mutation: {},
-    fetchingPolicyHolder: false,
-    errorPolicyHolder: null,
-    fetchedPolicyHolder: false,
-    policyHolder: {},
-    fetchingPolicyHolderInsurees: false,
-    errorPolicyHolderInsurees: null,
-    fetchedPolicyHolderInsurees: false,
-    policyHolderInsurees: [],
-    policyHolderInsureesPageInfo: {},
-    policyHolderInsureesTotalCount: 0,
-    fetchingPickerPolicyHolderInsurees: false,
-    errorPickerPolicyHolderInsurees: null,
-    fetchedPickerPolicyHolderInsurees: false,
-    pickerPolicyHolderInsurees: [],
-    pickerPolicyHolderInsureesPageInfo: {},
-    pickerPolicyHolderInsureesTotalCount: 0,
-    fetchingPolicyHolderContributionPlanBundles: false,
-    errorPolicyHolderContributionPlanBundles: null,
-    fetchedPolicyHolderContributionPlanBundles: false,
-    policyHolderContributionPlanBundles: [],
-    policyHolderContributionPlanBundlesPageInfo: {},
-    policyHolderContributionPlanBundlesTotalCount: 0,
-    fetchingPickerPolicyHolderContributionPlanBundles: false,
-    errorPickerPolicyHolderContributionPlanBundles: null,
-    fetchedPickerPolicyHolderContributionPlanBundles: false,
-    pickerPolicyHolderContributionPlanBundles: [],
-    pickerPolicyHolderContributionPlanBundlesPageInfo: {},
-    pickerPolicyHolderContributionPlanBundlesTotalCount: 0,
-    fetchingPolicyHolderUsers: false,
-    errorPolicyHolderUsers: null,
-    fetchedPolicyHolderUsers: false,
-    policyHolderUsers: [],
-    policyHolderUsersPageInfo: {},
-    policyHolderUsersTotalCount: 0,
+const initialState = {
+  fetchingPolicyHolders: false,
+  errorPolicyHolders: null,
+  fetchedPolicyHolders: false,
+  policyHolders: [],
+  policyHoldersPageInfo: {},
+  policyHoldersTotalCount: 0,
+  submittingMutation: false,
+  mutation: {},
+  fetchingPolicyHolder: false,
+  errorPolicyHolder: null,
+  fetchedPolicyHolder: false,
+  policyHolder: {},
+  fetchingPolicyHolderInsurees: false,
+  errorPolicyHolderInsurees: null,
+  fetchedPolicyHolderInsurees: false,
+  policyHolderInsurees: [],
+  policyHolderInsureesPageInfo: {},
+  policyHolderInsureesTotalCount: 0,
+  fetchingPickerPolicyHolderInsurees: false,
+  errorPickerPolicyHolderInsurees: null,
+  fetchedPickerPolicyHolderInsurees: false,
+  pickerPolicyHolderInsurees: [],
+  pickerPolicyHolderInsureesPageInfo: {},
+  pickerPolicyHolderInsureesTotalCount: 0,
+  fetchingPolicyHolderContributionPlanBundles: false,
+  errorPolicyHolderContributionPlanBundles: null,
+  fetchedPolicyHolderContributionPlanBundles: false,
+  policyHolderContributionPlanBundles: [],
+  policyHolderContributionPlanBundlesPageInfo: {},
+  policyHolderContributionPlanBundlesTotalCount: 0,
+  fetchingPickerPolicyHolderContributionPlanBundles: false,
+  errorPickerPolicyHolderContributionPlanBundles: null,
+  fetchedPickerPolicyHolderContributionPlanBundles: false,
+  pickerPolicyHolderContributionPlanBundles: [],
+  pickerPolicyHolderContributionPlanBundlesPageInfo: {},
+  pickerPolicyHolderContributionPlanBundlesTotalCount: 0,
+  fetchingPolicyHolderUsers: false,
+  errorPolicyHolderUsers: null,
+  fetchedPolicyHolderUsers: false,
+  policyHolderUsers: [],
+  policyHolderUsersPageInfo: {},
+  policyHolderUsersTotalCount: 0,
+  fetchingDeclarationReport: false,
+  fetchedDeclarationReport: false,
+  declarationReport: [],
+  declarationReportPageInfo: {},
+  declarationReportTotalCount: 0,
+  errorDeclarationReport: null,
+  fetchingPayments: false,
+  fetchedPayment: false,
+  errorPayments: null,
+  payment: null,
+  paymentsPageInfo: { totalCount: 0 },
+  fetchingapprover: false,
+  fetchedapprover: false,
+  approverData: null,
+  errorapprover: null,
+  fetchingExceptionInsurees: false,
+  errorExceptionInsurees: null,
+  fetchedExceptionInsurees: false,
+  ExceptionInsurees: [],
+  ExceptionInsureesPageInfo: {},
+  ExceptionInsureesTotalCount: 0,
+  fetchingExceptionPolicyholder: false,
+  errorExceptionPolicyholder: null,
+  fetchedExceptionPolicyholder: false,
+  ExceptionPolicyholder: [],
+  ExceptionPolicyholderPageInfo: {},
+  ExceptionPolicyholderTotalCount: 0,
+
+  fetchingExceptionPolicyholderById: false,
+  errorExceptionPolicyholderById: null,
+  fetchedExceptionPolicyholderById: false,
+  ExceptionPolicyholderById: [],
+  ExceptionPolicyholderPageInfoById: {},
+  ExceptionPolicyholderTotalCountById: 0,
+
+  fetchingExceptionInsureesByID: false,
+  errorExceptionInsureesByID: null,
+  fetchedExceptionInsureesByID: false,
+  ExceptionInsureesByID: [],
+  ExceptionInsureesPageInfoByID: {},
+  ExceptionInsureesTotalCountByID: 0,
+
+  fetchingDocuments: false,
+  fetchedDocuments: false,
+  documentsData: null,
+  errorDocument: null,
+
+  fetchingPolicyExcp: false,
+  fetchedPolicyExcp: false,
+  PolicyExcp: null,
+  errorPolicyExcp: null,
+
+  fetchingPolicyHolderCode: false,
+  errorPolicyHolderUsersCode: null,
+  fetchedPolicyHolderUsersCode: false,
+  policyHolderUsersCode: [],
+
+  fetchingRequestPolicyholder: false,
+  errorRequestPolicyholder: null,
+  fetchedRequestPolicyholder: false,
+  RequestPolicyholder: [],
+  RequestPolicyholderPageInfo: {},
+  RequestPolicyholderTotalCount: 0,
+
+  fetchingRequestPolicyholderById: false,
+  errorRequestPolicyholderById: null,
+  fetchedRequestPolicyholderById: false,
+  RequestPolicyholderById: [],
+  RequestPolicyholderPageInfoById: {},
+  RequestPolicyholderTotalCountById: 0,
+
+  fetchingBankList: false,
+  fetchedBankList: false,
+  errorBankList: null,
+  BankList: [],
+  BankListPageInfo: { totalCount: 0 },
+
+  fetchingPolicyHoldersUnpaid: false,
+  fetchedPolicyHoldersUnpaid: false,
+  policyHoldersUnpaid: [],
+  errorPolicyHoldersUnpaid: null,
+
+  unlockState: {
+    loading: false,
+    success: false,
+    error: false,
+    message: null,
   },
-  action
-) {
+  checkUnlockStatus: false,
+};
+
+function reducer(state = initialState, action) {
   switch (action.type) {
     case "POLICYHOLDER_POLICYHOLDERS_REQ":
       return {
@@ -102,6 +190,7 @@ function reducer(
         ),
         errorPolicyHolder: formatGraphQLError(action.payload),
       };
+
     case "POLICYHOLDER_POLICYHOLDER_CLEAR":
       return {
         ...state,
@@ -115,6 +204,30 @@ function reducer(
         ...state,
         fetchingPolicyHolder: false,
         errorPolicyHolder: formatServerError(action.payload),
+      };
+    case "POLICYHOLDER_POLICYHOLDER_CODE_REQ":
+      return {
+        ...state,
+        fetchingPolicyHolderCode: true,
+        fetchedPolicyHolderCode: false,
+        policyHolderCode: null,
+        errorPolicyHolderCode: null,
+      };
+    case "POLICYHOLDER_POLICYHOLDER_CODE_RESP":
+      return {
+        ...state,
+        fetchingPolicyHolderCode: false,
+        fetchedPolicyHolderCode: true,
+        policyHolderCode: parseData(action.payload.data.policyHolder).find(
+          (policyHolder) => !!policyHolder
+        ),
+        errorPolicyHolderCode: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_POLICYHOLDER_CODE_ERR":
+      return {
+        ...state,
+        fetchingPolicyHolderCode: false,
+        errorPolicyHolderCode: formatServerError(action.payload),
       };
     case "POLICYHOLDER_POLICYHOLDERINSUREES_REQ":
       return {
@@ -149,15 +262,218 @@ function reducer(
         fetchingPolicyHolderInsurees: false,
         errorPolicyHolderInsurees: formatServerError(action.payload),
       };
-    case "POLICYHOLDER_POLICYHOLDERINSUREES_CLEAR":
+    case "POLICYHOLDER_EXCEPTIONINSUREES_REQ":
       return {
         ...state,
-        fetchingPolicyHolderInsurees: false,
-        fetchedPolicyHolderInsurees: false,
-        policyHolderInsurees: [],
-        policyHolderInsureesPageInfo: {},
-        policyHolderInsureesTotalCount: 0,
-        errorPolicyHolderInsurees: null,
+        fetchingExceptionInsurees: true,
+        fetchedExceptionInsurees: false,
+        ExceptionInsurees: [],
+        ExceptionInsureesPageInfo: {},
+        ExceptionInsureesTotalCount: 0,
+        errorExceptionInsurees: null,
+      };
+    case "POLICYHOLDER_EXCEPTIONINSUREES_RESP":
+      return {
+        ...state,
+        fetchingExceptionInsurees: false,
+        fetchedExceptionInsurees: true,
+        ExceptionInsurees: parseData(action.payload.data.allInsureeExceptions),
+        ExceptionInsureesPageInfo: pageInfo(
+          action.payload.data.allInsureeExceptions
+        ),
+        ExceptionInsureesTotalCount: !!action.payload.data.allInsureeExceptions
+          ? action.payload.data.allInsureeExceptions.totalCount
+          : null,
+        errorExceptionInsurees: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_EXCEPTIONINSUREES_ERR":
+      return {
+        ...state,
+        fetchingExceptionInsurees: false,
+        errorExceptionInsurees: formatServerError(action.payload),
+      };
+
+    case "POLICYHOLDER_EXCEPTIONINSUREES_BY_ID_REQ":
+      return {
+        ...state,
+        fetchingExceptionInsureesByID: true,
+        fetchedExceptionInsureesByID: false,
+        ExceptionInsureesByID: [],
+        ExceptionInsureesPageInfoByID: {},
+        ExceptionInsureesTotalCountByID: 0,
+        errorExceptionInsureesByID: null,
+      };
+    case "POLICYHOLDER_EXCEPTIONINSUREES_BY_ID_RESP":
+      return {
+        ...state,
+        fetchingExceptionInsureesByID: false,
+        fetchedExceptionInsureesByID: true,
+        ExceptionInsureesByID: parseData(
+          action.payload.data.allInsureeExceptions
+        ),
+        ExceptionInsureesPageInfoByID: pageInfo(
+          action.payload.data.allInsureeExceptions
+        ),
+        ExceptionInsureesTotalCountByID: !!action.payload.data
+          .allInsureeExceptions
+          ? action.payload.data.allInsureeExceptions.totalCount
+          : null,
+        errorExceptionInsurees: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_EXCEPTIONINSUREES_BY_ID_ERR":
+      return {
+        ...state,
+        fetchingExceptionInsureesByID: false,
+        errorExceptionInsureesByID: formatServerError(action.payload),
+      };
+    case "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_REQ":
+      return {
+        ...state,
+        fetchingExceptionPolicyholder: true,
+        fetchedExceptionPolicyholder: false,
+        ExceptionPolicyholder: [],
+        ExceptionPolicyholderPageInfo: {},
+        ExceptionPolicyholderTotalCount: 0,
+        errorExceptionPolicyholder: null,
+      };
+    case "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_RESP":
+      return {
+        ...state,
+        fetchingExceptionPolicyholder: false,
+        fetchedExceptionPolicyholder: true,
+        ExceptionPolicyholder: parseData(
+          action.payload.data.allPolicyholderExceptions
+        ),
+        ExceptionPolicyholderPageInfo: pageInfo(
+          action.payload.data.allPolicyholderExceptions
+        ),
+        ExceptionPolicyholderTotalCount: !!action.payload.data
+          .allPolicyholderExceptions
+          ? action.payload.data.allPolicyholderExceptions.totalCount
+          : null,
+        errorExceptionPolicyholder: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_ERR":
+      return {
+        ...state,
+        fetchingExceptionPolicyholder: false,
+        errorExceptionPolicyholder: formatServerError(action.payload),
+      };
+
+    case "POLICYHOLDER_REQUESTPOLICYHOLDER_REQ":
+      return {
+        ...state,
+        fetchingRequestPolicyholder: true,
+        fetchedRequestPolicyholder: false,
+        RequestPolicyholder: [],
+        RequestPolicyholderPageInfo: {},
+        RequestPolicyholderTotalCount: 0,
+        errorRequestPolicyholder: null,
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDER_RESP":
+      return {
+        ...state,
+        fetchingRequestPolicyholder: false,
+        fetchedRequestPolicyholder: true,
+        RequestPolicyholder: parseData(action.payload.data.policyHolder),
+        RequestPolicyholderPageInfo: pageInfo(action.payload.data.policyHolder),
+        RequestPolicyholderTotalCount: !!action.payload.data.policyHolder
+          ? action.payload.data.policyHolder.totalCount
+          : null,
+        errorRequestPolicyholder: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDER_ERR":
+      return {
+        ...state,
+        fetchingRequestPolicyholder: false,
+        errorRequestPolicyholder: formatServerError(action.payload),
+      };
+
+    case "POLICYHOLDER_REQUESTPOLICYHOLDERBYID_REQ":
+      return {
+        ...state,
+        fetchingRequestPolicyholderById: true,
+        fetchedRequestPolicyholderById: false,
+        RequestPolicyholderById: [],
+        RequestPolicyholderPageInfoById: {},
+        RequestPolicyholderTotalCountById: 0,
+        errorRequestPolicyholderById: null,
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDERBYID_RESP":
+      return {
+        ...state,
+        fetchingRequestPolicyholderById: false,
+        fetchedRequestPolicyholderById: true,
+        RequestPolicyholderById: parseData(action.payload.data.policyHolder),
+        RequestPolicyholderPageInfoById: pageInfo(
+          action.payload.data.policyHolder
+        ),
+        RequestPolicyholderTotalCountById: !!action.payload.data.policyHolder
+          ? action.payload.data.policyHolder.totalCount
+          : null,
+        errorRequestPolicyholderById: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_REQUESTPOLICYHOLDERBYID_ERR":
+      return {
+        ...state,
+        fetchingRequestPolicyholderById: false,
+        errorRequestPolicyholderById: formatServerError(action.payload),
+      };
+
+    case "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_BY_ID_REQ":
+      return {
+        ...state,
+        fetchingExceptionPolicyholderById: true,
+        fetchedExceptionPolicyholderById: false,
+        ExceptionPolicyholderById: [],
+        ExceptionPolicyholderPageInfoById: {},
+        ExceptionPolicyholderTotalCountById: 0,
+        errorExceptionPolicyholderById: null,
+      };
+    case "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_BY_ID_RESP":
+      return {
+        ...state,
+        fetchingExceptionPolicyholderById: false,
+        fetchedExceptionPolicyholderById: true,
+        ExceptionPolicyholderById: parseData(
+          action.payload.data.allPolicyholderExceptions
+        ),
+        ExceptionPolicyholderPageInfoById: pageInfo(
+          action.payload.data.allPolicyholderExceptions
+        ),
+        ExceptionPolicyholderTotalCountById: !!action.payload.data
+          .allPolicyholderExceptions
+          ? action.payload.data.allPolicyholderExceptions.totalCount
+          : null,
+        errorExceptionPolicyholderById: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_EXCEPTIONPOLICYHOLDER_BY_ID_ERR":
+      return {
+        ...state,
+        fetchingExceptionPolicyholderById: false,
+        errorExceptionPolicyholderById: formatServerError(action.payload),
+      };
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_REQ":
+      return {
+        ...state,
+        fetchingDocuments: true,
+        fetchedDocuments: false,
+        documentsData: null,
+        errorDocument: null,
+      };
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_RESP":
+      return {
+        ...state,
+        fetchingDocuments: false,
+        fetchedDocuments: true,
+        documentsData: action.payload.data.insureeDocuments,
+        errorDocument: formatGraphQLError(action.payload),
+      };
+    case "INSUREE_POLICYHOLDER_DOCUMENTS_ERR":
+      return {
+        ...state,
+        fetchingDocuments: false,
+        errorDocument: formatServerError(action.payload),
       };
     case "POLICYHOLDER_PICKERPOLICYHOLDERINSUREES_REQ":
       return {
@@ -296,6 +612,39 @@ function reducer(
         fetchingPolicyHolderUsers: false,
         errorPolicyHolderUsers: formatServerError(action.payload),
       };
+    case "DECLARATION_REPORT_REQ":
+      return {
+        ...state,
+        fetchingDeclarationReport: true,
+        fetchedDeclarationReport: false,
+        declarationReport: [],
+        declarationReportPageInfo: {},
+        declarationReportTotalCount: 0,
+        errorDeclarationReport: null,
+      };
+    case "DECLARATION_REPORT_RESP":
+      return {
+        ...state,
+        fetchingDeclarationReport: false,
+        fetchedDeclarationReport: true,
+        declarationReport: parseData(
+          action.payload.data.notDeclaredPolicyHolder
+        ),
+        declarationReportPageInfo: pageInfo(
+          action.payload.data.notDeclaredPolicyHolder
+        ),
+        declarationReportTotalCount: !!action.payload.data
+          .notDeclaredPolicyHolder
+          ? action.payload.data.notDeclaredPolicyHolder.totalCount
+          : null,
+        errorDeclarationReport: formatGraphQLError(action.payload),
+      };
+    case "DECLARATION_REPORT_ERR":
+      return {
+        ...state,
+        fetchingDeclarationReport: false,
+        errorDeclarationReport: formatServerError(action.payload),
+      };
     case "POLICYHOLDER_CODE_FIELDS_VALIDATION_REQ":
       return {
         ...state,
@@ -356,6 +705,46 @@ function reducer(
           },
         },
       };
+    case "PAYMENT_OVERVIEW_REQ":
+      return {
+        ...state,
+        fetchingPayment: true,
+        fetchedPayment: false,
+        payment: null,
+        errorPayment: null,
+        paymentsPageInfo: { totalCount: 0 },
+      };
+    case "PAYMENT_OVERVIEW_RESP":
+      var payments = parseData(action.payload.data.payments);
+      return {
+        ...state,
+        fetchingPayment: false,
+        fetchedPayment: true,
+        payment: payments,
+        errorPayment: formatGraphQLError(action.payload),
+        paymentsPageInfo: pageInfo(action.payload.data.payments),
+      };
+    case "PAYMENT_OVERVIEW_ERR":
+      return {
+        ...state,
+        fetchingPayment: false,
+        errorPayment: formatServerError(action.payload),
+      };
+    case "HAVING_APPROVER_RESP":
+      return {
+        ...state,
+        fetchingapprover: false,
+        fetchedapprover: true,
+        approverData: action.payload.data.havingPaymentApproveRight,
+        errorapprover: formatGraphQLError(action.payload),
+      };
+    // case "POLICYHOLDER_INSUREE_POLICYHOLDERAPPROVAL_RESP":
+    //   return {
+    //     fetchingPolicyExcp: false,
+    //     fetchedPolicyExcp: true,
+    //     PolicyExcp: action.payload.data.createStation,
+    //     errorPolicyExcp: formatGraphQLError(action.payload),
+    //   };
     case "POLICYHOLDER_MUTATION_REQ":
       return dispatchMutationReq(state, action);
     case "POLICYHOLDER_MUTATION_ERR":
@@ -372,8 +761,8 @@ function reducer(
       return dispatchMutationResp(state, "updatePolicyHolderInsuree", action);
     case "POLICYHOLDER_DELETE_POLICYHOLDERINSUREE_RESP":
       return dispatchMutationResp(state, "deletePolicyHolderInsuree", action);
-    case "POLICYHOLDER_REPLACE_POLICYHOLDERINSUREE_RESP":
-      return dispatchMutationResp(state, "replacePolicyHolderInsuree", action);
+    // case "POLICYHOLDER_REPLACE_POLICYHOLDERINSUREE_RESP":
+    //   return dispatchMutationResp(state, "replacePolicyHolderInsuree", action);
     case "POLICYHOLDER_CREATE_POLICYHOLDERCONTRIBUTIONPLANBUNDLE_RESP":
       return dispatchMutationResp(
         state,
@@ -406,6 +795,116 @@ function reducer(
       return dispatchMutationResp(state, "deletePolicyHolderUser", action);
     case "POLICYHOLDER_REPLACE_POLICYHOLDERUSER_RESP":
       return dispatchMutationResp(state, "replacePolicyHolderUser", action);
+    case "POLICYHOLDER_EXCP_CREATE_RESP":
+      return dispatchMutationResp(state, "createException", action);
+    case "POLICYHOLDER_POLICYHOLDER_EXCP_CREATE_RESP":
+      return dispatchMutationResp(state, "createPolicyHolderException", action);
+    case "POLICYHOLDER_INSUREE_APPROVAL_RESP":
+      return dispatchMutationResp(state, "insureeApproval", action);
+    case "POLICYHOLDER_INSUREE_POLICYHOLDERAPPROVAL_RESP":
+      return dispatchMutationResp(state, "policyHolderApproval", action);
+    case "POLICYHOLDER_BANKLIST_REQ":
+      return {
+        ...state,
+        fetchingBankList: true,
+        fetchedBankList: false,
+        BankList: null,
+        errorBankList: null,
+      };
+    case "POLICYHOLDER_BANKLIST_RESP":
+      return {
+        ...state,
+        fetchingBankList: false,
+        fetchedBankList: true,
+        BankList: parseData(action?.payload?.data?.banks),
+        BankListPageInfo: pageInfo(action?.payload?.data?.banks),
+      };
+    case "POLICYHOLDER_BANKLIST_ERR":
+      return {
+        ...state,
+        fetchingBankList: false,
+        errorBankList: formatServerError(action.payload),
+      };
+    case "POLICYHOLDER_UNPAID_DECLARATION_REQ":
+      return {
+        ...state,
+        fetchingPolicyHoldersUnpaid: true,
+        fetchedPolicyHoldersUnpaid: false,
+        policyHoldersUnpaid: [],
+        errorPolicyHoldersUnpaid: null,
+      };
+    case "POLICYHOLDER_UNPAID_DECLARATION_RESP":
+      return {
+        ...state,
+        fetchingPolicyHoldersUnpaid: false,
+        fetchedPolicyHoldersUnpaid: true,
+        policyHoldersUnpaid:
+          action.payload.data.unpaidDeclarationByPolicyholder,
+        errorPolicyHoldersUnpaid: formatGraphQLError(action.payload),
+      };
+    case "POLICYHOLDER_UNPAID_DECLARATION_ERR":
+      return {
+        ...state,
+        fetchingPolicyHoldersUnpaid: false,
+        errorPolicyHoldersUnpaid: formatServerError(action.payload),
+      };
+
+    case "POLICYHOLDER_CHECK_UNLOCK_STATUS_REQ":
+      return {
+        ...state,
+        checkUnlockStatus: false,
+      };
+    case "POLICYHOLDER_CHECK_UNLOCK_STATUS_RESP":
+      return {
+        ...state,
+        checkUnlockStatus: action.payload?.data?.unlockPolicyholder?.success,
+      };
+    case "POLICYHOLDER_CHECK_UNLOCK_STATUS_ERR":
+      return {
+        ...state,
+        checkUnlockStatus: false,
+      };
+    case "POLICYHOLDER_INLOCK_MUTATION_REQ":
+      return {
+        ...state,
+        unlockState: {
+          loading: true,
+          success: false,
+          error: false,
+          message: null,
+        },
+      };
+    case "POLICYHOLDER_INLOCK_MUTATION_RESP":
+      return {
+        ...state,
+        unlockState: {
+          loading: false,
+          success: true,
+          error: false,
+          message: "Le souscripteur à bien été débloqué!",
+        },
+      };
+    case "POLICYHOLDER_INLOCK_MUTATION_ERR":
+      return {
+        ...state,
+        unlockState: {
+          loading: false,
+          success: false,
+          error: true,
+          message: "Une erreur s'est produite, veuillez réessayer!",
+        },
+      };
+    case "POLICYHOLDER_INLOCK_MUTATION_RESET": {
+      return {
+        ...state,
+        unlockState: {
+          loading: false,
+          success: false,
+          error: false,
+          message: null,
+        },
+      };
+    }
     default:
       return state;
   }
