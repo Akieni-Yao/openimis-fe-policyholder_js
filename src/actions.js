@@ -173,6 +173,8 @@ export function fetchExceptionReasons(modulesManager, params) {
     "reason",
     "period",
     "scope",
+    "createdAt",
+    "modifiedAt",
   ]);
   return graphql(payload, [
     "EXCEPTION_REASONS_REQ",

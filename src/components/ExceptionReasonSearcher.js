@@ -11,7 +11,14 @@ import {
   PublishedComponent,
 } from "@openimis/fe-core";
 import PolicyHolderFilter from "./PolicyHolderFilter";
-import { fetchPolicyHolders, deletePolicyHolder } from "../actions";
+import {
+  fetchPolicyHolders,
+  deletePolicyHolder,
+  fetchExceptionReasons,
+  createExceptionReason,
+  updateExceptionReason,
+  deleteExceptionReason,
+} from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { IconButton, Tooltip } from "@material-ui/core";
@@ -47,35 +54,27 @@ class ExceptionReasonSearcher extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.submittingMutation && !this.props.submittingMutation) {
-      this.props.journalize(this.props.mutation);
-      this.setState((state) => ({
-        deleted: state.deleted.concat(state.toDelete),
-      }));
-    } else if (
-      prevProps.confirmed !== this.props.confirmed &&
-      !!this.props.confirmed &&
-      !!this.state.confirmedAction
-    ) {
-      this.state.confirmedAction();
-    }
+    // if (prevProps.submittingMutation && !this.props.submittingMutation) {
+    //   this.props.journalize(this.props.mutation);
+    //   this.setState((state) => ({
+    //     deleted: state.deleted.concat(state.toDelete),
+    //   }));
+    // } else if (
+    //   prevProps.confirmed !== this.props.confirmed &&
+    //   !!this.props.confirmed &&
+    //   !!this.state.confirmedAction
+    // ) {
+    //   this.state.confirmedAction();
+    // }
   }
 
   fetch = (params) => {
-    this.props.fetchPolicyHolders(this.props.modulesManager, params);
+    this.props.fetchExceptionReasons(this.props.modulesManager, params);
   };
 
   headers = () => {
     const { rights } = this.props;
-    let result = [
-      "policyHolder.displayName",
-      "policyHolder.location",
-      "policyHolder.legalForm",
-      "policyHolder.activityCode",
-      "policyHolder.dateValidFrom",
-      "policyHolder.dateValidTo",
-      "policyholder.status",
-    ];
+    let result = ["Raison", "Période", "Scope", "Date de création"];
     if (rights.includes(RIGHT_POLICYHOLDER_UPDATE)) {
       result.push("policyHolder.emptyLabel");
     }
@@ -94,86 +93,36 @@ class ExceptionReasonSearcher extends Component {
       rights,
     } = this.props;
     let result = [
-      (policyHolder) =>
-        !!policyHolder.code && policyHolder.tradeName
-          ? `${policyHolder.code} ${policyHolder.tradeName}`
-          : "",
-      (policyHolder) =>
-        !!policyHolder.locations
-          ? `
-          ${policyHolder.locations.parent.parent.parent.code} 
-          ${policyHolder.locations.parent.parent.parent.name}
-          ${policyHolder.locations.parent.parent.code} 
-          ${policyHolder.locations.parent.parent.name} 
-          ${policyHolder.locations.parent.code}
-          ${policyHolder.locations.parent.name}
-          ${policyHolder.locations.code}
-          ${policyHolder.locations.name}`
-          : "",
-      (policyHolder) =>
-        !!policyHolder.legalForm ? (
-          <PublishedComponent
-            pubRef='policyHolder.LegalFormPicker'
-            module='policyHolder'
-            label='legalForm'
-            value={policyHolder.legalForm}
-            withLabel={false}
-            readOnly
-          />
-        ) : (
-          ""
-        ),
-      (policyHolder) =>
-        !!policyHolder.activityCode ? (
-          <PublishedComponent
-            pubRef='policyHolder.ActivityCodePicker'
-            module='policyHolder'
-            label='activityCode'
-            value={policyHolder.activityCode}
-            withLabel={false}
-            readOnly
-          />
-        ) : (
-          ""
-        ),
-      (policyHolder) =>
-        !!policyHolder.dateValidFrom
-          ? formatDateFromISO(modulesManager, intl, policyHolder.dateValidFrom)
-          : "",
-      (policyHolder) =>
-        !!policyHolder.dateValidTo
-          ? formatDateFromISO(modulesManager, intl, policyHolder.dateValidTo)
-          : "",
-      (policyHolder) =>
-        !!policyHolder.status
-          ? policyHolder.status
-          : "",
+      (data) => `${data.reason}`,
+      (data) => `${data.period}`,
+      (data) => `${data.scope}`,
+      (data) => `${formatDateFromISO(modulesManager, intl, date.createdAt)}`,
     ];
-    if (
-      rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
-      rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH)
-    ) {
-      result.push(
-        (policyHolder) =>
-          !this.isDeletedFilterEnabled(policyHolder) && (
-            <Tooltip
-              title={formatMessage(intl, "policyHolder", "editButton.tooltip")}
-            >
-              <IconButton
-                href={policyHolderPageLink(policyHolder)}
-                onClick={(e) =>
-                  e.stopPropagation() &&
-                  !policyHolder.clientMutationId &&
-                  onDoubleClick(policyHolder)
-                }
-                disabled={this.state.deleted.includes(policyHolder.id)}
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-          )
-      );
-    }
+    // if (
+    //   rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
+    //   rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH)
+    // ) {
+    //   result.push(
+    //     (policyHolder) =>
+    //       !this.isDeletedFilterEnabled(policyHolder) && (
+    //         <Tooltip
+    //           title={formatMessage(intl, "policyHolder", "editButton.tooltip")}
+    //         >
+    //           <IconButton
+    //             href={policyHolderPageLink(policyHolder)}
+    //             onClick={(e) =>
+    //               e.stopPropagation() &&
+    //               !policyHolder.clientMutationId &&
+    //               onDoubleClick(policyHolder)
+    //             }
+    //             disabled={this.state.deleted.includes(policyHolder.id)}
+    //           >
+    //             <EditIcon />
+    //           </IconButton>
+    //         </Tooltip>
+    //       )
+    //   );
+    // }
     if (rights.includes(RIGHT_POLICYHOLDER_DELETE)) {
       result.push(
         (policyHolder) =>
@@ -243,13 +192,13 @@ class ExceptionReasonSearcher extends Component {
 
   sorts = () => {
     return [
-      ["code", true],
-      null,
-      ["legalForm", true],
-      ["activityCode", true],
-      ["dateValidFrom", true],
-      ["dateValidTo", true],
-      ["status", true],
+      // ["code", true],
+      // null,
+      // ["legalForm", true],
+      // ["activityCode", true],
+      // ["dateValidFrom", true],
+      // ["dateValidTo", true],
+      // ["status", true],
     ];
   };
 
@@ -269,41 +218,47 @@ class ExceptionReasonSearcher extends Component {
   render() {
     const {
       intl,
-      fetchingPolicyHolders,
-      fetchedPolicyHolders,
-      errorPolicyHolders,
-      policyHolders,
-      policyHoldersPageInfo,
-      policyHoldersTotalCount,
+      // fetchingPolicyHolders,
+      // fetchedPolicyHolders,
+      // errorPolicyHolders,
+      // policyHolders,
+      // policyHoldersPageInfo,
+      // policyHoldersTotalCount,
       onDoubleClick,
+      fetchingExceptionReasons,
+      fetchedExceptionReasons,
+      exceptionReasons,
+      exceptionReasonsPageInfo,
+      exceptionReasonsTotalCount,
+      errorExceptionReasons,
+      exceptionReasonsMutation,
+      exceptionReasonsMutationError,
+      exceptionReasonsMutationSuccess,
     } = this.props;
     return (
       <Fragment>
         <Searcher
-          module='policyHolder'
-          FilterPane={PolicyHolderFilter}
+          module="policyHolder"
+          FilterPane={null}
           fetch={this.fetch}
-          items={policyHolders}
-          itemsPageInfo={policyHoldersPageInfo}
-          fetchingItems={fetchingPolicyHolders}
-          fetchedItems={fetchedPolicyHolders}
-          errorItems={errorPolicyHolders}
+          items={exceptionReasons}
+          itemsPageInfo={exceptionReasonsPageInfo}
+          fetchingItems={fetchingExceptionReasons}
+          fetchedItems={fetchedExceptionReasons}
+          errorItems={errorExceptionReasons}
           tableTitle={formatMessageWithValues(
             intl,
             "policyHolder",
-            "policyHolders.searcher.results.title",
-            { policyHoldersTotalCount }
+            "policyHolder.exceptionReasons.searcher.results.title",
+            { exceptionReasonsTotalCount }
           )}
           headers={this.headers}
           itemFormatters={this.itemFormatters}
           sorts={this.sorts}
           rowsPerPageOptions={this.rowsPerPageOptions}
           defaultPageSize={this.defaultPageSize}
-          defaultOrderBy='-date_created'
-          onDoubleClick={(policyHolder) =>
-            this.isOnDoubleClickEnabled(policyHolder) &&
-            onDoubleClick(policyHolder)
-          }
+          defaultOrderBy="-date_created"
+          onDoubleClick={(policyHolder) => {}}
           rowDisabled={this.isRowDisabled}
           rowLocked={this.isRowDisabled}
           defaultFilters={this.defaultFilters()}
@@ -314,24 +269,48 @@ class ExceptionReasonSearcher extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  fetchingPolicyHolders: state.policyHolder.fetchingPolicyHolders,
-  fetchedPolicyHolders: state.policyHolder.fetchedPolicyHolders,
-  errorPolicyHolders: state.policyHolder.errorPolicyHolders,
-  policyHolders: state.policyHolder.policyHolders,
-  policyHoldersPageInfo: state.policyHolder.policyHoldersPageInfo,
-  policyHoldersTotalCount: state.policyHolder.policyHoldersTotalCount,
-  confirmed: state.core.confirmed,
-  submittingMutation: state.policyHolder.submittingMutation,
-  mutation: state.policyHolder.mutation,
+  // fetchingPolicyHolders: state.policyHolder.fetchingPolicyHolders,
+  // fetchedPolicyHolders: state.policyHolder.fetchedPolicyHolders,
+  // errorPolicyHolders: state.policyHolder.errorPolicyHolders,
+  // policyHolders: state.policyHolder.policyHolders,
+  // policyHoldersPageInfo: state.policyHolder.policyHoldersPageInfo,
+  // policyHoldersTotalCount: state.policyHolder.policyHoldersTotalCount,
+  // confirmed: state.core.confirmed,
+  // submittingMutation: state.policyHolder.submittingMutation,
+  // mutation: state.policyHolder.mutation,
+
+  fetchingExceptionReasons: state.policyHolder.fetchingExceptionReasons,
+  fetchedExceptionReasons: state.policyHolder.fetchedExceptionReasons,
+  exceptionReasons: state.policyHolder.exceptionReasons,
+  exceptionReasonsPageInfo: state.policyHolder.exceptionReasonsPageInfo,
+  exceptionReasonsTotalCount: state.policyHolder.exceptionReasonsTotalCount,
+  errorExceptionReasons: state.policyHolder.errorExceptionReasons,
+
+  exceptionReasonsMutation: state.policyHolder.exceptionReasonsMutation,
+  exceptionReasonsMutationError:
+    state.policyHolder.exceptionReasonsMutationError,
+  exceptionReasonsMutationSuccess:
+    state.policyHolder.exceptionReasonsMutationSuccess,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchPolicyHolders, coreConfirm, deletePolicyHolder, journalize },
+    {
+      fetchPolicyHolders,
+      coreConfirm,
+      deletePolicyHolder,
+      journalize,
+      fetchExceptionReasons,
+      createExceptionReason,
+      updateExceptionReason,
+      deleteExceptionReason,
+    },
     dispatch
   );
 };
 
 export default withModulesManager(
-  injectIntl(connect(mapStateToProps, mapDispatchToProps)(ExceptionReasonSearcher))
+  injectIntl(
+    connect(mapStateToProps, mapDispatchToProps)(ExceptionReasonSearcher)
+  )
 );

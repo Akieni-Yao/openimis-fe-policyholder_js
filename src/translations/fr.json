@@ -1,3 +1,4 @@
 {
-    "_openSanction.btn": "Payer"
+    "_openSanction.btn": "Payer",
+    "policyHolder.exceptionReasons.searcher.results.title": "{exceptionReasonTotalCount} raison d'exception trouvée"
 }
