@@ -174,7 +174,11 @@ export function fetchExceptionReasons(modulesManager, params) {
     "period",
     "scope",
   ]);
-  return graphql(payload, "POLICYHOLDER_EXCEPTION_REASONS");
+  return graphql(payload, [
+    "EXCEPTION_REASONS_REQ",
+    "EXCEPTION_REASONS_RESP",
+    "EXCEPTION_REASONS_ERR",
+  ]);
 }
 
 export function createExceptionReason(exceptionReason, clientMutationLabel) {
@@ -189,8 +193,8 @@ export function createExceptionReason(exceptionReason, clientMutationLabel) {
     mutation.payload,
     [
       "EXCEPTION_REASON_MUTATION_REQ",
-      "EXCEPTION_REASON_CREATE_RESP",
-      "EXCEPTION_REASON_ERR",
+      "EXCEPTION_REASON_MUTATION_CREATE_RESP",
+      "EXCEPTION_REASON_MUTATION_ERR",
     ],
     {
       clientMutationId: mutation.clientMutationId,
@@ -227,8 +231,8 @@ export function updateExceptionReason(exceptionReason, clientMutationLabel) {
     mutation.payload,
     [
       "EXCEPTION_REASON_MUTATION_REQ",
-      "EXCEPTION_REASON_UPDATE_RESP",
-      "EXCEPTION_REASON_ERR",
+      "EXCEPTION_REASON_MUTATION_UPDATE_RESP",
+      "EXCEPTION_REASON_MUTATION_ERR",
     ],
     {
       clientMutationId: mutation.clientMutationId,
@@ -250,8 +254,8 @@ export function deleteExceptionReason(exceptionReason, clientMutationLabel) {
     mutation.payload,
     [
       "EXCEPTION_REASON_MUTATION_REQ",
-      "EXCEPTION_REASON_DELETE_RESP",
-      "EXCEPTION_REASON_ERR",
+      "EXCEPTION_REASON_MUTATION_DELETE_RESP",
+      "EXCEPTION_REASON_MUTATION_ERR",
     ],
     {
       clientMutationId: mutation.clientMutationId,

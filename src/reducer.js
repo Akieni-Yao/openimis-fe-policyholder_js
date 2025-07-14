@@ -140,10 +140,95 @@ const initialState = {
     message: null,
   },
   checkUnlockStatus: false,
+
+  fetchingExceptionReasons: true,
+  fetchedExceptionReasons: false,
+  exceptionReasons: [],
+  exceptionReasonsPageInfo: {},
+  exceptionReasonsTotalCount: 0,
+  errorExceptionReasons: null,
+
+  exceptionReasonsMutation: null,
+  exceptionReasonsMutationError: null,
+  exceptionReasonsMutationSuccess: null,
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case "EXCEPTION_REASONS_REQ":
+      return {
+        ...state,
+        fetchingExceptionReasons: true,
+        fetchedExceptionReasons: false,
+        exceptionReasons: [],
+        exceptionReasonsPageInfo: {},
+        exceptionReasonsTotalCount: 0,
+        errorExceptionReasons: null,
+        exceptionReasonsMutation: null,
+        exceptionReasonsMutationError: null,
+        exceptionReasonsMutationSuccess: null,
+      };
+
+    case "EXCEPTION_REASONS_RESP":
+      return {
+        ...state,
+        fetchingExceptionReasons: false,
+        fetchedExceptionReasons: true,
+        exceptionReasons: parseData(action.payload.data.exceptionReason),
+        exceptionReasonsPageInfo: pageInfo(action.payload.data.exceptionReason),
+        exceptionReasonsTotalCount: !!action.payload.data.exceptionReason
+          ? action.payload.data.exceptionReason.totalCount
+          : null,
+        errorExceptionReasons: formatGraphQLError(action.payload),
+      };
+
+    case "EXCEPTION_REASONS_ERR":
+      return {
+        ...state,
+        fetchingExceptionReasons: false,
+        errorExceptionReasons: formatServerError(action.payload),
+      };
+
+    case "EXCEPTION_REASON_MUTATION_REQ":
+      return {
+        ...state,
+        exceptionReasonsMutation: null,
+        exceptionReasonsMutationError: null,
+        exceptionReasonsMutationSuccess: null,
+      };
+
+    case "EXCEPTION_REASON_MUTATION_ERR":
+      return {
+        ...state,
+        exceptionReasonsMutation: null,
+        exceptionReasonsMutationError: formatServerError(action.payload),
+        exceptionReasonsMutationSuccess: false,
+      };
+
+    case "EXCEPTION_REASON_MUTATION_CREATE_RESP":
+      return {
+        ...state,
+        exceptionReasonsMutation: action.payload.data.exceptionReasonCreate,
+        exceptionReasonsMutationError: null,
+        exceptionReasonsMutationSuccess: true,
+      };
+
+    case "EXCEPTION_REASON_MUTATION_UPDATE_RESP":
+      return {
+        ...state,
+        exceptionReasonsMutation: action.payload.data.exceptionReasonUpdate,
+        exceptionReasonsMutationError: null,
+        exceptionReasonsMutationSuccess: true,
+      };
+
+    case "EXCEPTION_REASON_MUTATION_DELETE_RESP":
+      return {
+        ...state,
+        exceptionReasonsMutation: action.payload.data.exceptionReasonDelete,
+        exceptionReasonsMutationError: null,
+        exceptionReasonsMutationSuccess: true,
+      };
+
     case "POLICYHOLDER_POLICYHOLDERS_REQ":
       return {
         ...state,
