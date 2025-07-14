@@ -101,10 +101,7 @@ class ExceptionReasonSearcher extends Component {
         <Tooltip
           title={formatMessage(intl, "policyHolder", "editButton.tooltip")}
         >
-          <IconButton
-            href={policyHolderPageLink(policyHolder)}
-            onClick={(e) => {}}
-          >
+          <IconButton onClick={(e) => {}}>
             <EditIcon />
           </IconButton>
         </Tooltip>
