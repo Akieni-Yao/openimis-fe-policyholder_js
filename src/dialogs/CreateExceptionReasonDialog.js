@@ -191,29 +191,16 @@ class CreateExceptionReasonDialog extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-        {this.state.camuCode ? (
+        {this.state.snackbar && (
           <CommonSnackbar
             open={this.state.snackbar}
             onClose={this.closeSnakBar}
             message={this.state.snackbarMsg}
-            severity="success"
+            severity={this.state.severity}
             intl={intl}
-            copyText={!!this.state.camuCode ? this.state.camuCode : ""}
-            backgroundColor="#00913E"
-          />
-        ) : (
-          <CommonSnackbar
-            open={this.state.snackbar}
-            onClose={this.closeSnakBar}
-            message={formatMessageWithValues(
-              intl,
-              "policyHolder",
-              `CreatePolicyHolder.${this.state.snackbarMsg}`,
-              {}
-            )}
-            intl={intl}
-            severity="error"
-            backgroundColor="red"
+            backgroundColor={
+              this.state.severity == "success" ? "#00913E" : "#D32F2F"
+            }
           />
         )}
       </Fragment>

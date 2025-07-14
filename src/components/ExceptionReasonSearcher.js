@@ -243,15 +243,7 @@ class ExceptionReasonSearcher extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  // fetchingPolicyHolders: state.policyHolder.fetchingPolicyHolders,
-  // fetchedPolicyHolders: state.policyHolder.fetchedPolicyHolders,
-  // errorPolicyHolders: state.policyHolder.errorPolicyHolders,
-  // policyHolders: state.policyHolder.policyHolders,
-  // policyHoldersPageInfo: state.policyHolder.policyHoldersPageInfo,
-  // policyHoldersTotalCount: state.policyHolder.policyHoldersTotalCount,
-  // confirmed: state.core.confirmed,
-  // submittingMutation: state.policyHolder.submittingMutation,
-  // mutation: state.policyHolder.mutation,
+  
 
   fetchingExceptionReasons: state.policyHolder.fetchingExceptionReasons,
   fetchedExceptionReasons: state.policyHolder.fetchedExceptionReasons,
