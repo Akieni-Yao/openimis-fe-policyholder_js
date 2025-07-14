@@ -17,18 +17,20 @@ import { withTheme, withStyles } from "@material-ui/core/styles";
 import {
   createPolicyHolderInsuree,
   createPolicyHolderException,
+  createExceptionReason,
+  updateExceptionReason,
 } from "../actions";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import PolicyHolderContributionPlanBundlePicker from "../pickers/PolicyHolderContributionPlanBundlePicker";
-import {
-  ZERO,
-  MAX_CLIENTMUTATIONLABEL_LENGTH,
-  POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY,
-  POLICYHOLDERINSUREE_CLASSNAME,
-  RIGHT_CALCULATION_WRITE,
-} from "../constants";
+// import PolicyHolderContributionPlanBundlePicker from "../pickers/PolicyHolderContributionPlanBundlePicker";
+// import {
+//   ZERO,
+//   MAX_CLIENTMUTATIONLABEL_LENGTH,
+//   POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY,
+//   POLICYHOLDERINSUREE_CLASSNAME,
+//   RIGHT_CALCULATION_WRITE,
+// } from "../constants";
 import CommonSnackbar from "../components/CommonSnackbar";
 
 const styles = (theme) => ({
@@ -39,9 +41,8 @@ class CreateExceptionReasonDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      // open: false,
       edited: {},
-      jsonExtValid: true,
       success: false,
       successMessage: "",
       confirmDialog: false,
@@ -49,106 +50,140 @@ class CreateExceptionReasonDialog extends Component {
       snackbar: false,
       severity: null,
       snackbarMsg: null,
-      camuCode: null,
     };
   }
 
-  handleOpen = () => {
-    this.setState((_, props) => ({
-      open: true,
-      policyHolderInsuree: {
-        policyHolder: props.policyHolder,
-        policy: {},
-      },
-      jsonExtValid: true,
-      jsonData: {},
-    }));
-  };
+  componentDidMount() {
+    this.setState({
+      // open: this.props.open,
+      edited: this.props.edited || {},
+    });
+  }
+
+  // handleOpen = () => {
+  //   this.setState((_, props) => ({
+  //     open: true,
+  //     policyHolderInsuree: {
+  //       policyHolder: props.policyHolder,
+  //       policy: {},
+  //     },
+  //     jsonExtValid: true,
+  //     jsonData: {},
+  //   }));
+  // };
 
   // handleClose = () => {
   //     this.setState({ open: false, policyHolderInsuree: {} });
   // };
 
   handleSave = async () => {
-    const { intl, policyHolder, onSave, createPolicyHolderException } =
-      this.props;
-    const response = await createPolicyHolderException(
-      this.props.modulesManager,
-      this.state.jsonData
-    );
-    // console.log("response", response)
-    if (!!response?.payload?.data?.createPolicyHolderException?.code) {
-      this.setState({
-        snackbar: true,
-        camuCode: !!response?.payload?.data?.createPolicyHolderException
-          ?.policyHolderExcption?.code
-          ? response?.payload?.data?.createPolicyHolderException
-              ?.policyHolderExcption?.code
-          : "",
+    // const { intl, policyHolder, onSave, createPolicyHolderException } =
+    //   this.props;
 
-        // severity: paymentData.status == 5 ? "success" : "error",
-        snackbarMsg: formatMessageWithValues(
-          this.props.intl,
-          "policyHolder",
-          "snackbar.create",
-          {}
-        ),
-      });
-    } else {
-      this.setState({
-        snackbar: true,
-        severity: "error",
-        // camuCode: !!response?.payload?.data?.createInsureeException?.insureeException?.code ? response?.payload?.data?.createInsureeException?.insureeException?.code : "",
-        snackbarMsg:
-          response?.payload?.data?.createPolicyHolderException?.message,
-        // formatMessageWithValues(
-        //   this.props.intl,
-        //   "policyHolder",
-        //   "snackbar.create",
-        //   {}
-        // )
-      });
-    }
-    onSave();
+    console.log("....this.state.edited", this.state.edited);
+
+    const response = await this.props.createExceptionReason(
+      this.state.edited,
+      this.props.modulesManager
+    );
+
+    console.log("response", response);
+
     this.props.handleClose();
-    this.setState({ open: false, jsonData: {} });
+
+    // const response = await createPolicyHolderException(
+    //   this.props.modulesManager,
+    //   this.state.jsonData
+    // );
+    // // console.log("response", response)
+    // if (!!response?.payload?.data?.createPolicyHolderException?.code) {
+    //   this.setState({
+    //     snackbar: true,
+    //     camuCode: !!response?.payload?.data?.createPolicyHolderException
+    //       ?.policyHolderExcption?.code
+    //       ? response?.payload?.data?.createPolicyHolderException
+    //           ?.policyHolderExcption?.code
+    //       : "",
+    //     // severity: paymentData.status == 5 ? "success" : "error",
+    //     snackbarMsg: formatMessageWithValues(
+    //       this.props.intl,
+    //       "policyHolder",
+    //       "snackbar.create",
+    //       {}
+    //     ),
+    //   });
+    // } else {
+    //   this.setState({
+    //     snackbar: true,
+    //     severity: "error",
+    //     // camuCode: !!response?.payload?.data?.createInsureeException?.insureeException?.code ? response?.payload?.data?.createInsureeException?.insureeException?.code : "",
+    //     snackbarMsg:
+    //       response?.payload?.data?.createPolicyHolderException?.message,
+    //     // formatMessageWithValues(
+    //     //   this.props.intl,
+    //     //   "policyHolder",
+    //     //   "snackbar.create",
+    //     //   {}
+    //     // )
+    //   });
+    // }
+    // onSave();
+    // this.props.handleClose();
+    // this.setState({ open: false, jsonData: {} });
   };
   closeSnakBar = () => {
     this.setState({ snackbar: false });
   };
+  // updateAttribute = (attribute, value) => {
+  //   // debugger
+  //   this.setState((state) => ({
+  //     jsonData: {
+  //       ...state.jsonData,
+  //     },
+  //   }));
+  // };
+
+  canSave = () => {
+    return (
+      this.state.edited?.reason &&
+      this.state.edited?.scope &&
+      this.state.edited?.period
+    );
+    // const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
+    // // console.log("jsonData", jsonData);
+    // return !!jsonData?.policyHolder;
+    // // &&
+    // // !!policyHolderInsuree.insuree &&
+    // // !!policyHolderInsuree.contributionPlanBundle &&
+    // // !!policyHolderInsuree.dateValidFrom &&
+    // // !!jsonExtValid
+  };
+
+  // setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
+
   updateAttribute = (attribute, value) => {
-    // debugger
     this.setState((state) => ({
-      jsonData: {
-        ...state.jsonData,
+      edited: {
+        ...state.edited,
         [attribute]: value,
       },
     }));
   };
-
-  canSave = () => {
-    const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
-    // console.log("jsonData", jsonData);
-    return !!jsonData?.policyHolder;
-    // &&
-    // !!policyHolderInsuree.insuree &&
-    // !!policyHolderInsuree.contributionPlanBundle &&
-    // !!policyHolderInsuree.dateValidFrom &&
-    // !!jsonExtValid
-  };
-
-  setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
   render() {
     const { intl, classes, open, edited, handleClose } = this.props;
 
     return (
       <Fragment>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} style={{ minWidth: "500px" }}>
           <DialogTitle>
             <FormattedMessage
               module="policyHolder"
-              id="exception.addException"
+              id={
+                edited.id
+                  ? "exception.addExceptionReason"
+                  : "exception.editExceptionReason"
+              }
             />
           </DialogTitle>
           <DialogContent>
@@ -231,7 +266,12 @@ class CreateExceptionReasonDialog extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { createPolicyHolderInsuree, createPolicyHolderException },
+    {
+      createPolicyHolderInsuree,
+      createPolicyHolderException,
+      createExceptionReason,
+      updateExceptionReason,
+    },
     dispatch
   );
 };

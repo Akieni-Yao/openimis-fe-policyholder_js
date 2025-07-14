@@ -23,6 +23,7 @@ import {
 import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { decodeId } from "@openimis/fe-core";
+import { createExceptionReason, updateExceptionReason } from "../actions";
 
 const styles = (theme) => ({
   page: theme.page,
@@ -32,38 +33,17 @@ const styles = (theme) => ({
 class ExceptionReasonPage extends Component {
   state = {
     open: false,
+    edited: {},
   };
-  // onAdd = () => {
-  //   historyPush(
-  //     this.props.modulesManager,
-  //     this.props.history,
-  //     "policyHolder.route.policyHolder"
-  //   );
-  // };
 
-  // policyHolderPageLink = (policyHolder) => {
-  //   return `${this.props.modulesManager.getRef(
-  //     "policyHolder.route.policyHolder"
-  //   )}${"/" + decodeId(policyHolder.id)}`;
-  // };
-
-  onDoubleClick = (policyHolder, newTab = false) => {
+  onDoubleClick = (data, newTab = false) => {
     const { rights, modulesManager, history } = this.props;
-    // if (
-    //   rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
-    //   rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH)
-    // ) {
-    //   historyPush(
-    //     modulesManager,
-    //     history,
-    //     "policyHolder.route.policyHolder",
-    //     [decodeId(policyHolder.id)],
-    //     newTab
-    //   );
-    // }
+    this.setState({ open: true, edited: data });
   };
 
-  onSave = (edited) => {};
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
   componentDidMount = () => {
     const moduleName = "policyHolder";
@@ -112,8 +92,7 @@ class ExceptionReasonPage extends Component {
             )}
 
           <CreateExceptionReasonDialog
-            edited={{}}
-            onSave={this.onSave}
+            edited={this.state.edited}
             open={this.state.open}
             handleClose={this.handleClose}
           />
@@ -132,7 +111,14 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ clearCurrentPaginationPage }, dispatch);
+  bindActionCreators(
+    {
+      clearCurrentPaginationPage,
+      createExceptionReason,
+      updateExceptionReason,
+    },
+    dispatch
+  );
 
 export default withModulesManager(
   injectIntl(
