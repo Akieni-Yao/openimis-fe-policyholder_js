@@ -158,7 +158,6 @@ class CreateExceptionReasonDialog extends Component {
                   module="policyHolder"
                   label="Raison"
                   required
-                  inputProps={{ maxLength: MAX_PHONE_LENGTH }}
                   value={edited?.reason}
                   onChange={(v) => this.updateAttribute("reason", v)}
                 />
