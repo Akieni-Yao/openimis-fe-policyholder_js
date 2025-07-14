@@ -15,6 +15,7 @@
   "policyHolder.dateValidTo": "Date Valid To",
   "policyHolder.isDeleted": "Show deleted",
   "policyHolder.policyHolders.searcher.results.title": "{policyHoldersTotalCount} Policy Holders Found",
+  "policyHolder.exceptionReasons.searcher.results.title": "{exceptionReasonsTotalCount} Exception reason Found",
   "policyHolder.any": "Any",
   "policyHolder.emptyLabel": " ",
   "policyHolder.delete": "Delete",
@@ -235,5 +236,9 @@
   "policyholder.openSanction.title": "Open Sanction",
   "policyholder.openSanction.btn": "Pay",
   "policyholder.openSanction.paidStatus": "Paid",
-  "policyHolder.policyHolder.unlockPolicyholder": "Unlock Policy Holder"
+  "policyHolder.policyHolder.unlockPolicyholder": "Unlock Policy Holder",
+  "exceptionScope.INSUREE": "Insuree",
+  "exceptionScope.POLICY_HOLDER": "Policy Holder",
+  "exception.addExceptionReason": "Add Exception Reason",
+  "exception.editExceptionReason": "Add Exception Reason"
 }
