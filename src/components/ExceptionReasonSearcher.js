@@ -97,53 +97,29 @@ class ExceptionReasonSearcher extends Component {
       (data) => `${data.period} mois`,
       (data) => `${data.scope == "INSUREE" ? "Assuré" : "Souscripteur"}`,
       (data) => `${formatDateFromISO(modulesManager, intl, data.createdAt)}`,
+      (data) => (
+        <Tooltip
+          title={formatMessage(intl, "policyHolder", "editButton.tooltip")}
+        >
+          <IconButton
+            href={policyHolderPageLink(policyHolder)}
+            onClick={(e) => {}}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+      ),
+      (data) => (
+        <Tooltip
+          title={formatMessage(intl, "policyHolder", "deleteButton.tooltip")}
+        >
+          <IconButton onClick={() => {}}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ),
     ];
-    // if (
-    //   rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
-    //   rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH)
-    // ) {
-    //   result.push(
-    //     (policyHolder) =>
-    //       !this.isDeletedFilterEnabled(policyHolder) && (
-    //         <Tooltip
-    //           title={formatMessage(intl, "policyHolder", "editButton.tooltip")}
-    //         >
-    //           <IconButton
-    //             href={policyHolderPageLink(policyHolder)}
-    //             onClick={(e) =>
-    //               e.stopPropagation() &&
-    //               !policyHolder.clientMutationId &&
-    //               onDoubleClick(policyHolder)
-    //             }
-    //             disabled={this.state.deleted.includes(policyHolder.id)}
-    //           >
-    //             <EditIcon />
-    //           </IconButton>
-    //         </Tooltip>
-    //       )
-    //   );
-    // }
-    if (rights.includes(RIGHT_POLICYHOLDER_DELETE)) {
-      result.push(
-        (policyHolder) =>
-          !this.isDeletedFilterEnabled(policyHolder) && (
-            <Tooltip
-              title={formatMessage(
-                intl,
-                "policyHolder",
-                "deleteButton.tooltip"
-              )}
-            >
-              <IconButton
-                onClick={() => this.onDelete(policyHolder)}
-                disabled={this.state.deleted.includes(policyHolder.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )
-      );
-    }
+
     return result;
   };
 
