@@ -96,7 +96,7 @@ class ExceptionReasonSearcher extends Component {
       (data) => `${data.reason}`,
       (data) => `${data.period}`,
       (data) => `${data.scope}`,
-      (data) => `${formatDateFromISO(modulesManager, intl, date.createdAt)}`,
+      (data) => `${formatDateFromISO(modulesManager, intl, data.createdAt)}`,
     ];
     // if (
     //   rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
