@@ -170,6 +170,7 @@ function reducer(state = initialState, action) {
       };
 
     case "EXCEPTION_REASONS_RESP":
+      console.log(".....EXCEPTION_REASONS_RESP", action.payload);
       return {
         ...state,
         fetchingExceptionReasons: false,

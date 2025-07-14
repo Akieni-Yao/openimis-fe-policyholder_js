@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import PolicyHolderSearcher from "../components/PolicyHolderSearcher";
+import ExceptionReasonSearcher from "../components/ExceptionReasonSearcher";
 import {
   withModulesManager,
   formatMessage,
@@ -86,7 +87,7 @@ class ExceptionReasonPage extends Component {
               "policyHolders.page.title"
             )}
           />
-          <PolicyHolderSearcher
+          <ExceptionReasonSearcher
             onDoubleClick={this.onDoubleClick}
             policyHolderPageLink={this.policyHolderPageLink}
             rights={rights}

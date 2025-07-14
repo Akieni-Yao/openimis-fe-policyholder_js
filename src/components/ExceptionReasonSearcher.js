@@ -203,16 +203,17 @@ class ExceptionReasonSearcher extends Component {
   };
 
   defaultFilters = () => {
-    return {
-      isDeleted: {
-        value: false,
-        filter: "isDeleted: false",
-      },
-      applyDefaultValidityFilter: {
-        value: true,
-        filter: "applyDefaultValidityFilter: true,isApproved: true",
-      },
-    };
+    return {};
+    // return {
+    //   isDeleted: {
+    //     value: false,
+    //     filter: "isDeleted: false",
+    //   },
+    //   applyDefaultValidityFilter: {
+    //     value: true,
+    //     filter: "applyDefaultValidityFilter: true,isApproved: true",
+    //   },
+    // };
   };
 
   render() {
@@ -257,7 +258,7 @@ class ExceptionReasonSearcher extends Component {
           sorts={this.sorts}
           rowsPerPageOptions={this.rowsPerPageOptions}
           defaultPageSize={this.defaultPageSize}
-          defaultOrderBy="-date_created"
+          defaultOrderBy="-createdAt"
           onDoubleClick={(policyHolder) => {}}
           rowDisabled={this.isRowDisabled}
           rowLocked={this.isRowDisabled}
