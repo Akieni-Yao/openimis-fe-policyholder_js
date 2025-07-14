@@ -52,6 +52,18 @@ class PolicyHolderExceptionReasonPicker extends Component {
       });
     }
 
+    console.log(".....value", value);
+
+    const getPeriod = (id) => {
+      try {
+        const reason = options.find((v) => v.value === id);
+        return reason ? reason.period : null;
+      } catch (error) {
+        console.log("Error getting period:", error);
+        return null;
+      }
+    };
+
     return (
       <>
         <SelectInput
@@ -69,9 +81,7 @@ class PolicyHolderExceptionReasonPicker extends Component {
             module="policyHolder"
             label="Période"
             readOnly
-            value={`${
-              options?.filter((v) => decodeId(v.id) == value)?.[0]?.period
-            } mois`}
+            value={`${getPeriod(value) || "Non défini"} mois`}
           />
         )}
       </>
