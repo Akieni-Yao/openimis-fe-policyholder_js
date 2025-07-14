@@ -85,7 +85,6 @@ class CreateExceptionReasonDialog extends Component {
           ),
         });
         this.props.handleClose();
-        this.props.onSave();
         this.props.fetchExceptionReasons(this.props.modulesManager, {
           first: 10,
           orderBy: "-createdAt",
