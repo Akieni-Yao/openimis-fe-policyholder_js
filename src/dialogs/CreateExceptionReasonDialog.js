@@ -57,14 +57,6 @@ class CreateExceptionReasonDialog extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   console.log("....CreateExceptionReasonDialog mounted", this.props);
-  //   this.setState({
-  //     // open: this.props.open,
-  //     edited: this.props.edited || {},
-  //   });
-  // }
-
   handleSave = async () => {
     try {
       const response = this.state.edited?.id
