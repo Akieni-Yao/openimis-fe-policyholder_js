@@ -68,7 +68,7 @@ export const INSUREE_STATUS = "PRE_REGISTERED";
 
 export const RIGHT_PAYMENT_EDIT = 101403;
 export const EXCEPTION_REASON = ["not_able_to_pay"];
-export const EXCEPTION_SCOPE = ["INSUREE", "POLICYHOLDER"];
+export const EXCEPTION_SCOPE = ["INSUREE", "POLICY_HOLDER"];
 export const INSUREE_EXCEPTION_REASON = [
   "Loss_of_Job",
   "death_of_head_insuree",

@@ -1,4 +1,6 @@
 {
     "_openSanction.btn": "Payer",
-    "policyHolder.exceptionReasons.searcher.results.title": "{exceptionReasonsTotalCount} raison d'exception trouvée"
+    "policyHolder.exceptionReasons.searcher.results.title": "{exceptionReasonsTotalCount} raison d'exception trouvée",
+    "exceptionScope.INSUREE": "Assuré",
+    "exceptionScope.POLICY_HOLDER": "Souscripteur"
 }

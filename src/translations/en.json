@@ -236,5 +236,7 @@
   "policyholder.openSanction.title": "Open Sanction",
   "policyholder.openSanction.btn": "Pay",
   "policyholder.openSanction.paidStatus": "Paid",
-  "policyHolder.policyHolder.unlockPolicyholder": "Unlock Policy Holder"
+  "policyHolder.policyHolder.unlockPolicyholder": "Unlock Policy Holder",
+  "exceptionScope.INSUREE": "Insuree",
+  "exceptionScope.POLICY_HOLDER": "Policy Holder"
 }
