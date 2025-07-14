@@ -36,8 +36,6 @@ class PolicyHolderExceptionReasonPicker extends Component {
       scope = "POLICY_HOLDER",
     } = this.props;
 
-    console.log("....ExceptionReasonPicker props", this.props.exceptionReasons);
-
     let options = this.props.exceptionReasons
       .filter((v) => v.scope === scope)
       .map((v) => ({
