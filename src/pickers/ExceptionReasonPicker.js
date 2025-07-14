@@ -35,9 +35,10 @@ class PolicyHolderExceptionReasonPicker extends Component {
       withLabel = true,
       readOnly = false,
       scope = "POLICY_HOLDER",
+      exceptionReasons,
     } = this.props;
 
-    let options = this.props.exceptionReasons
+    let options = exceptionReasons
       .filter((v) => v.scope === scope)
       .map((v) => ({
         value: decodeId(v.id),
@@ -52,11 +53,9 @@ class PolicyHolderExceptionReasonPicker extends Component {
       });
     }
 
-    console.log(".....value", value);
-
     const getPeriod = (id) => {
       try {
-        const reason = options.find((v) => v.value === id);
+        const reason = exceptionReasons.find((v) => decodeId(v.id) === id);
         return reason ? reason.period : null;
       } catch (error) {
         console.log("Error getting period:", error);
