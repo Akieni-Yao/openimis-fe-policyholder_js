@@ -101,7 +101,7 @@ class ExceptionReasonSearcher extends Component {
         <Tooltip
           title={formatMessage(intl, "policyHolder", "editButton.tooltip")}
         >
-          <IconButton onClick={(e) => {}}>
+          <IconButton onClick={(e) => onDoubleClick(data)}>
             <EditIcon />
           </IconButton>
         </Tooltip>
@@ -164,40 +164,17 @@ class ExceptionReasonSearcher extends Component {
     !this.isDeletedFilterEnabled(policyHolder);
 
   sorts = () => {
-    return [
-      // ["code", true],
-      // null,
-      // ["legalForm", true],
-      // ["activityCode", true],
-      // ["dateValidFrom", true],
-      // ["dateValidTo", true],
-      // ["status", true],
-    ];
+    return [];
   };
 
   defaultFilters = () => {
     return {};
-    // return {
-    //   isDeleted: {
-    //     value: false,
-    //     filter: "isDeleted: false",
-    //   },
-    //   applyDefaultValidityFilter: {
-    //     value: true,
-    //     filter: "applyDefaultValidityFilter: true,isApproved: true",
-    //   },
-    // };
   };
 
   render() {
     const {
       intl,
-      // fetchingPolicyHolders,
-      // fetchedPolicyHolders,
-      // errorPolicyHolders,
-      // policyHolders,
-      // policyHoldersPageInfo,
-      // policyHoldersTotalCount,
+
       onDoubleClick,
       fetchingExceptionReasons,
       fetchedExceptionReasons,
@@ -243,8 +220,6 @@ class ExceptionReasonSearcher extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  
-
   fetchingExceptionReasons: state.policyHolder.fetchingExceptionReasons,
   fetchedExceptionReasons: state.policyHolder.fetchedExceptionReasons,
   exceptionReasons: state.policyHolder.exceptionReasons,

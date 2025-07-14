@@ -37,7 +37,6 @@ class ExceptionReasonPage extends Component {
   };
 
   onDoubleClick = (data, newTab = false) => {
-    const { rights, modulesManager, history } = this.props;
     this.setState({ open: true, edited: data });
   };
 
