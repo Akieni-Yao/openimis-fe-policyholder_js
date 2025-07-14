@@ -166,7 +166,7 @@ class CreateExceptionReasonDialog extends Component {
                 <PublishedComponent
                   pubRef="policyHolder.ExceptionScopePicker"
                   module="policyHolder"
-                  label="exceptionScope"
+                  label="Scope"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
                   value={edited?.scope}
                   onChange={(v) => this.updateAttribute("scope", v)}
