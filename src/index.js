@@ -5,6 +5,7 @@ import { FormattedMessage } from "@openimis/fe-core";
 import messages_en from "./translations/en.json";
 import messages_fr from "./translations/fr.json";
 import PolicyHoldersPage from "./pages/PolicyHoldersPage";
+import ExceptionReasonPage from "./pages/ExceptionReasonPage";
 import PolicyHolderPage from "./pages/PolicyHolderPage";
 import LegalFormPicker from "./pickers/LegalFormPicker";
 import ActivityCodePicker from "./pickers/ActivityCodePicker";
@@ -86,6 +87,7 @@ const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS =
   "exception/pendingapproval/policyholder";
 const POLICYHOLDER_APPROVAL = "policyholder/approval";
 const ROUTE_POLICYHOLDER_REQUEST = "policyholderRequest";
+const ROUTE_EXCEPTION_REASON = "exception/reason";
 const DEFAULT_CONFIG = {
   translations: [
     { key: "en", messages: messages_en },
@@ -172,6 +174,7 @@ const DEFAULT_CONFIG = {
     { path: ROUTE_PAYMENT_FOR_APPROVAL, component: PaymentForApproval },
     { path: EXCEPTION_PANELS, component: ExceptionTabPanel },
     { path: EXCEPTION_PANELS_POLICYHOLDER, component: ExceptionTabPanel },
+    { path: ROUTE_EXCEPTION_REASON, component: ExceptionReasonPage },
     {
       path: EXCEPTION__PENDING_APPROVAL_PANELS,
       component: ExceptionTabPanel,
