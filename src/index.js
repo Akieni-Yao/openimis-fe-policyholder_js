@@ -74,6 +74,7 @@ import {
 } from "./components/PenaltyandSactionTab";
 import BankPicker from "./pickers/BankAutoPicker";
 import UnlockPolicyholderPage from "./pages/UnlockPolicyholderPage";
+import PolicyHolderExceptionReasonPicker from "./pickers/ExceptionReasonPicker";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
@@ -129,6 +130,10 @@ const DEFAULT_CONFIG = {
     {
       key: "policyHolder.PolicyHolderContributionPlanBundlePicker",
       ref: PolicyHolderContributionPlanBundlePicker,
+    },
+    {
+      key: "policyHolder.ExceptionReasonPicker",
+      ref: PolicyHolderExceptionReasonPicker,
     },
     {
       key: "policyHolder.PolicyHolderContributionPlanBundlePicker.projection",

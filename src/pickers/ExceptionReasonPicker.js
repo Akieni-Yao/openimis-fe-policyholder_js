@@ -10,13 +10,14 @@ import { bindActionCreators } from "redux";
 import _ from "lodash";
 import {
   fetchPickerPolicyHolderContributionPlanBundles,
+  fetchExceptionReasons,
   fetchPolicyHolders,
 } from "../actions";
 
-class ExceptionReasonPicker extends Component {
+class PolicyHolderExceptionReasonPicker extends Component {
   componentDidMount() {
     this.props.fetchExceptionReasons(this.props.modulesManager, [
-      "orderBy: -createdAt",
+      'orderBy: "-createdAt"',
       "first: 100",
     ]);
   }
@@ -32,8 +33,10 @@ class ExceptionReasonPicker extends Component {
       nullLabel = null,
       withLabel = true,
       readOnly = false,
-      scope,
+      scope = "POLICY_HOLDER",
     } = this.props;
+
+    console.log("....ExceptionReasonPicker props", this.props.exceptionReasons);
 
     let options = this.props.exceptionReasons
       .filter((v) => v.scope === scope)
@@ -80,5 +83,5 @@ export default withModulesManager(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(PolicyHolderContributionPlanBundlePicker)
+  )(PolicyHolderExceptionReasonPicker)
 );
