@@ -215,7 +215,7 @@ export function updateExceptionReason(exceptionReason, clientMutationLabel) {
 
 export function deleteExceptionReason(exceptionReason, clientMutationLabel) {
   const mutation = `mutation {
-  deleteExceptionReason(input: {id:${decodeId(exceptionReason.id)}}){
+  deleteExceptionReason(id:${decodeId(exceptionReason.id)}){
     message
     success
     }

@@ -11,6 +11,7 @@ import {
   PublishedComponent,
 } from "@openimis/fe-core";
 import PolicyHolderFilter from "./PolicyHolderFilter";
+import AlertSimpleDialogDelete from "./AlertSimpleDialogDelete";
 import {
   fetchPolicyHolders,
   deletePolicyHolder,
@@ -49,6 +50,7 @@ class ExceptionReasonSearcher extends Component {
     );
     this.state = {
       toDelete: null,
+      openDeleteDialog: false,
       deleted: [],
     };
   }
@@ -84,6 +86,20 @@ class ExceptionReasonSearcher extends Component {
     return result;
   };
 
+  onConfirmDelete = async (data) => {
+    await this.props.deleteExceptionReason(data, this.props.modulesManager);
+    this.fetch({
+      first: 10,
+      orderBy: "-createdAt",
+    });
+
+    this.setState({ openDeleteDialog: false });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ openDeleteDialog: false });
+  };
+
   itemFormatters = () => {
     const {
       intl,
@@ -110,7 +126,10 @@ class ExceptionReasonSearcher extends Component {
         <Tooltip
           title={formatMessage(intl, "policyHolder", "deleteButton.tooltip")}
         >
-          <IconButton onClick={() => {}}>
+          <IconButton onClick={() => {
+            console.log("....Delete clicked", data);
+            this.setState({ toDelete: data, openDeleteDialog: true });
+          }}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -118,39 +137,6 @@ class ExceptionReasonSearcher extends Component {
     ];
 
     return result;
-  };
-
-  onDelete = (policyHolder) => {
-    const { intl, coreConfirm, deletePolicyHolder } = this.props;
-    let confirm = () =>
-      coreConfirm(
-        formatMessageWithValues(
-          intl,
-          "policyHolder",
-          "deletePolicyHolder.confirm.title",
-          {
-            code: policyHolder.code,
-            tradeName: policyHolder.tradeName,
-          }
-        ),
-        formatMessage(intl, "policyHolder", "dialog.delete.message")
-      );
-    let confirmedAction = () => {
-      deletePolicyHolder(
-        policyHolder,
-        formatMessageWithValues(
-          intl,
-          "policyHolder",
-          "DeletePolicyHolder.mutationLabel",
-          {
-            code: policyHolder.code,
-            tradeName: policyHolder.tradeName,
-          }
-        ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
-      );
-      this.setState({ toDelete: policyHolder.id });
-    };
-    this.setState({ confirmedAction }, confirm);
   };
 
   isDeletedFilterEnabled = (policyHolder) => policyHolder.isDeleted;
@@ -213,6 +199,16 @@ class ExceptionReasonSearcher extends Component {
           rowDisabled={this.isRowDisabled}
           rowLocked={this.isRowDisabled}
           defaultFilters={this.defaultFilters()}
+        />
+        <AlertSimpleDialogDelete
+          title="Supprimer cet item de la liste"
+          open={this.state.openDeleteDialog}
+          handleClose={this.handleCloseDialog}
+          onConfirm={this.onConfirmDelete}
+          toDelete={this.state.toDelete}
+          message={
+            "La suppression des données ne signifie pas leur effacement de la base de données openIMIS. La donnée sera seulement désactivée de la liste consultée."
+          }
         />
       </Fragment>
     );
