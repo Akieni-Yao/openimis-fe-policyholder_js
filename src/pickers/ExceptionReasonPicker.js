@@ -4,6 +4,7 @@ import {
   FormattedMessage,
   SelectInput,
   decodeId,
+  TextInput,
 } from "@openimis/fe-core";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -50,16 +51,30 @@ class PolicyHolderExceptionReasonPicker extends Component {
         ),
       });
     }
+
     return (
-      <SelectInput
-        module="policyHolder"
-        label={withLabel ? "Motif exception" : null}
-        required={required}
-        options={options}
-        value={!!value ? value : null}
-        onChange={onChange}
-        readOnly={readOnly}
-      />
+      <>
+        <SelectInput
+          module="policyHolder"
+          label={withLabel ? "Motif exception" : null}
+          required={required}
+          options={options}
+          value={!!value ? value : null}
+          onChange={onChange}
+          readOnly={readOnly}
+        />
+
+        {value && (
+          <TextInput
+            module="policyHolder"
+            label="Période"
+            readOnly
+            value={`${
+              options?.filter((v) => decodeId(v.id) == value)?.[0]?.period
+            } mois`}
+          />
+        )}
+      </>
     );
   }
 }
