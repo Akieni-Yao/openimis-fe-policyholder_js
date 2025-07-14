@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import PolicyHolderSearcher from "../components/PolicyHolderSearcher";
+import CreateExceptionReasonDialog from "../dialogs/CreateExceptionReasonDialog";
 import ExceptionReasonSearcher from "../components/ExceptionReasonSearcher";
 import {
   withModulesManager,
@@ -29,35 +30,40 @@ const styles = (theme) => ({
 });
 
 class ExceptionReasonPage extends Component {
-  onAdd = () => {
-    historyPush(
-      this.props.modulesManager,
-      this.props.history,
-      "policyHolder.route.policyHolder"
-    );
+  state = {
+    open: false,
   };
+  // onAdd = () => {
+  //   historyPush(
+  //     this.props.modulesManager,
+  //     this.props.history,
+  //     "policyHolder.route.policyHolder"
+  //   );
+  // };
 
-  policyHolderPageLink = (policyHolder) => {
-    return `${this.props.modulesManager.getRef(
-      "policyHolder.route.policyHolder"
-    )}${"/" + decodeId(policyHolder.id)}`;
-  };
+  // policyHolderPageLink = (policyHolder) => {
+  //   return `${this.props.modulesManager.getRef(
+  //     "policyHolder.route.policyHolder"
+  //   )}${"/" + decodeId(policyHolder.id)}`;
+  // };
 
   onDoubleClick = (policyHolder, newTab = false) => {
     const { rights, modulesManager, history } = this.props;
-    if (
-      rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
-      rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH)
-    ) {
-      historyPush(
-        modulesManager,
-        history,
-        "policyHolder.route.policyHolder",
-        [decodeId(policyHolder.id)],
-        newTab
-      );
-    }
+    // if (
+    //   rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
+    //   rights.includes(RIGHT_PORTALPOLICYHOLDER_SEARCH)
+    // ) {
+    //   historyPush(
+    //     modulesManager,
+    //     history,
+    //     "policyHolder.route.policyHolder",
+    //     [decodeId(policyHolder.id)],
+    //     newTab
+    //   );
+    // }
   };
+
+  onSave = (edited) => {};
 
   componentDidMount = () => {
     const moduleName = "policyHolder";
@@ -89,18 +95,28 @@ class ExceptionReasonPage extends Component {
           />
           <ExceptionReasonSearcher
             onDoubleClick={this.onDoubleClick}
-            policyHolderPageLink={this.policyHolderPageLink}
+            policyHolderPageLink={"#"}
             rights={rights}
           />
           {rights.includes(RIGHT_POLICYHOLDER_CREATE) &&
             withTooltip(
               <div className={classes.fab}>
-                <Fab color="primary" onClick={this.onAdd}>
+                <Fab
+                  color="primary"
+                  onClick={() => this.setState({ open: true })}
+                >
                   <AddIcon />
                 </Fab>
               </div>,
               formatMessage(intl, "policyHolder", "createButton.tooltip")
             )}
+
+          <CreateExceptionReasonDialog
+            edited={{}}
+            onSave={this.onSave}
+            open={this.state.open}
+            handleClose={this.handleClose}
+          />
         </div>
       )
     );

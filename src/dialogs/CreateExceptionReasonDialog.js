@@ -10,6 +10,7 @@ import {
   formatMessageWithValues,
   PublishedComponent,
   formatMessage,
+  TextInput,
 } from "@openimis/fe-core";
 import { Fab, Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -39,7 +40,7 @@ class CreateExceptionReasonDialog extends Component {
     super(props);
     this.state = {
       open: false,
-      policyHolderInsuree: {},
+      edited: {},
       jsonExtValid: true,
       success: false,
       successMessage: "",
@@ -139,10 +140,8 @@ class CreateExceptionReasonDialog extends Component {
   setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
   render() {
-    const { intl, classes, open, policyHolderInsuree, handleClose } =
-      this.props;
-    // const { open, policyHolderInsuree } = this.state;
-    // console.log("policyHolderInsuree", policyHolderInsuree);
+    const { intl, classes, open, edited, handleClose } = this.props;
+
     return (
       <Fragment>
         <Dialog open={open} onClose={handleClose}>
@@ -155,30 +154,33 @@ class CreateExceptionReasonDialog extends Component {
           <DialogContent>
             <Grid container direction="column" className={classes.item}>
               <Grid item className={classes.item}>
-                <PublishedComponent
-                  pubRef="policyHolder.camuCodePicker"
+                <TextInput
+                  module="policyHolder"
+                  label="Raison"
                   required
-                  value={
-                    // !!this.state.jsonData && policyHolderInsuree.insuree
-                    !!this?.state?.jsonData?.policyHolder &&
-                    this?.state?.jsonData?.policyHolder
-                  }
-                  onChange={(v) => this.updateAttribute("policyHolder", v)}
+                  inputProps={{ maxLength: MAX_PHONE_LENGTH }}
+                  value={edited?.reason}
+                  onChange={(v) => this.updateAttribute("reason", v)}
                 />
               </Grid>
               <Grid item className={classes.item}>
                 <PublishedComponent
-                  pubRef="policyHolder.ExceptionRegionPicker"
+                  pubRef="policyHolder.ExceptionScopePicker"
                   module="policyHolder"
-                  label="exceptionReason"
+                  label="exceptionScope"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-                  value={
-                    // !!policyHolderInsuree.insuree &&
-                    // policyHolderInsuree.insuree.exceptionReason
-                    !!this?.state?.jsonData?.exceptionReason &&
-                    this?.state?.jsonData?.exceptionReason
-                  }
-                  onChange={(v) => this.updateAttribute("exceptionReason", v)}
+                  value={edited?.scope}
+                  onChange={(v) => this.updateAttribute("scope", v)}
+                />
+              </Grid>
+              <Grid item className={classes.item}>
+                <TextInput
+                  module="policyHolder"
+                  label="Période"
+                  required
+                  type="number"
+                  value={edited?.period}
+                  onChange={(v) => this.updateAttribute("period", v)}
                 />
               </Grid>
             </Grid>
@@ -202,12 +204,6 @@ class CreateExceptionReasonDialog extends Component {
           <CommonSnackbar
             open={this.state.snackbar}
             onClose={this.closeSnakBar}
-            // message={formatMessageWithValues(
-            //   intl,
-            //   "policyHolder",
-            //   "policyHolder.CreatePolicyHolder.snackbar",
-            //   {}
-            // )}
             message={this.state.snackbarMsg}
             severity="success"
             intl={intl}
@@ -225,9 +221,7 @@ class CreateExceptionReasonDialog extends Component {
               {}
             )}
             intl={intl}
-            // message={this.state.snackbarMsg}
             severity="error"
-            // copyText={!!this.state.camuCode ? this.state.camuCode : ""}
             backgroundColor="red"
           />
         )}

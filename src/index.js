@@ -50,6 +50,7 @@ import {
   ExceptionInsureeTabPanel,
 } from "./pages/ExceptionInsureePage";
 // import ExceptionRegionPicker from "./pickers/ExceptionStatusPicker";
+import ExceptionScopePicker from "./pickers/ExceptionScopePicker";
 import ExceptionRegionPicker from "./pickers/ExceptionRegionPicker";
 import InsureeExceptionRegion from "./pickers/InsureeExceptionRegion";
 import ExceptionStatusPicker from "./pickers/ExceptionStatusPicker";
@@ -103,6 +104,7 @@ const DEFAULT_CONFIG = {
     { key: "policyHolder.PolicyHolderPicker", ref: PolicyHolderPicker },
     { key: "policyHolder.PolicyHolderPickerNew", ref: PolicyHolderPickerNew },
     { key: "policyHolder.ExceptionRegionPicker", ref: ExceptionRegionPicker },
+    { key: "policyHolder.ExceptionScopePicker", ref: ExceptionScopePicker },
     { key: "policyHolder.InsureeExceptionRegion", ref: InsureeExceptionRegion },
 
     { key: "policyHolder.ExceptionStatusPicker", ref: ExceptionStatusPicker },
