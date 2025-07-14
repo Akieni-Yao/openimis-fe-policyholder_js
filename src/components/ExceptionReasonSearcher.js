@@ -94,8 +94,8 @@ class ExceptionReasonSearcher extends Component {
     } = this.props;
     let result = [
       (data) => `${data.reason}`,
-      (data) => `${data.period}`,
-      (data) => `${data.scope}`,
+      (data) => `${data.period} mois`,
+      (data) => `${data.scope == "INSUREE" ? "Assuré" : "Souscripteur"}`,
       (data) => `${formatDateFromISO(modulesManager, intl, data.createdAt)}`,
     ];
     // if (
