@@ -167,6 +167,100 @@ export function fetchPolicyHolders(modulesManager, params) {
   return graphql(payload, "POLICYHOLDER_POLICYHOLDERS");
 }
 
+export function fetchExceptionReasons(modulesManager, params) {
+  const payload = formatPageQueryWithCount("exceptionReason", params, [
+    "id",
+    "reason",
+    "period",
+    "scope",
+  ]);
+  return graphql(payload, "POLICYHOLDER_EXCEPTION_REASONS");
+}
+
+export function createExceptionReason(exceptionReason, clientMutationLabel) {
+  let mutation = formatMutation(
+    "createExceptionReason",
+    formatExceptionReasonGQL(exceptionReason),
+    clientMutationLabel
+  );
+
+  var requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [
+      "EXCEPTION_REASON_MUTATION_REQ",
+      "EXCEPTION_REASON_CREATE_RESP",
+      "EXCEPTION_REASON_ERR",
+    ],
+    {
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    }
+  );
+  // return graphqlMutationLegacy(
+  //   mutation.payload,
+  //   [
+  //     "EXCEPTION_REASON_MUTATION_REQ",
+  //     "EXCEPTION_REASON_CREATE_POLICYHOLDER_RESP",
+  //     "EXCEPTION_REASON_MUTATION_ERR",
+  //   ],
+  //   {
+  //     clientMutationId: mutation.clientMutationId,
+  //     clientMutationLabel,
+  //     requestedDateTime,
+  //   },
+  //   true,
+  //   "policyHolder { policyholder { id code }}"
+  // );
+}
+
+export function updateExceptionReason(exceptionReason, clientMutationLabel) {
+  let mutation = formatMutation(
+    "updateExceptionReason",
+    formatExceptionReasonGQL(exceptionReason),
+    clientMutationLabel
+  );
+
+  var requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [
+      "EXCEPTION_REASON_MUTATION_REQ",
+      "EXCEPTION_REASON_UPDATE_RESP",
+      "EXCEPTION_REASON_ERR",
+    ],
+    {
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    }
+  );
+}
+
+export function deleteExceptionReason(exceptionReason, clientMutationLabel) {
+  let mutation = formatMutation(
+    "deleteExceptionReason",
+    `id: "${decodeId(exceptionReason.id)}"`,
+    clientMutationLabel
+  );
+
+  var requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [
+      "EXCEPTION_REASON_MUTATION_REQ",
+      "EXCEPTION_REASON_DELETE_RESP",
+      "EXCEPTION_REASON_ERR",
+    ],
+    {
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    }
+  );
+}
+
 export function fetchPickerPolicyHolders(params) {
   const payload = formatPageQuery(
     "policyHolder",
@@ -254,6 +348,15 @@ export function fetchPolicyHolderUsers(modulesManager, params) {
     POLICYHOLDERUSER_FULL_PROJECTION(modulesManager)
   );
   return graphql(payload, "POLICYHOLDER_POLICYHOLDERUSERS");
+}
+
+function formatExceptionReasonGQL(exceptionReason) {
+  return `
+  ${exceptionReason.id ? `id: "${decodeId(exceptionReason.id)}"` : ""}
+  reason:"${exceptionReason.reason}", 
+  scope:"${exceptionReason.scope}", 
+  period:${exceptionReason.period}
+  `;
 }
 
 function formatPolicyHolderGQL(policyHolder) {
