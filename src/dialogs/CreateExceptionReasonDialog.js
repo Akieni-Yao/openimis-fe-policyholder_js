@@ -47,12 +47,23 @@ class CreateExceptionReasonDialog extends Component {
     };
   }
 
-  componentDidMount() {
-    this.setState({
-      // open: this.props.open,
-      edited: this.props.edited || {},
-    });
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("....CreateExceptionReasonDialog mounted", this.props.edited);
+    if (prevProps.open !== this.props.open) {
+      this.setState({
+        // open: this.props.open,
+        edited: this.props.edited || {},
+      });
+    }
   }
+
+  // componentDidMount() {
+  //   console.log("....CreateExceptionReasonDialog mounted", this.props);
+  //   this.setState({
+  //     // open: this.props.open,
+  //     edited: this.props.edited || {},
+  //   });
+  // }
 
   handleSave = async () => {
     try {
@@ -128,7 +139,8 @@ class CreateExceptionReasonDialog extends Component {
   };
 
   render() {
-    const { intl, classes, open, edited, handleClose } = this.props;
+    const { intl, classes, open, handleClose } = this.props;
+    const { edited } = this.state;
 
     return (
       <Fragment>

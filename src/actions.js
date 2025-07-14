@@ -319,7 +319,7 @@ export function fetchPolicyHolderUsers(modulesManager, params) {
 
 function formatExceptionReasonGQL(exceptionReason) {
   return `
-  ${exceptionReason.id ? `id: "${decodeId(exceptionReason.id)}"` : ""}
+  ${exceptionReason.id ? `id: ${decodeId(exceptionReason.id)}` : ""}
   reason:"${exceptionReason.reason}", 
   scope:"${exceptionReason.scope}", 
   period:${exceptionReason.period}
