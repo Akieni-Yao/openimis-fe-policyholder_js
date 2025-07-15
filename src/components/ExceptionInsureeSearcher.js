@@ -437,10 +437,9 @@ class ExceptionInsureeSearcher extends Component {
           // rowLocked={this.isRowDisabled}
           // rowDisabled={this.isRowDisabled}
           //   defaultFilters={this.defaultFilters()}
+          // pendingApprovalUser &&
           actions={actions}
-          onDoubleClick={(insuree) =>
-            pendingApprovalUser && this.onDoubleClick(insuree)
-          }
+          onDoubleClick={(insuree) => this.onDoubleClick(insuree)}
         />
         {policyHolderInsurees.length == 0 && (
           <Box marginTop={2}>
