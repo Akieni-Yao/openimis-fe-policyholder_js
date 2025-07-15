@@ -1356,6 +1356,12 @@ export function fetchPolicyHolderExceptionBYId(mm, id) {
                   modifiedBy
                   createdTime
                   modifiedTime
+                  reason{
+                    id
+                    reason
+                    scope
+                    period
+                  }
                   policyHolder {
                     code
                     tradeName
