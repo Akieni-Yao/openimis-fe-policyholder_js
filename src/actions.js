@@ -1125,9 +1125,8 @@ export function createException(mm, jsonData) {
   let mutation = `mutation CreateInsureeException {
     createInsureeException(
         inputData: {
+            reasonId: ${jsonData.reason_id}
             insureeId: ${decodeId(jsonData?.insuree?.id)}
-            exceptionReason:"${jsonData?.exceptionReason}"
-            exceptionMonths: ${jsonData?.exceptionMonth}
             ${raisedById}
         }
     ) {
@@ -1156,8 +1155,8 @@ export function createPolicyHolderException(mm, jsonData) {
   let mutation = `mutation CreatePolicyHolderException  {
     createPolicyHolderException(
         inputData: {
+          reasonId:${jsonData.reason_id}
           policyHolderId: "${decodeId(jsonData?.policyHolder?.id)}"
-            exceptionReason:"${jsonData?.exceptionReason}"
         }
     ) {
       policyHolderExcption {
@@ -1210,6 +1209,12 @@ export function fetchInsureeException(mm, filters) {
                 modifiedBy
                 createdTime
                 modifiedTime
+                reason{
+                  id 
+                  reason
+                  scope
+                  period
+                }
                 insuree {
                     camuNumber
                     lastName
@@ -1292,6 +1297,12 @@ export function fetchPolicyHolderException(mm, filters) {
                   createdTime
                   modifiedTime
                   month
+                  reason{
+                    id
+                    reason
+                    scope
+                    period
+                  }
                   policyHolder {
                     code
                     tradeName
@@ -1343,6 +1354,12 @@ export function fetchPolicyHolderExceptionBYId(mm, id) {
                   modifiedBy
                   createdTime
                   modifiedTime
+                  reason{
+                    id
+                    reason
+                    scope
+                    period
+                  }
                   policyHolder {
                     code
                     tradeName

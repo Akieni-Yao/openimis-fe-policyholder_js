@@ -1,0 +1,109 @@
+import React, { Component } from "react";
+import {
+  withModulesManager,
+  FormattedMessage,
+  SelectInput,
+  decodeId,
+  TextInput,
+} from "@openimis/fe-core";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import _ from "lodash";
+import {
+  fetchPickerPolicyHolderContributionPlanBundles,
+  fetchExceptionReasons,
+  fetchPolicyHolders,
+} from "../actions";
+
+class PolicyHolderExceptionReasonPicker extends Component {
+  componentDidMount() {
+    this.props.fetchExceptionReasons(this.props.modulesManager, [
+      'orderBy: "-createdAt"',
+      "first: 100",
+    ]);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {}
+
+  render() {
+    const {
+      value,
+      onChange,
+      required = false,
+      withNull = false,
+      nullLabel = null,
+      withLabel = true,
+      readOnly = false,
+      scope = "POLICY_HOLDER",
+      exceptionReasons,
+    } = this.props;
+
+    let options = exceptionReasons
+      .filter((v) => v.scope === scope)
+      .map((v) => ({
+        value: decodeId(v.id),
+        label: v.reason,
+      }));
+    if (withNull) {
+      options.unshift({
+        value: null,
+        label: nullLabel || (
+          <FormattedMessage module="policyHolder" id="emptyLabel" />
+        ),
+      });
+    }
+
+    const getPeriod = (id) => {
+      try {
+        const reason = exceptionReasons.find((v) => decodeId(v.id) === id);
+        return reason ? reason.period : null;
+      } catch (error) {
+        console.log("Error getting period:", error);
+        return null;
+      }
+    };
+
+    return (
+      <>
+        <SelectInput
+          module="policyHolder"
+          label={withLabel ? "Motif exception" : null}
+          required={required}
+          options={options}
+          value={!!value ? value : null}
+          onChange={onChange}
+          readOnly={readOnly}
+        />
+
+        {value && (
+          <TextInput
+            module="policyHolder"
+            label="Période"
+            readOnly
+            value={`${getPeriod(value) || "Non défini"} mois`}
+          />
+        )}
+      </>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  pickerPolicyHolderContributionPlanBundles:
+    state.policyHolder.pickerPolicyHolderContributionPlanBundles,
+  exceptionReasons: state.policyHolder.exceptionReasons,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    { fetchPickerPolicyHolderContributionPlanBundles, fetchExceptionReasons },
+    dispatch
+  );
+};
+
+export default withModulesManager(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(PolicyHolderExceptionReasonPicker)
+);
