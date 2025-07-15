@@ -428,7 +428,9 @@ class ExceptionPolicyHolderSearcher extends Component {
           // rowDisabled={this.isRowDisabled}
           //   defaultFilters={this.defaultFilters()}
           actions={actions}
-          onDoubleClick={(policyHolder) => this.onDoubleClick(policyHolder)}
+          onDoubleClick={(policyHolder) =>
+            pendingApprovalUser && this.onDoubleClick(policyHolder)
+          }
         />
         {policyHolderInsurees.length == 0 && (
           <Box marginTop={2}>

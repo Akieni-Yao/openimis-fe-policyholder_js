@@ -434,8 +434,8 @@ class ExceptionInsureeSearcher extends Component {
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           defaultPageSize={DEFAULT_PAGE_SIZE}
           defaultOrderBy={DEFAULT_ORDER_BY}
-          rowLocked={this.isRowDisabled}
-          rowDisabled={this.isRowDisabled}
+          // rowLocked={this.isRowDisabled}
+          // rowDisabled={this.isRowDisabled}
           //   defaultFilters={this.defaultFilters()}
           actions={actions}
           onDoubleClick={(insuree) =>
