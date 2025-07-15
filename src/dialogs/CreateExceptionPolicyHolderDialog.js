@@ -172,7 +172,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
                   module="policyHolder"
                   label="exceptionReason"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-                  value={this?.state?.jsonData?.reason?.id}
+                  value={this?.state?.jsonData?.reason_id}
                   onChange={(v) => this.updateAttribute("reason_id", v)}
                 />
               </Grid>
