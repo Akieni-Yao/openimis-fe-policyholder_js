@@ -145,16 +145,17 @@ class CreateExceptionDialog extends Component {
   };
   canSave = () => {
     const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
-    const isValid =
-      jsonData.insuree?.status !== "END_OF_LIFE" ||
-      jsonData.exceptionMonth !== 6;
-    return (
-      !!jsonData.insuree &&
-      jsonData.insuree &&
-      !!jsonData.exceptionMonth &&
-      jsonData.exceptionMonth &&
-      isValid
-    );
+    return jsonData.insuree && jsonData.reason_id;
+    // const isValid =
+    //   jsonData.insuree?.status !== "END_OF_LIFE" ||
+    //   jsonData.exceptionMonth !== 6;
+    // return (
+    //   !!jsonData.insuree &&
+    //   jsonData.insuree &&
+    //   !!jsonData.exceptionMonth &&
+    //   jsonData.exceptionMonth &&
+    //   isValid
+    // );
   };
   getExceptionMonthOptions = (exceptionReason) => {
     if (exceptionReason === "death_of_head_insuree") {
