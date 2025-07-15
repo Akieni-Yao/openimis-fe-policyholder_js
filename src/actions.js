@@ -1125,6 +1125,7 @@ export function createException(mm, jsonData) {
   let mutation = `mutation CreateInsureeException {
     createInsureeException(
         inputData: {
+            reasonId: ${jsonData.reason_id}
             insureeId: ${decodeId(jsonData?.insuree?.id)}
             exceptionReason:"${jsonData?.exceptionReason}"
             exceptionMonths: ${jsonData?.exceptionMonth}
@@ -1211,6 +1212,12 @@ export function fetchInsureeException(mm, filters) {
                 modifiedBy
                 createdTime
                 modifiedTime
+                reason{
+                  id 
+                  reason
+                  scope
+                  period
+                }
                 insuree {
                     camuNumber
                     lastName

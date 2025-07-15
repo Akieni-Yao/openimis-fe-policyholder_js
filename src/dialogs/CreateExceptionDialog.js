@@ -220,8 +220,8 @@ class CreateExceptionDialog extends Component {
                   label="exceptionReason"
                   scope="INSUREE"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-                  value={this?.state?.jsonData?.exceptionReason}
-                  onChange={(v) => this.updateAttribute("exceptionReason", v)}
+                  value={this?.state?.jsonData?.reason_id}
+                  onChange={(v) => this.updateAttribute("reason_id", v)}
                 />
               </Grid>
               {/* <Grid item className={classes.item}>
