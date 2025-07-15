@@ -1159,7 +1159,6 @@ export function createPolicyHolderException(mm, jsonData) {
         inputData: {
           reasonId:${jsonData.reason_id}
           policyHolderId: "${decodeId(jsonData?.policyHolder?.id)}"
-          exceptionReason:"${jsonData?.exceptionReason}"
         }
     ) {
       policyHolderExcption {

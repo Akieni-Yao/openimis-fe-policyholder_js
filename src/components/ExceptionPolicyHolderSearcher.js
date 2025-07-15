@@ -209,9 +209,9 @@ class ExceptionPolicyHolderSearcher extends Component {
           ? policyHolderInsuree?.policyHolder?.tradeName
           : "",
       (policyHolderInsuree) =>
-        policyHolderInsuree?.policyHolder?.reason?.reason || "",
+        policyHolderInsuree?.reason?.reason || "",
       (policyHolderInsuree) =>
-        policyHolderInsuree?.policyHolder?.reason?.period || "",
+        policyHolderInsuree?.reason?.period || "",
       // (policyHolderInsuree) =>
       //   policyHolderInsuree?.policyHolder?.locations?.parent?.name
       //     ? policyHolderInsuree?.policyHolder?.locations?.parent?.name
