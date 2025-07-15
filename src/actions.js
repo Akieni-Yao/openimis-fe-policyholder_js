@@ -1127,8 +1127,6 @@ export function createException(mm, jsonData) {
         inputData: {
             reasonId: ${jsonData.reason_id}
             insureeId: ${decodeId(jsonData?.insuree?.id)}
-            exceptionReason:"${jsonData?.exceptionReason}"
-            exceptionMonths: ${jsonData?.exceptionMonth}
             ${raisedById}
         }
     ) {
