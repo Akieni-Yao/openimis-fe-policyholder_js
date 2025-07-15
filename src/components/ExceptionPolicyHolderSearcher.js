@@ -208,10 +208,8 @@ class ExceptionPolicyHolderSearcher extends Component {
         !!policyHolderInsuree?.policyHolder?.tradeName
           ? policyHolderInsuree?.policyHolder?.tradeName
           : "",
-      (policyHolderInsuree) =>
-        policyHolderInsuree?.reason?.reason || "",
-      (policyHolderInsuree) =>
-        policyHolderInsuree?.reason?.period || "",
+      (policyHolderInsuree) => policyHolderInsuree?.reason?.reason || "",
+      (policyHolderInsuree) => policyHolderInsuree?.reason?.period || "",
       // (policyHolderInsuree) =>
       //   policyHolderInsuree?.policyHolder?.locations?.parent?.name
       //     ? policyHolderInsuree?.policyHolder?.locations?.parent?.name
@@ -426,13 +424,11 @@ class ExceptionPolicyHolderSearcher extends Component {
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           defaultPageSize={DEFAULT_PAGE_SIZE}
           defaultOrderBy={DEFAULT_ORDER_BY}
-          rowLocked={this.isRowDisabled}
-          rowDisabled={this.isRowDisabled}
+          // rowLocked={this.isRowDisabled}
+          // rowDisabled={this.isRowDisabled}
           //   defaultFilters={this.defaultFilters()}
           actions={actions}
-          onDoubleClick={(policyHolder) =>
-            pendingApprovalUser && this.onDoubleClick(policyHolder)
-          }
+          onDoubleClick={(policyHolder) => this.onDoubleClick(policyHolder)}
         />
         {policyHolderInsurees.length == 0 && (
           <Box marginTop={2}>
