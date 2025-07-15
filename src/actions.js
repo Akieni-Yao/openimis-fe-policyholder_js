@@ -1156,8 +1156,9 @@ export function createPolicyHolderException(mm, jsonData) {
   let mutation = `mutation CreatePolicyHolderException  {
     createPolicyHolderException(
         inputData: {
+          reasonId:${jsonData.reason_id}
           policyHolderId: "${decodeId(jsonData?.policyHolder?.id)}"
-            exceptionReason:"${jsonData?.exceptionReason}"
+          exceptionReason:"${jsonData?.exceptionReason}"
         }
     ) {
       policyHolderExcption {
