@@ -68,7 +68,7 @@ class ExceptionPolicyHolderMasterPanel extends FormPanel {
               readOnly={true}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          {/* <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="exception.city"
@@ -81,7 +81,7 @@ class ExceptionPolicyHolderMasterPanel extends FormPanel {
               }
               // onChange={p => this.updateAttribute('receiptNo', p)}
             />
-          </Grid>
+          </Grid> */}
           <Grid item className={classes.item} xs={12}>
             <TextInput
               module="policyHolder"
@@ -100,7 +100,7 @@ class ExceptionPolicyHolderMasterPanel extends FormPanel {
               readOnly={true}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item className={classes.item}>
             <TextInput
               module="policyHolder"
               label="exception.exceptionStatus"

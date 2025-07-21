@@ -326,6 +326,7 @@ class ExceptionPolicyHolderForm extends Component {
     // console.log("documentDetails", documentDetails)
     const { payment, newPayment, reset, payload, statusCheck } = this.state;
     const exceptionApprove = !!approverData && documentDetails?.length > 0 && policyHolder[0]?.status==="PENDING"
+
     return (
       <Fragment>
         <Helmet
