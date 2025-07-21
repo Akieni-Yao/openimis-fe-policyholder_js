@@ -1256,6 +1256,12 @@ export function fetchInsureeExceptionByID(mm, id) {
                 modifiedBy
                 createdTime
                 modifiedTime
+                reason{
+                  id 
+                  reason
+                  scope
+                  period
+                }
                 insuree {
                     camuNumber
                     lastName
