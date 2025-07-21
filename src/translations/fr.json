@@ -4,5 +4,6 @@
     "exceptionScope.INSUREE": "Assuré",
     "exceptionScope.POLICY_HOLDER": "Souscripteur",
     "exception.addExceptionReason": "Ajouter une raison d'exception",
-    "exception.editExceptionReason": "Modifier la raison d'exception"
+    "exception.editExceptionReason": "Modifier la raison d'exception",
+    "exception.exceptionInsuree.label": "Exceptions d'assurés {label}"
 }

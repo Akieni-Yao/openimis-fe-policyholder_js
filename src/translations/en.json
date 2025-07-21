@@ -143,7 +143,7 @@
   "policyHolder.payment.code": "Payment Code",
   "policyHolder.legalStatus": "Legal Form",
   "policyHolder.policyHolder.sample_insureess_data.xlsx": "policyholder_insurees.xlsx",
-  "exception.exceptionInsuree.label": "Insurees Exceptions",
+  "exception.exceptionInsuree.label": "Insurees Exceptions {label}",
   "exception.exceptionInsureeApproval.label": "Insurees Exceptions Approval",
   "exception.camuNo": "CAMU No.",
   "exception.firstName": "First Name",
