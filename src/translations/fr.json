@@ -6,5 +6,6 @@
     "exception.addExceptionReason": "Ajouter une raison d'exception",
     "exception.editExceptionReason": "Modifier la raison d'exception",
     "exception.exceptionInsuree.label": "Exceptions d'assurés {label}",
-    "exception.exceptionInsuree.tab.label": "Exceptions d'assurés"
+    "exception.exceptionInsuree.tab.label": "Exceptions d'assurés",
+    "exception.createdTime": "Date de création"
 }

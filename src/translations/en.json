@@ -241,5 +241,6 @@
   "exceptionScope.INSUREE": "Insuree",
   "exceptionScope.POLICY_HOLDER": "Policy Holder",
   "exception.addExceptionReason": "Add Exception Reason",
-  "exception.editExceptionReason": "Add Exception Reason"
+  "exception.editExceptionReason": "Add Exception Reason",
+  "exception.createdTime": "Created Time"
 }

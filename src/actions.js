@@ -1209,6 +1209,7 @@ export function fetchInsureeException(mm, filters) {
                 modifiedBy
                 createdTime
                 modifiedTime
+                
                 reason{
                   id 
                   reason
