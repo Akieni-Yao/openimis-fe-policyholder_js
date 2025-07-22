@@ -84,7 +84,7 @@ const ROUTE_DECLARATION = "declaration";
 const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
 const EXCEPTION_PANELS = "exception";
 const EXCEPTION_PANELS_POLICYHOLDER = "exception/policyholder";
-const EXCEPTION__PENDING_APPROVAL_PANELS = "exception/pendingapproval";
+const EXCEPTION__PENDING_APPROVAL_PANELS = "exception";
 const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS =
   "exception/pendingapproval/policyholder";
 const POLICYHOLDER_APPROVAL = "policyholder/approval";

@@ -31,7 +31,7 @@ import ExceptionInsureeFilter from "./ExceptionInsureeFilter";
 import { Box, Typography, Grid, IconButton, Tooltip } from "@material-ui/core";
 import CreateExceptionDialog from "../dialogs/CreateExceptionDialog";
 import HelpIcon from "@material-ui/icons/Help";
-const DEFAULT_ORDER_BY = "insuree";
+const DEFAULT_ORDER_BY = "-created_time";
 
 class ExceptionInsureeSearcher extends Component {
   constructor(props) {
@@ -85,6 +85,7 @@ class ExceptionInsureeSearcher extends Component {
     let params = Object.keys(state.filters)
       .filter((f) => !!state.filters[f]["filter"])
       .map((f) => state.filters[f]["filter"]);
+
     if (!state.beforeCursor && !state.afterCursor) {
       params.push(`first: ${state.pageSize}`);
     }
@@ -109,6 +110,7 @@ class ExceptionInsureeSearcher extends Component {
     if (!!state.orderBy) {
       params.push(`orderBy: ["${state.orderBy}"]`);
     }
+
     this.setState({ queryParams: params });
     return params;
   };
@@ -119,16 +121,12 @@ class ExceptionInsureeSearcher extends Component {
       "exception.camuNo",
       "exception.firstName",
       "exception.lastName",
-      "exception.bithDate",
-      "exception.phone",
       "exception.date",
       "exception.enddate",
-      // "exception.city",
       "exception.exceptionType",
       "exception.month",
-      // "exception.exceptionStatus",
-      //   "policyHolder.dateValidTo",
-      //   "policyHolder.print",
+      "exception.createdTime",
+      
     ];
     if (!pendingApprovalUser) {
       result.push("exception.exceptionStatus");
@@ -198,10 +196,10 @@ class ExceptionInsureeSearcher extends Component {
         !!policyHolderInsuree.insuree
           ? policyHolderInsuree.insuree.lastName
           : "",
-      (policyHolderInsuree) =>
-        policyHolderInsuree?.insuree ? policyHolderInsuree?.insuree.dob : "",
-      (policyHolderInsuree) =>
-        !!policyHolderInsuree.insuree ? policyHolderInsuree.insuree.phone : "",
+      // (policyHolderInsuree) =>
+      //   policyHolderInsuree?.insuree ? policyHolderInsuree?.insuree.dob : "",
+      // (policyHolderInsuree) =>
+      //   !!policyHolderInsuree.insuree ? policyHolderInsuree.insuree.phone : "",
       // (policyHolderInsuree) =>
       //   policyHolderInsuree?.employerNumber
       //     ? policyHolderInsuree?.employerNumber
@@ -223,6 +221,7 @@ class ExceptionInsureeSearcher extends Component {
 
       (policyHolderInsuree) => policyHolderInsuree?.reason?.reason,
       (policyHolderInsuree) => policyHolderInsuree?.reason?.period,
+      (policyHolderInsuree) => policyHolderInsuree?.createdTime ? formatDateFromISO(modulesManager, intl, policyHolderInsuree?.createdTime) : "",
     ];
 
     // result.push((policyHolderInsuree) => {
@@ -290,49 +289,6 @@ class ExceptionInsureeSearcher extends Component {
     return result;
   };
 
-  // onDelete = (policyHolderInsuree) => {
-  //   const { intl, coreConfirm, deletePolicyHolderInsuree, policyHolder } =
-  //     this.props;
-  //   let confirm = () =>
-  //     coreConfirm(
-  //       formatMessageWithValues(
-  //         intl,
-  //         "policyHolder",
-  //         "policyHolderInsuree.dialog.delete.title",
-  //         {
-  //           otherNames: policyHolderInsuree.insuree.otherNames,
-  //           lastName: policyHolderInsuree.insuree.lastName,
-  //         }
-  //       ),
-  //       formatMessage(intl, "policyHolder", "dialog.delete.message")
-  //     );
-  //   let confirmedAction = () => {
-  //     deletePolicyHolderInsuree(
-  //       policyHolderInsuree,
-  //       formatMessageWithValues(
-  //         intl,
-  //         "policyHolder",
-  //         "DeletePolicyHolderInsuree.mutationLabel",
-  //         {
-  //           code: policyHolder.code,
-  //           tradeName: policyHolder.tradeName,
-  //         }
-  //       ).slice(ZERO, MAX_CLIENTMUTATIONLABEL_LENGTH)
-  //     );
-  //     this.setState({ toDelete: policyHolderInsuree.id });
-  //   };
-  //   this.setState({ confirmedAction }, confirm);
-  // };
-
-  // isReplaced = (policyHolderInsuree) => !!policyHolderInsuree.replacementUuid;
-
-  // isDeletedFilterEnabled = (policyHolderInsuree) =>
-  //   policyHolderInsuree.isDeleted;
-
-  // isRowDisabled = (_, policyHolderInsuree) =>
-  //   this.state.deleted.includes(policyHolderInsuree.id) &&
-  //   !this.isDeletedFilterEnabled(policyHolderInsuree);
-
   sorts = () => {
     return [
       ["insuree__chf_id", true],
@@ -346,15 +302,6 @@ class ExceptionInsureeSearcher extends Component {
       ["status", true],
     ];
   };
-
-  // defaultFilters = () => {
-  //   return {
-  //     policyHolder_Id: {
-  //       value: decodeId(this.props.policyHolder.id),
-  //       filter: `policyHolder_Id: "${decodeId(this.props.policyHolder.id)}"`,
-  //     },
-  //   };
-  // };
 
   isBulkActionOnSelectedEnabled = (selection) =>
     !!selection && selection.length === 0;
@@ -413,7 +360,7 @@ class ExceptionInsureeSearcher extends Component {
     return (
       <Fragment>
         <Searcher
-          module="policyHolder"
+          module="insuree"
           FilterPane={ExceptionInsureeFilter}
           fetch={this.fetch}
           items={policyHolderInsurees}
