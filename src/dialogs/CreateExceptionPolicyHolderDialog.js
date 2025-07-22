@@ -79,13 +79,13 @@ class CreateExceptionPolicyHolderDialog extends Component {
     if (!!response?.payload?.data?.createPolicyHolderException?.code) {
       this.setState({
         snackbar: true,
+        severity: "success",
         camuCode: !!response?.payload?.data?.createPolicyHolderException
           ?.policyHolderExcption?.code
           ? response?.payload?.data?.createPolicyHolderException
               ?.policyHolderExcption?.code
           : "",
 
-        // severity: paymentData.status == 5 ? "success" : "error",
         snackbarMsg: formatMessageWithValues(
           this.props.intl,
           "policyHolder",
@@ -97,15 +97,8 @@ class CreateExceptionPolicyHolderDialog extends Component {
       this.setState({
         snackbar: true,
         severity: "error",
-        // camuCode: !!response?.payload?.data?.createInsureeException?.insureeException?.code ? response?.payload?.data?.createInsureeException?.insureeException?.code : "",
         snackbarMsg:
           response?.payload?.data?.createPolicyHolderException?.message,
-        // formatMessageWithValues(
-        //   this.props.intl,
-        //   "policyHolder",
-        //   "snackbar.create",
-        //   {}
-        // )
       });
     }
     onSave();
