@@ -195,6 +195,7 @@
   "policyHolder.dialog.rejectTitlePolicyholder": "Policyholder Exception Rejection",
   "policyHolder.dialog.approvedTitlePolicyholder": "Policyholder Exception Approval",
   "policyHolder.snackbar.create": "Exception is created successfully!",
+  "policyHolder.snackbar.create.label": "Exception is created successfully! {label}",
   "policyholder.policyholder.SelectValidOption": "Select Valid Option",
   "policyholder.policyholder.SelectValidOption.null": " ",
   "policyholder.policyHolder.SelectValidOption.not_clear_docs": "Documents are not clear",

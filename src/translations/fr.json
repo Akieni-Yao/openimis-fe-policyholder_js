@@ -7,5 +7,6 @@
     "exception.editExceptionReason": "Modifier la raison d'exception",
     "exception.exceptionInsuree.label": "Exceptions d'assurés {label}",
     "exception.exceptionInsuree.tab.label": "Exceptions d'assurés",
-    "exception.createdTime": "Date de création"
+    "exception.createdTime": "Date de création",
+    "policyHolder.snackbar.create.label": "Exception est créée avec succès! {label}"
 }
