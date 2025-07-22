@@ -76,36 +76,28 @@ class CreateExceptionPolicyHolderDialog extends Component {
       this.state.jsonData
     );
     // console.log("response", response)
-    if (!!response?.payload?.data?.createPolicyHolderException?.code) {
+    const ph_code =
+      response?.payload?.data?.createPolicyHolderException?.policyHolderExcption
+        ?.code;
+    if (ph_code) {
       this.setState({
         snackbar: true,
-        camuCode: !!response?.payload?.data?.createPolicyHolderException
-          ?.policyHolderExcption?.code
-          ? response?.payload?.data?.createPolicyHolderException
-              ?.policyHolderExcption?.code
-          : "",
+        severity: "success",
+        camuCode: ph_code,
 
-        // severity: paymentData.status == 5 ? "success" : "error",
         snackbarMsg: formatMessageWithValues(
           this.props.intl,
           "policyHolder",
-          "snackbar.create",
-          {}
+          "snackbar.create.label",
+          { label: ph_code }
         ),
       });
     } else {
       this.setState({
         snackbar: true,
         severity: "error",
-        // camuCode: !!response?.payload?.data?.createInsureeException?.insureeException?.code ? response?.payload?.data?.createInsureeException?.insureeException?.code : "",
         snackbarMsg:
           response?.payload?.data?.createPolicyHolderException?.message,
-        // formatMessageWithValues(
-        //   this.props.intl,
-        //   "policyHolder",
-        //   "snackbar.create",
-        //   {}
-        // )
       });
     }
     onSave();
