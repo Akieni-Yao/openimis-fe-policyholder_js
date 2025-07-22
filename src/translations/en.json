@@ -144,6 +144,7 @@
   "policyHolder.legalStatus": "Legal Form",
   "policyHolder.policyHolder.sample_insureess_data.xlsx": "policyholder_insurees.xlsx",
   "exception.exceptionInsuree.label": "Insurees Exceptions {label}",
+  "exception.exceptionInsuree.tab.label": "Insurees Exceptions",
   "exception.exceptionInsureeApproval.label": "Insurees Exceptions Approval",
   "exception.camuNo": "CAMU No.",
   "exception.firstName": "First Name",
