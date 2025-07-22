@@ -34,7 +34,7 @@ import ExceptionPolicyHolderFilter from "./ExceptionPolicyHolderFilter";
 import CreateExceptionPolicyHolderDialog from "../dialogs/CreateExceptionPolicyHolderDialog";
 import HelpIcon from "@material-ui/icons/Help";
 
-const DEFAULT_ORDER_BY = "policy_holder__code";
+const DEFAULT_ORDER_BY = "-created_time";
 const styles = (theme) => ({
   customArrow: {
     color: "#eeeaea",
@@ -133,6 +133,7 @@ class ExceptionPolicyHolderSearcher extends Component {
       "policyHolder.tradeName",
       "exception.exceptionType",
       "exception.month",
+      "exception.createdTime",
       // "exception.city",
       // "exception.exceptionStatus",
     ];
@@ -210,34 +211,14 @@ class ExceptionPolicyHolderSearcher extends Component {
           : "",
       (policyHolderInsuree) => policyHolderInsuree?.reason?.reason || "",
       (policyHolderInsuree) => policyHolderInsuree?.reason?.period || "",
-      // (policyHolderInsuree) =>
-      //   policyHolderInsuree?.policyHolder?.locations?.parent?.name
-      //     ? policyHolderInsuree?.policyHolder?.locations?.parent?.name
-      //     : "",
-      // (policyHolderInsuree) =>
-      //   !!policyHolderInsuree?.exceptionReason
-      //     ? formatMessage(this.props.intl, "policyHolder.exceptionReason", policyHolderInsuree?.exceptionReason)
-      //     : "",
-      // (policyHolderInsuree) =>
-      //   !!policyHolderInsuree?.month
-      //     ? formatMessage(this.props.intl, "policyHolder.exceptionReason", policyHolderInsuree?.month)
-      //     : "",
-      // (policyHolderInsuree) => {
-      //   // !!policyHolderInsuree.status ? policyHolderInsuree.status : "",
-      //   let color = "inherit";
-      //   if (policyHolderInsuree.status === "APPROVED") {
-      //     color = "green";
-      //   } else if (policyHolderInsuree.status === "REJECTED") {
-      //     color = "red";
-      //   } else if (policyHolderInsuree.status === "PENDING") {
-      //     color = "orange";
-      //   }
-      //   return (
-      //     <span style={{ color, fontWeight: "bold" }}>
-      //       {policyHolderInsuree.status}
-      //     </span>
-      //   );
-      // }
+      (policyHolderInsuree) =>
+        policyHolderInsuree?.createdTime
+          ? formatDateFromISO(
+              modulesManager,
+              intl,
+              policyHolderInsuree?.createdTime
+            )
+          : "",
     ];
     if (!pendingApprovalUser) {
       result.push((policyHolderInsuree) => {
