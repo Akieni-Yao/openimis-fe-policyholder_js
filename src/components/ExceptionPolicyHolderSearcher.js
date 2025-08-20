@@ -194,11 +194,11 @@ class ExceptionPolicyHolderSearcher extends Component {
     } = this.props;
     let result = [
       (policyHolderInsuree) =>
-        !!policyHolderInsuree.createdTime
+        !!policyHolderInsuree.startedAt
           ? formatDateFromISO(
               modulesManager,
               intl,
-              policyHolderInsuree.createdTime
+              policyHolderInsuree.startedAt
             )
           : "",
       (policyHolderInsuree) =>
