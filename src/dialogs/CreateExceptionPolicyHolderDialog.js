@@ -119,13 +119,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
 
   canSave = () => {
     const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
-    // console.log("jsonData", jsonData);
     return !!jsonData?.policyHolder;
-    // &&
-    // !!policyHolderInsuree.insuree &&
-    // !!policyHolderInsuree.contributionPlanBundle &&
-    // !!policyHolderInsuree.dateValidFrom &&
-    // !!jsonExtValid
   };
 
   setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
@@ -133,8 +127,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
   render() {
     const { intl, classes, open, policyHolderInsuree, handleClose } =
       this.props;
-    // const { open, policyHolderInsuree } = this.state;
-    // console.log("policyHolderInsuree", policyHolderInsuree);
+
     return (
       <Fragment>
         <Dialog open={open} onClose={handleClose}>
@@ -151,7 +144,6 @@ class CreateExceptionPolicyHolderDialog extends Component {
                   pubRef="policyHolder.camuCodePicker"
                   required
                   value={
-                    // !!this.state.jsonData && policyHolderInsuree.insuree
                     !!this?.state?.jsonData?.policyHolder &&
                     this?.state?.jsonData?.policyHolder
                   }
@@ -166,6 +158,16 @@ class CreateExceptionPolicyHolderDialog extends Component {
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
                   value={this?.state?.jsonData?.reason_id}
                   onChange={(v) => this.updateAttribute("reason_id", v)}
+                />
+              </Grid>
+
+              <Grid item className={classes.item}>
+                <PublishedComponent
+                  pubRef="core.DatePicker"
+                  module="policyHolder"
+                  label="exception.date"
+                  required
+                  onChange={(v) => this.updateAttribute("started_at", v)}
                 />
               </Grid>
             </Grid>
@@ -189,12 +191,6 @@ class CreateExceptionPolicyHolderDialog extends Component {
           <CommonSnackbar
             open={this.state.snackbar}
             onClose={this.closeSnakBar}
-            // message={formatMessageWithValues(
-            //   intl,
-            //   "policyHolder",
-            //   "policyHolder.CreatePolicyHolder.snackbar",
-            //   {}
-            // )}
             message={this.state.snackbarMsg}
             severity="success"
             intl={intl}
@@ -212,9 +208,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
               {}
             )}
             intl={intl}
-            // message={this.state.snackbarMsg}
             severity="error"
-            // copyText={!!this.state.camuCode ? this.state.camuCode : ""}
             backgroundColor="red"
           />
         )}

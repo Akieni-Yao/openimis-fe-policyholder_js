@@ -1156,6 +1156,7 @@ export function createPolicyHolderException(mm, jsonData) {
     createPolicyHolderException(
         inputData: {
           reasonId:${jsonData.reason_id}
+          startedAt: "${jsonData?.started_at}"
           policyHolderId: "${decodeId(jsonData?.policyHolder?.id)}"
         }
     ) {
@@ -1166,6 +1167,7 @@ export function createPolicyHolderException(mm, jsonData) {
         exceptionReason
         rejectionReason
         createdBy
+        startedAt
         modifiedBy
         createdTime
         modifiedTime
@@ -1302,6 +1304,7 @@ export function fetchPolicyHolderException(mm, filters) {
                   createdBy
                   modifiedBy
                   createdTime
+                  startedAt
                   modifiedTime
                   month
                   reason{
@@ -1359,6 +1362,7 @@ export function fetchPolicyHolderExceptionBYId(mm, id) {
                   rejectionReason
                   createdBy
                   modifiedBy
+                  startedAt
                   createdTime
                   modifiedTime
                   reason{
