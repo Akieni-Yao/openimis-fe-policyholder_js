@@ -113,6 +113,20 @@ class ExceptionPolicyHolderMasterPanel extends FormPanel {
             />
           </Grid>
 
+          <Grid item className={classes.item}>
+            <PublishedComponent
+              pubRef="core.DatePicker"
+              module="policyHolder"
+              label="exception.date"
+              readOnly={true}
+              value={
+                !!edited[0] && !!edited[0]?.startedAt
+                  ? edited[0]?.startedAt
+                  : ""
+              }
+            />
+          </Grid>
+
           <Grid container>
             <Grid item xs={6}>
               <Contributions
