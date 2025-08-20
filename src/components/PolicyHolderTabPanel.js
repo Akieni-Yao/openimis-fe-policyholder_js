@@ -26,8 +26,8 @@ const styles = theme => ({
     }
 });
 
-const POLICYHOLDER_TABS_PANEL_CONTRIBUTION_KEY = "policyHolder.TabPanel.panel";
 const POLICYHOLDER_TABS_LABEL_CONTRIBUTION_KEY = "policyHolder.TabPanel.label";
+const POLICYHOLDER_TABS_PANEL_CONTRIBUTION_KEY = "policyHolder.TabPanel.panel";
 
 class PolicyHolderTabPanel extends FormPanel {
     constructor(props) {
