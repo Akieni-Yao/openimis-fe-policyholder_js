@@ -278,9 +278,6 @@ class ExceptionPolicyHolderForm extends Component {
       paymentData
     );
 
-    const payload = response?.payload?.data?.approvePolicyholderException;
-    console.log("==> response", payload);
-
     this.handleDialogClose();
     if (payload?.success) {
       if (paymentData.status == -1) {
