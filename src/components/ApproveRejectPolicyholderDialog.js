@@ -56,7 +56,7 @@ const RejectDialog = (props) => {
     modulesManager,
     intl,
   } = props;
-  console.log("payload",payload,"approveorreject",approveorreject)
+  console.log("payload", payload, "approveorreject", approveorreject);
   const approverData = useSelector((store) => store);
   const { formatMessage, formatMessageWithValues } = useTranslations(
     "policyHolder",
@@ -103,19 +103,6 @@ const RejectDialog = (props) => {
         <DialogContent>
           {statusCheck == -1 ? (
             <Grid item xs={12} className={classes.item}>
-              {/* <TextInput
-                // pubRef="insuree"
-                module="insuree"
-                label="Insuree.rejectComment"
-                required={false}
-                placeholder="Please write your comments here"
-                value={
-                  !!comment && !!comment?.statusComment
-                    ? comment?.statusComment
-                    : comment.statusComment
-                }
-                onChange={(e) => handleChange("statusComment", e)}
-              /> */}
               <ConstantBasedPicker
                 module="payment"
                 label="payment.rejectComment"
@@ -133,9 +120,7 @@ const RejectDialog = (props) => {
             <Grid item xs={12} className={classes.item}>
               <Typography>
                 {formatMessageWithValues("policyHolder.ApprovalMsg", {
-                  paymentCode: !!payload?.[0]?.code
-                    ? payload?.[0]?.code
-                    : null,
+                  paymentCode: !!payload?.[0]?.code ? payload?.[0]?.code : null,
                 })}
               </Typography>
             </Grid>

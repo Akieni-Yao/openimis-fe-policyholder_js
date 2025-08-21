@@ -275,6 +275,7 @@ class ExceptionPolicyHolderForm extends Component {
   _approveorreject = async (paymentData) => {
     // console.log("paymentData.status", paymentData[0]?.id)
     const response = await this.props.policyHolderExceptionApproval("", paymentData);
+    console.log("==> response", response);
     this.handleDialogClose();
     if (!!response?.payload?.data?.approvePolicyholderException?.success) {
       if (paymentData.status == -1) {
