@@ -308,9 +308,9 @@ class ExceptionPolicyHolderForm extends Component {
                 {}
               ),
       });
-      // setTimeout(() => {
-      //   this.reload();
-      // }, 3000);
+      setTimeout(() => {
+        this.reload();
+      }, 3000);
     } else {
       this.setState({
         snackbar: true,
