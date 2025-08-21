@@ -217,7 +217,7 @@ class UnpaidDeclarationSearcher extends Component {
 
     return (
       <Grid container>
-        <Grid item xs={6} className={classes.item}>
+        <Grid item xs={12} className={classes.item}>
           <Searcher
             module="policyHolder"
             fetch={this.fetch}
@@ -240,7 +240,7 @@ class UnpaidDeclarationSearcher extends Component {
           <AppliedPenaltiesSearcher policyHoldersUnpaid={policyHoldersUnpaid}/>
           <SanctionOpenSearcher policyHoldersUnpaid={policyHoldersUnpaid}/>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <UnlockPaymentDetails
             policyHoldersUnpaid={policyHoldersUnpaid}
             policyHolderId={this.props.policyHolderId}
