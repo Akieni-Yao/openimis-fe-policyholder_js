@@ -104,7 +104,7 @@ class UnlockPaymentDetails extends Component {
     const sanctionAmount = policyHoldersUnpaid.reduce((total, payment) => {
       const sanctionSum = payment.paymentsPenalty.edges.reduce(
         (sanctionTotal, edge) => {
-          if (edge.node.penaltyType === "Penalty") {
+          if (edge.node.penaltyType === "Sanction") {
             return sanctionTotal + parseInt(edge.node.amount);
           }
           return sanctionTotal;

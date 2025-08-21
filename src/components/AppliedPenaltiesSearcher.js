@@ -332,31 +332,33 @@ class AppliedPenaltiesSearcher extends Component {
 
     return (
       <Grid container style={{ width: "100%" }}>
-        <Searcher
-          module="policyHolder"
-          fetch={this.fetch}
-          items={combinedPenalties}
-          itemsPageInfo={0}
-          fetchingItems={fetchingPolicyHoldersUnpaid}
-          fetchedItems={fetchedPolicyHoldersUnpaid}
-          errorItems={errorPolicyHoldersUnpaid}
-          tableTitle={formatMessage(
-            intl,
-            "policyHolder",
-            "policyholder.appliedPenalties.title"
-          )}
-          filtersToQueryParams={this.filtersToQueryParams}
-          headers={this.headers}
-          itemFormatters={this.itemFormatters}
-          sorts={this.sorts}
-          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
-          defaultPageSize={DEFAULT_PAGE_SIZE}
-          defaultFilters={this.defaultFilters()}
-          FilterExt={predefinedPolicyHolderId}
-          onDoubleClick={(combinedPenalties) =>
-            this.onDoubleClick(combinedPenalties)
-          }
-        />
+        <Grid item xs={12}>
+          <Searcher
+            module="policyHolder"
+            fetch={this.fetch}
+            items={combinedPenalties}
+            itemsPageInfo={0}
+            fetchingItems={fetchingPolicyHoldersUnpaid}
+            fetchedItems={fetchedPolicyHoldersUnpaid}
+            errorItems={errorPolicyHoldersUnpaid}
+            tableTitle={formatMessage(
+              intl,
+              "policyHolder",
+              "policyholder.appliedPenalties.title"
+            )}
+            filtersToQueryParams={this.filtersToQueryParams}
+            headers={this.headers}
+            itemFormatters={this.itemFormatters}
+            sorts={this.sorts}
+            rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+            defaultPageSize={DEFAULT_PAGE_SIZE}
+            defaultFilters={this.defaultFilters()}
+            FilterExt={predefinedPolicyHolderId}
+            onDoubleClick={(combinedPenalties) =>
+              this.onDoubleClick(combinedPenalties)
+            }
+          />
+        </Grid>
       </Grid>
     );
   }
