@@ -207,6 +207,7 @@ class SanctionOpenSearcher extends Component {
                   "payment",
                   `penalty.status.${policyholder.status}`
                 )}
+                
 
                 {policyholder.status == -1 ? (
                   <Tooltip
