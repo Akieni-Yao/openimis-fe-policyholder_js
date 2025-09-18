@@ -157,47 +157,17 @@ class SanctionOpenSearcher extends Component {
   };
 
   getPaymentStatusDetails = (intl, state) => {
-    let color;
-
-    switch (state) {
-      case 1:
-        color = "orange";
-
-        break;
-      case 2:
-        color = "blue";
-
-        break;
-      case 3:
-        color = "orange";
-
-        break;
-      case 4:
-        color = "purple";
-        break;
-      case 5:
-        color = "green";
-        break;
-
-      case 7:
-        color = "green";
-        break;
-
-      case 9:
-        color = "orange";
-        break;
-      case -1:
-        color = "red";
-        break;
-      case -2:
-        color = "red";
-        break;
-      default:
-        color = "red";
-        break;
+    
+    if (state == 3 || state == 7) {
+      return "green";
+    }
+    
+    if (state == 4 || state == 10) {
+      return "red";
     }
 
-    return { color };
+    return "orange";
+    
   };
 
   itemFormatters = () => {
@@ -212,7 +182,7 @@ class SanctionOpenSearcher extends Component {
         formatNumber(!!policyholder?.amount ? policyholder?.amount : ""),
       (policyholder) => "",
       (policyholder) => {
-        const { color } = this.getPaymentStatusDetails(
+        const color  = this.getPaymentStatusDetails(
           this.props.intl,
           policyholder.status
         );
