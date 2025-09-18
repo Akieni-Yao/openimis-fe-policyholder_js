@@ -157,17 +157,15 @@ class SanctionOpenSearcher extends Component {
   };
 
   getPaymentStatusDetails = (intl, state) => {
-    
     if (state == 3 || state == 7) {
       return "green";
     }
-    
+
     if (state == 4 || state == 10) {
       return "red";
     }
 
     return "orange";
-    
   };
 
   itemFormatters = () => {
@@ -182,7 +180,7 @@ class SanctionOpenSearcher extends Component {
         formatNumber(!!policyholder?.amount ? policyholder?.amount : ""),
       (policyholder) => "",
       (policyholder) => {
-        const color  = this.getPaymentStatusDetails(
+        const color = this.getPaymentStatusDetails(
           this.props.intl,
           policyholder.status
         );
@@ -204,15 +202,11 @@ class SanctionOpenSearcher extends Component {
           return (
             <Grid style={{ display: "flex" }}>
               <span style={{ color, fontWeight: "bold" }}>
-                {policyholder.status !== null &&
-                  policyholder.status !== 9 &&
-                  formatMessage(
-                    this.props.intl,
-                    "payment",
-                    `penalty.status.${policyholder.status}`
-                  )}
-
-                {policyholder.status == 9 && "Échelonné"}
+                {formatMessage(
+                  this.props.intl,
+                  "payment",
+                  `penalty.status.${policyholder.status}`
+                )}
 
                 {policyholder.status == -1 ? (
                   <Tooltip
