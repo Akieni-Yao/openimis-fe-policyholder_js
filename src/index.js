@@ -5,6 +5,7 @@ import { FormattedMessage } from "@openimis/fe-core";
 import messages_en from "./translations/en.json";
 import messages_fr from "./translations/fr.json";
 import PolicyHoldersPage from "./pages/PolicyHoldersPage";
+import ExceptionReasonPage from "./pages/ExceptionReasonPage";
 import PolicyHolderPage from "./pages/PolicyHolderPage";
 import LegalFormPicker from "./pickers/LegalFormPicker";
 import ActivityCodePicker from "./pickers/ActivityCodePicker";
@@ -49,6 +50,7 @@ import {
   ExceptionInsureeTabPanel,
 } from "./pages/ExceptionInsureePage";
 // import ExceptionRegionPicker from "./pickers/ExceptionStatusPicker";
+import ExceptionScopePicker from "./pickers/ExceptionScopePicker";
 import ExceptionRegionPicker from "./pickers/ExceptionRegionPicker";
 import InsureeExceptionRegion from "./pickers/InsureeExceptionRegion";
 import ExceptionStatusPicker from "./pickers/ExceptionStatusPicker";
@@ -72,6 +74,7 @@ import {
 } from "./components/PenaltyandSactionTab";
 import BankPicker from "./pickers/BankAutoPicker";
 import UnlockPolicyholderPage from "./pages/UnlockPolicyholderPage";
+import PolicyHolderExceptionReasonPicker from "./pickers/ExceptionReasonPicker";
 
 const ROUTE_POLICY_HOLDERS = "policyHolders";
 const ROUTE_POLICY_HOLDER = "policyHolders/policyHolder";
@@ -81,11 +84,12 @@ const ROUTE_DECLARATION = "declaration";
 const ROUTE_PAYMENT_FOR_APPROVAL = "paymentApproval";
 const EXCEPTION_PANELS = "exception";
 const EXCEPTION_PANELS_POLICYHOLDER = "exception/policyholder";
-const EXCEPTION__PENDING_APPROVAL_PANELS = "exception/pendingapproval";
+const EXCEPTION__PENDING_APPROVAL_PANELS = "exception";
 const EXCEPTION__PENDING_APPROVAL_POLICYHOLDER_PANELS =
   "exception/pendingapproval/policyholder";
 const POLICYHOLDER_APPROVAL = "policyholder/approval";
 const ROUTE_POLICYHOLDER_REQUEST = "policyholderRequest";
+const ROUTE_EXCEPTION_REASON = "exception/reason";
 const DEFAULT_CONFIG = {
   translations: [
     { key: "en", messages: messages_en },
@@ -101,6 +105,7 @@ const DEFAULT_CONFIG = {
     { key: "policyHolder.PolicyHolderPicker", ref: PolicyHolderPicker },
     { key: "policyHolder.PolicyHolderPickerNew", ref: PolicyHolderPickerNew },
     { key: "policyHolder.ExceptionRegionPicker", ref: ExceptionRegionPicker },
+    { key: "policyHolder.ExceptionScopePicker", ref: ExceptionScopePicker },
     { key: "policyHolder.InsureeExceptionRegion", ref: InsureeExceptionRegion },
 
     { key: "policyHolder.ExceptionStatusPicker", ref: ExceptionStatusPicker },
@@ -125,6 +130,10 @@ const DEFAULT_CONFIG = {
     {
       key: "policyHolder.PolicyHolderContributionPlanBundlePicker",
       ref: PolicyHolderContributionPlanBundlePicker,
+    },
+    {
+      key: "policyHolder.ExceptionReasonPicker",
+      ref: PolicyHolderExceptionReasonPicker,
     },
     {
       key: "policyHolder.PolicyHolderContributionPlanBundlePicker.projection",
@@ -172,6 +181,7 @@ const DEFAULT_CONFIG = {
     { path: ROUTE_PAYMENT_FOR_APPROVAL, component: PaymentForApproval },
     { path: EXCEPTION_PANELS, component: ExceptionTabPanel },
     { path: EXCEPTION_PANELS_POLICYHOLDER, component: ExceptionTabPanel },
+    { path: ROUTE_EXCEPTION_REASON, component: ExceptionReasonPage },
     {
       path: EXCEPTION__PENDING_APPROVAL_PANELS,
       component: ExceptionTabPanel,

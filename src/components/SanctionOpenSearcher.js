@@ -157,47 +157,15 @@ class SanctionOpenSearcher extends Component {
   };
 
   getPaymentStatusDetails = (intl, state) => {
-    let color;
-
-    switch (state) {
-      case 1:
-        color = "orange";
-
-        break;
-      case 2:
-        color = "blue";
-
-        break;
-      case 3:
-        color = "orange";
-
-        break;
-      case 4:
-        color = "purple";
-        break;
-      case 5:
-        color = "green";
-        break;
-
-      case 7:
-        color = "green";
-        break;
-
-      case 9:
-        color = "orange";
-        break;
-      case -1:
-        color = "red";
-        break;
-      case -2:
-        color = "red";
-        break;
-      default:
-        color = "red";
-        break;
+    if (state == 3 || state == 7) {
+      return "green";
     }
 
-    return { color };
+    if (state == 4 || state == 10) {
+      return "red";
+    }
+
+    return "orange";
   };
 
   itemFormatters = () => {
@@ -212,7 +180,7 @@ class SanctionOpenSearcher extends Component {
         formatNumber(!!policyholder?.amount ? policyholder?.amount : ""),
       (policyholder) => "",
       (policyholder) => {
-        const { color } = this.getPaymentStatusDetails(
+        const color = this.getPaymentStatusDetails(
           this.props.intl,
           policyholder.status
         );
@@ -234,15 +202,12 @@ class SanctionOpenSearcher extends Component {
           return (
             <Grid style={{ display: "flex" }}>
               <span style={{ color, fontWeight: "bold" }}>
-                {policyholder.status !== null &&
-                  policyholder.status !== 9 &&
-                  formatMessage(
-                    this.props.intl,
-                    "payment",
-                    `penalty.status.${policyholder.status}`
-                  )}
-
-                {policyholder.status == 9 && "Échelonné"}
+                {formatMessage(
+                  this.props.intl,
+                  "payment",
+                  `penalty.status.${policyholder.status}`
+                )}
+                
 
                 {policyholder.status == -1 ? (
                   <Tooltip
@@ -332,29 +297,31 @@ class SanctionOpenSearcher extends Component {
 
     return (
       <Grid container style={{ width: "100%" }}>
-        <Searcher
-          module="policyHolder"
-          fetch={this.fetch}
-          items={combinedPenalties}
-          itemsPageInfo={0}
-          fetchingItems={fetchingPolicyHoldersUnpaid}
-          fetchedItems={fetchedPolicyHoldersUnpaid}
-          errorItems={errorPolicyHoldersUnpaid}
-          tableTitle={formatMessage(
-            intl,
-            "policyHolder",
-            "policyholder.openSanction.title"
-          )}
-          filtersToQueryParams={this.filtersToQueryParams}
-          headers={this.headers}
-          itemFormatters={this.itemFormatters}
-          sorts={this.sorts}
-          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
-          defaultPageSize={DEFAULT_PAGE_SIZE}
-          defaultFilters={this.defaultFilters()}
-          FilterExt={predefinedPolicyHolderId}
-          onDoubleClick={(policyHolder) => this.onDoubleClick(policyHolder)}
-        />
+        <Grid item xs={12}>
+          <Searcher
+            module="policyHolder"
+            fetch={this.fetch}
+            items={combinedPenalties}
+            itemsPageInfo={0}
+            fetchingItems={fetchingPolicyHoldersUnpaid}
+            fetchedItems={fetchedPolicyHoldersUnpaid}
+            errorItems={errorPolicyHoldersUnpaid}
+            tableTitle={formatMessage(
+              intl,
+              "policyHolder",
+              "policyholder.openSanction.title"
+            )}
+            filtersToQueryParams={this.filtersToQueryParams}
+            headers={this.headers}
+            itemFormatters={this.itemFormatters}
+            sorts={this.sorts}
+            rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+            defaultPageSize={DEFAULT_PAGE_SIZE}
+            defaultFilters={this.defaultFilters()}
+            FilterExt={predefinedPolicyHolderId}
+            onDoubleClick={(policyHolder) => this.onDoubleClick(policyHolder)}
+          />
+        </Grid>
       </Grid>
     );
   }

@@ -10,7 +10,7 @@ import {
   PublishedComponent,
   formatMessage,
   ConstantBasedPicker,
-  TextInput
+  TextInput,
 } from "@openimis/fe-core";
 import { Fab, Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -29,9 +29,9 @@ import CommonSnackbar from "../components/CommonSnackbar";
 const styles = (theme) => ({
   item: theme.paper.item,
   errorMessage: {
-    color: 'red',
-    marginTop: '5px',
-    marginLeft: "9px" // Adjust the spacing as needed
+    color: "red",
+    marginTop: "5px",
+    marginLeft: "9px", // Adjust the spacing as needed
   },
 });
 
@@ -65,18 +65,21 @@ class CreateExceptionDialog extends Component {
     }));
   };
 
-
   handleSave = async () => {
-    const { intl, policyHolder, onSave, createException } =
-      this.props;
-    const response = await createException(this.props.modulesManager,
-      this.state.jsonData,
+    const { intl, policyHolder, onSave, createException } = this.props;
+    const response = await createException(
+      this.props.modulesManager,
+      this.state.jsonData
     );
     // console.log(response, "response")
     if (!!response?.payload?.data?.createInsureeException?.insureeException) {
       this.setState({
         snackbar: true,
-        camuCode: !!response?.payload?.data?.createInsureeException?.insureeException?.code ? response?.payload?.data?.createInsureeException?.insureeException?.code : "",
+        camuCode: !!response?.payload?.data?.createInsureeException
+          ?.insureeException?.code
+          ? response?.payload?.data?.createInsureeException?.insureeException
+              ?.code
+          : "",
 
         severity: "success",
         snackbarMsg: formatMessageWithValues(
@@ -84,7 +87,7 @@ class CreateExceptionDialog extends Component {
           "policyHolder",
           "snackbar.create",
           {}
-        )
+        ),
       });
     } else {
       this.setState({
@@ -98,16 +101,15 @@ class CreateExceptionDialog extends Component {
         //   "snackbar.create",
         //   {}
         // )
-      })
+      });
     }
     onSave();
     this.props.handleClose();
     this.setState({ open: false, jsonData: {} });
-
   };
   closeSnakBar = () => {
     this.setState({ snackbar: false });
-  }
+  };
   // updateAttribute = (attribute, value) => {
   //   // debugger
   //   this.setState((state) => ({
@@ -119,15 +121,16 @@ class CreateExceptionDialog extends Component {
   // };
   updateAttribute = (attribute, value) => {
     // If the attribute is 'exceptionReason', update 'exceptionMonth' based on it
-    if (attribute === 'exceptionReason') {
+    if (attribute === "exceptionReason") {
       const exceptionMonthOptions = this.getExceptionMonthOptions(value);
-      const defaultValue = exceptionMonthOptions.length > 0 ? exceptionMonthOptions[0]?.value : '';
+      const defaultValue =
+        exceptionMonthOptions.length > 0 ? exceptionMonthOptions[0]?.value : "";
       this.setState((state) => ({
         jsonData: {
           ...state.jsonData,
           [attribute]: value,
           // Autofill 'exceptionMonth' with the first value if available
-          exceptionMonth: defaultValue
+          exceptionMonth: defaultValue,
         },
       }));
     } else {
@@ -142,12 +145,17 @@ class CreateExceptionDialog extends Component {
   };
   canSave = () => {
     const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
-    const isValid = jsonData.insuree?.status !== "END_OF_LIFE" || jsonData.exceptionMonth !== 6;
-    return (
-      !!jsonData.insuree && jsonData.insuree &&
-      !!jsonData.exceptionMonth && jsonData.exceptionMonth &&
-      isValid
-    );
+    return jsonData.insuree && jsonData.reason_id;
+    // const isValid =
+    //   jsonData.insuree?.status !== "END_OF_LIFE" ||
+    //   jsonData.exceptionMonth !== 6;
+    // return (
+    //   !!jsonData.insuree &&
+    //   jsonData.insuree &&
+    //   !!jsonData.exceptionMonth &&
+    //   jsonData.exceptionMonth &&
+    //   isValid
+    // );
   };
   getExceptionMonthOptions = (exceptionReason) => {
     if (exceptionReason === "death_of_head_insuree") {
@@ -166,10 +174,12 @@ class CreateExceptionDialog extends Component {
     const { exceptionReason } = this.state.jsonData;
     return (
       <Fragment>
-
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
-            <FormattedMessage module="policyHolder" id="exception.addException" />
+            <FormattedMessage
+              module="policyHolder"
+              id="exception.addException"
+            />
           </DialogTitle>
           <DialogContent>
             <Grid container direction="column" className={classes.item}>
@@ -183,26 +193,39 @@ class CreateExceptionDialog extends Component {
                   onChange={(v) => this.updateAttribute("insuree", v)}
                 />
               </Grid>
-              {this?.state?.jsonData?.insuree?.status == "END_OF_LIFE" && this.state.jsonData.exceptionMonth == 6 && (
-                <span className={classes.errorMessage} style={{ fontSize: "12px" }}><FormattedMessage
-                  module="policyholder"
-                  id="policyholder.error"
-                /></span>
-              )}
+              {this?.state?.jsonData?.insuree?.status == "END_OF_LIFE" &&
+                this.state.jsonData.exceptionMonth == 6 && (
+                  <span
+                    className={classes.errorMessage}
+                    style={{ fontSize: "12px" }}
+                  >
+                    <FormattedMessage
+                      module="policyholder"
+                      id="policyholder.error"
+                    />
+                  </span>
+                )}
               <Grid item className={classes.item}>
                 <PublishedComponent
-                  pubRef="policyHolder.InsureeExceptionRegion"
+                  // pubRef="policyHolder.InsureeExceptionRegion"
+                  // module="policyHolder"
+                  // label="policyHolder.insureeexceptionReason"
+                  // nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+                  // value={!!this.state.jsonData.exceptionReason && this.state.jsonData.exceptionReason}
+                  // onChange={(v) =>
+                  //   // this.updateAttribute({ exceptionReason: v })
+                  //   this.updateAttribute("exceptionReason", v)
+                  // }
+                  pubRef="policyHolder.ExceptionReasonPicker"
                   module="policyHolder"
-                  label="policyHolder.insureeexceptionReason"
+                  label="exceptionReason"
+                  scope="INSUREE"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-                  value={!!this.state.jsonData.exceptionReason && this.state.jsonData.exceptionReason}
-                  onChange={(v) =>
-                    // this.updateAttribute({ exceptionReason: v })
-                    this.updateAttribute("exceptionReason", v)
-                  }
+                  value={this?.state?.jsonData?.reason_id}
+                  onChange={(v) => this.updateAttribute("reason_id", v)}
                 />
               </Grid>
-              <Grid item className={classes.item}>
+              {/* <Grid item className={classes.item}>
                 <TextInput
                   module="policyHolder"
                   label="ExceptionMonth"
@@ -210,16 +233,22 @@ class CreateExceptionDialog extends Component {
                   readOnly={true}
                 // onChange={(event) => this.updateAttribute("exceptionMonth", event.target.value)}
                 />
-              </Grid>
-              {this.state.jsonData.exceptionMonth == 6 ? <Grid item className={classes.item}>
-                <PublishedComponent
-                  pubRef="insuree.RequestedByPicker"
-                  value={!!this.state.jsonData.secondGuardian && this.state.jsonData.secondGuardian}
-                  onChange={(v) => this.updateAttribute("secondGuardian", v)}
-                  uuid={this.state.jsonData.insuree?.family?.uuid}
-                />
-              </Grid> : ""}
-
+              </Grid> */}
+              {/* {this.state.jsonData.exceptionMonth == 6 ? (
+                <Grid item className={classes.item}>
+                  <PublishedComponent
+                    pubRef="insuree.RequestedByPicker"
+                    value={
+                      !!this.state.jsonData.secondGuardian &&
+                      this.state.jsonData.secondGuardian
+                    }
+                    onChange={(v) => this.updateAttribute("secondGuardian", v)}
+                    uuid={this.state.jsonData.insuree?.family?.uuid}
+                  />
+                </Grid>
+              ) : (
+                ""
+              )} */}
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -237,36 +266,41 @@ class CreateExceptionDialog extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-        {!!this.state.camuCode ? <CommonSnackbar
-          open={this.state.snackbar}
-          onClose={this.closeSnakBar}
-          // message={formatMessageWithValues(
-          //   intl,
-          //   "policyHolder",
-          //   "policyHolder.CreatePolicyHolder.snackbar",
-          //   {}
-          // )}
-          message={this.state.snackbarMsg}
-          intl={intl}
-          // severity="success"
-          severity={this.state.severity} // Use the severity from state
-          copyText={!!this.state.camuCode ? this.state.camuCode : ""}
-          backgroundColor="#00913E"
-        /> : <CommonSnackbar
-          open={this.state.snackbar}
-          onClose={this.closeSnakBar}
-          message={formatMessageWithValues(
-            intl,
-            "policyHolder",
-            "InsureeExceptionError.Insuree is not in an active or approved.",
-            {}
-          )}
-          intl={intl}
-          // message={this.state.snackbarMsg}
-          // severity="success"
-          severity={this.state.severity} // Use the severity from state
-          // copyText={!!this.state.camuCode ? this.state.camuCode : ""}
-          backgroundColor="red" />}
+        {!!this.state.camuCode ? (
+          <CommonSnackbar
+            open={this.state.snackbar}
+            onClose={this.closeSnakBar}
+            // message={formatMessageWithValues(
+            //   intl,
+            //   "policyHolder",
+            //   "policyHolder.CreatePolicyHolder.snackbar",
+            //   {}
+            // )}
+            message={this.state.snackbarMsg}
+            intl={intl}
+            // severity="success"
+            severity={this.state.severity} // Use the severity from state
+            copyText={!!this.state.camuCode ? this.state.camuCode : ""}
+            backgroundColor="#00913E"
+          />
+        ) : (
+          <CommonSnackbar
+            open={this.state.snackbar}
+            onClose={this.closeSnakBar}
+            message={formatMessageWithValues(
+              intl,
+              "policyHolder",
+              "InsureeExceptionError.Insuree is not in an active or approved.",
+              {}
+            )}
+            intl={intl}
+            // message={this.state.snackbarMsg}
+            // severity="success"
+            severity={this.state.severity} // Use the severity from state
+            // copyText={!!this.state.camuCode ? this.state.camuCode : ""}
+            backgroundColor="red"
+          />
+        )}
       </Fragment>
     );
   }

@@ -167,6 +167,67 @@ export function fetchPolicyHolders(modulesManager, params) {
   return graphql(payload, "POLICYHOLDER_POLICYHOLDERS");
 }
 
+export function fetchExceptionReasons(modulesManager, params) {
+  const payload = formatPageQueryWithCount("exceptionReason", params, [
+    "id",
+    "reason",
+    "period",
+    "scope",
+    "createdAt",
+    "modifiedAt",
+  ]);
+  return graphql(payload, [
+    "EXCEPTION_REASONS_REQ",
+    "EXCEPTION_REASONS_RESP",
+    "EXCEPTION_REASONS_ERR",
+  ]);
+}
+
+export function createExceptionReason(exceptionReason, clientMutationLabel) {
+  const mutation = `mutation {
+  createExceptionReason(input: {${formatExceptionReasonGQL(exceptionReason)}}){
+    message
+    success
+    }
+  }
+  `;
+  return graphql(mutation, [
+    "EXCEPTION_REASON_MUTATION_REQ",
+    "EXCEPTION_REASON_MUTATION_CREATE_RESP",
+    "EXCEPTION_REASON_MUTATION_ERR",
+  ]);
+}
+
+export function updateExceptionReason(exceptionReason, clientMutationLabel) {
+  const mutation = `mutation {
+  updateExceptionReason(input: {${formatExceptionReasonGQL(exceptionReason)}}){
+    message
+    success
+    }
+  }
+  `;
+  return graphql(mutation, [
+    "EXCEPTION_REASON_MUTATION_REQ",
+    "EXCEPTION_REASON_MUTATION_UPDATE_RESP",
+    "EXCEPTION_REASON_MUTATION_ERR",
+  ]);
+}
+
+export function deleteExceptionReason(exceptionReason, clientMutationLabel) {
+  const mutation = `mutation {
+  deleteExceptionReason(id:${decodeId(exceptionReason.id)}){
+    message
+    success
+    }
+  }
+  `;
+  return graphql(mutation, [
+    "EXCEPTION_REASON_MUTATION_REQ",
+    "EXCEPTION_REASON_MUTATION_DELETE_RESP",
+    "EXCEPTION_REASON_MUTATION_ERR",
+  ]);
+}
+
 export function fetchPickerPolicyHolders(params) {
   const payload = formatPageQuery(
     "policyHolder",
@@ -254,6 +315,15 @@ export function fetchPolicyHolderUsers(modulesManager, params) {
     POLICYHOLDERUSER_FULL_PROJECTION(modulesManager)
   );
   return graphql(payload, "POLICYHOLDER_POLICYHOLDERUSERS");
+}
+
+function formatExceptionReasonGQL(exceptionReason) {
+  return `
+  ${exceptionReason.id ? `id: ${decodeId(exceptionReason.id)}` : ""}
+  reason:"${exceptionReason.reason}", 
+  scope:"${exceptionReason.scope}", 
+  period:${exceptionReason.period}
+  `;
 }
 
 function formatPolicyHolderGQL(policyHolder) {
@@ -1055,9 +1125,8 @@ export function createException(mm, jsonData) {
   let mutation = `mutation CreateInsureeException {
     createInsureeException(
         inputData: {
+            reasonId: ${jsonData.reason_id}
             insureeId: ${decodeId(jsonData?.insuree?.id)}
-            exceptionReason:"${jsonData?.exceptionReason}"
-            exceptionMonths: ${jsonData?.exceptionMonth}
             ${raisedById}
         }
     ) {
@@ -1086,8 +1155,9 @@ export function createPolicyHolderException(mm, jsonData) {
   let mutation = `mutation CreatePolicyHolderException  {
     createPolicyHolderException(
         inputData: {
+          reasonId:${jsonData.reason_id}
+          startedAt: "${jsonData?.started_at}"
           policyHolderId: "${decodeId(jsonData?.policyHolder?.id)}"
-            exceptionReason:"${jsonData?.exceptionReason}"
         }
     ) {
       policyHolderExcption {
@@ -1097,6 +1167,7 @@ export function createPolicyHolderException(mm, jsonData) {
         exceptionReason
         rejectionReason
         createdBy
+        startedAt
         modifiedBy
         createdTime
         modifiedTime
@@ -1140,6 +1211,13 @@ export function fetchInsureeException(mm, filters) {
                 modifiedBy
                 createdTime
                 modifiedTime
+                
+                reason{
+                  id 
+                  reason
+                  scope
+                  period
+                }
                 insuree {
                     camuNumber
                     lastName
@@ -1181,6 +1259,12 @@ export function fetchInsureeExceptionByID(mm, id) {
                 modifiedBy
                 createdTime
                 modifiedTime
+                reason{
+                  id 
+                  reason
+                  scope
+                  period
+                }
                 insuree {
                     camuNumber
                     lastName
@@ -1220,8 +1304,15 @@ export function fetchPolicyHolderException(mm, filters) {
                   createdBy
                   modifiedBy
                   createdTime
+                  startedAt
                   modifiedTime
                   month
+                  reason{
+                    id
+                    reason
+                    scope
+                    period
+                  }
                   policyHolder {
                     code
                     tradeName
@@ -1271,8 +1362,15 @@ export function fetchPolicyHolderExceptionBYId(mm, id) {
                   rejectionReason
                   createdBy
                   modifiedBy
+                  startedAt
                   createdTime
                   modifiedTime
+                  reason{
+                    id
+                    reason
+                    scope
+                    period
+                  }
                   policyHolder {
                     code
                     tradeName

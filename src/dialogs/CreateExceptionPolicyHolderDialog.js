@@ -13,7 +13,10 @@ import {
 } from "@openimis/fe-core";
 import { Fab, Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { createPolicyHolderInsuree, createPolicyHolderException } from "../actions";
+import {
+  createPolicyHolderInsuree,
+  createPolicyHolderException,
+} from "../actions";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -45,7 +48,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
       snackbar: false,
       severity: null,
       snackbarMsg: null,
-      camuCode: null
+      camuCode: null,
     };
   }
 
@@ -57,7 +60,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
         policy: {},
       },
       jsonExtValid: true,
-      jsonData: {}
+      jsonData: {},
     }));
   };
 
@@ -68,36 +71,34 @@ class CreateExceptionPolicyHolderDialog extends Component {
   handleSave = async () => {
     const { intl, policyHolder, onSave, createPolicyHolderException } =
       this.props;
-    const response = await createPolicyHolderException(this.props.modulesManager,
-      this.state.jsonData,
+    const response = await createPolicyHolderException(
+      this.props.modulesManager,
+      this.state.jsonData
     );
     // console.log("response", response)
-    if (!!response?.payload?.data?.createPolicyHolderException?.code) {
+    const ph_code =
+      response?.payload?.data?.createPolicyHolderException?.policyHolderExcption
+        ?.code;
+    if (ph_code) {
       this.setState({
         snackbar: true,
-        camuCode: !!response?.payload?.data?.createPolicyHolderException?.policyHolderExcption?.code ? response?.payload?.data?.createPolicyHolderException?.policyHolderExcption?.code : "",
+        severity: "success",
+        camuCode: ph_code,
 
-        // severity: paymentData.status == 5 ? "success" : "error",
         snackbarMsg: formatMessageWithValues(
           this.props.intl,
           "policyHolder",
-          "snackbar.create",
-          {}
-        )
+          "snackbar.create.label",
+          { label: ph_code }
+        ),
       });
     } else {
       this.setState({
         snackbar: true,
         severity: "error",
-        // camuCode: !!response?.payload?.data?.createInsureeException?.insureeException?.code ? response?.payload?.data?.createInsureeException?.insureeException?.code : "",
-        snackbarMsg: response?.payload?.data?.createPolicyHolderException?.message
-        // formatMessageWithValues(
-        //   this.props.intl,
-        //   "policyHolder",
-        //   "snackbar.create",
-        //   {}
-        // )
-      })
+        snackbarMsg:
+          response?.payload?.data?.createPolicyHolderException?.message,
+      });
     }
     onSave();
     this.props.handleClose();
@@ -105,7 +106,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
   };
   closeSnakBar = () => {
     this.setState({ snackbar: false });
-  }
+  };
   updateAttribute = (attribute, value) => {
     // debugger
     this.setState((state) => ({
@@ -118,15 +119,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
 
   canSave = () => {
     const { policyHolderInsuree, jsonExtValid, jsonData } = this.state;
-    // console.log("jsonData", jsonData);
-    return (
-      !!jsonData?.policyHolder
-      // &&
-      // !!policyHolderInsuree.insuree &&
-      // !!policyHolderInsuree.contributionPlanBundle &&
-      // !!policyHolderInsuree.dateValidFrom &&
-      // !!jsonExtValid
-    );
+    return !!jsonData?.policyHolder;
   };
 
   setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
@@ -134,8 +127,7 @@ class CreateExceptionPolicyHolderDialog extends Component {
   render() {
     const { intl, classes, open, policyHolderInsuree, handleClose } =
       this.props;
-    // const { open, policyHolderInsuree } = this.state;
-    // console.log("policyHolderInsuree", policyHolderInsuree);
+
     return (
       <Fragment>
         <Dialog open={open} onClose={handleClose}>
@@ -152,25 +144,30 @@ class CreateExceptionPolicyHolderDialog extends Component {
                   pubRef="policyHolder.camuCodePicker"
                   required
                   value={
-                    // !!this.state.jsonData && policyHolderInsuree.insuree
-                    !!this?.state?.jsonData?.policyHolder && this?.state?.jsonData?.policyHolder
-
+                    !!this?.state?.jsonData?.policyHolder &&
+                    this?.state?.jsonData?.policyHolder
                   }
                   onChange={(v) => this.updateAttribute("policyHolder", v)}
                 />
               </Grid>
               <Grid item className={classes.item}>
                 <PublishedComponent
-                  pubRef="policyHolder.ExceptionRegionPicker"
+                  pubRef="policyHolder.ExceptionReasonPicker"
                   module="policyHolder"
                   label="exceptionReason"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-                  value={
-                    // !!policyHolderInsuree.insuree &&
-                    // policyHolderInsuree.insuree.exceptionReason
-                    !!this?.state?.jsonData?.exceptionReason && this?.state?.jsonData?.exceptionReason
-                  }
-                  onChange={(v) => this.updateAttribute("exceptionReason", v)}
+                  value={this?.state?.jsonData?.reason_id}
+                  onChange={(v) => this.updateAttribute("reason_id", v)}
+                />
+              </Grid>
+
+              <Grid item className={classes.item}>
+                <PublishedComponent
+                  pubRef="core.DatePicker"
+                  module="policyHolder"
+                  label="exception.date"
+                  required
+                  onChange={(v) => this.updateAttribute("started_at", v)}
                 />
               </Grid>
             </Grid>
@@ -190,42 +187,41 @@ class CreateExceptionPolicyHolderDialog extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-        {this.state.camuCode ? <CommonSnackbar
-          open={this.state.snackbar}
-          onClose={this.closeSnakBar}
-          // message={formatMessageWithValues(
-          //   intl,
-          //   "policyHolder",
-          //   "policyHolder.CreatePolicyHolder.snackbar",
-          //   {}
-          // )}
-          message={this.state.snackbarMsg}
-          severity="success"
-          intl={intl}
-          copyText={!!this.state.camuCode ? this.state.camuCode : ""}
-          backgroundColor="#00913E"
-        /> : <CommonSnackbar
-          open={this.state.snackbar}
-          onClose={this.closeSnakBar}
-          message={formatMessageWithValues(
-            intl,
-            "policyHolder",
-            `CreatePolicyHolder.${this.state.snackbarMsg}`,
-            {}
-          )}
-          intl={intl}
-          // message={this.state.snackbarMsg}
-          severity="error"
-          // copyText={!!this.state.camuCode ? this.state.camuCode : ""}
-          backgroundColor="red"
-        />}
+        {this.state.camuCode ? (
+          <CommonSnackbar
+            open={this.state.snackbar}
+            onClose={this.closeSnakBar}
+            message={this.state.snackbarMsg}
+            severity="success"
+            intl={intl}
+            copyText={!!this.state.camuCode ? this.state.camuCode : ""}
+            backgroundColor="#00913E"
+          />
+        ) : (
+          <CommonSnackbar
+            open={this.state.snackbar}
+            onClose={this.closeSnakBar}
+            message={formatMessageWithValues(
+              intl,
+              "policyHolder",
+              `CreatePolicyHolder.${this.state.snackbarMsg}`,
+              {}
+            )}
+            intl={intl}
+            severity="error"
+            backgroundColor="red"
+          />
+        )}
       </Fragment>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ createPolicyHolderInsuree, createPolicyHolderException }, dispatch);
+  return bindActionCreators(
+    { createPolicyHolderInsuree, createPolicyHolderException },
+    dispatch
+  );
 };
 
 export default injectIntl(

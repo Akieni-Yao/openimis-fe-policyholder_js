@@ -74,7 +74,25 @@ class ExceptionMasterPanel extends FormPanel {
             // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item className={classes.item} xs={12}>
+            <TextInput
+              module="policyHolder"
+              label="exceptionReason"
+              nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+              value={edited[0]?.reason?.reason || ""}
+              readOnly={true}
+            />
+          </Grid>
+          <Grid item className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="exception.month"
+              nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+              value={`${edited[0]?.reason?.period} mois`}
+              readOnly={true}
+            />
+          </Grid>
+          {/* <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="exception.city"
@@ -82,8 +100,8 @@ class ExceptionMasterPanel extends FormPanel {
               value={!!insureeLocation ? insureeLocation : ""}
             // onChange={p => this.updateAttribute('receiptNo', p)}
             />
-          </Grid>
-          <Grid item xs={3} className={classes.item}>
+          </Grid> */}
+          {/* <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="exception.phone"
@@ -91,8 +109,8 @@ class ExceptionMasterPanel extends FormPanel {
               value={!edited ? "" : edited[0]?.insuree?.phone}
             // onChange={p => this.updateAttribute('receiptNo', p)}
             />
-          </Grid>
-          <Grid item xs={3} className={classes.item}>
+          </Grid> */}
+          {/* <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="exception.bithDate"
@@ -100,8 +118,8 @@ class ExceptionMasterPanel extends FormPanel {
               value={!edited ? "" : edited[0]?.insuree?.dob}
             // onChange={p => this.updateAttribute('receiptNo', p)}
             />
-          </Grid>
-          <Grid item xs={3} className={classes.item}>
+          </Grid> */}
+          <Grid item className={classes.item}>
           {/* <PublishedComponent
                   pubRef="policyHolder.insureeexceptionReason"
                   module="policyHolder"
@@ -114,14 +132,14 @@ class ExceptionMasterPanel extends FormPanel {
                   //   this.updateAttribute("exceptionReason", v)
                   // }
                 /> */}
-                   <PublishedComponent
+                   {/* <PublishedComponent
                   pubRef="policyHolder.InsureeExceptionRegion"
                   module="policyHolder"
                   label="policyHolder.insureeexceptionReason"
                   readOnly={true}
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
                   value={!edited ? "" : edited[0]?.exceptionReason}
-                />
+                /> */}
             {/* <TextInput
               module="policyHolder"
               label="exception.exceptionType"

@@ -35,7 +35,7 @@ class ExceptionInsureeTabLabel extends Component {
           className={tabStyle(POLICYHOLDERINSUREE_TAB_VALUE)}
           selected={isSelected(POLICYHOLDERINSUREE_TAB_VALUE)}
           value={POLICYHOLDERINSUREE_TAB_VALUE}
-          label={!!this.pendingApprovalUser ? formatMessage(intl, "exception", "exceptionInsureeApproval.label") : formatMessage(intl, "exception", "exceptionInsuree.label")}
+          label={!!this.pendingApprovalUser ? formatMessage(intl, "exception", "exceptionInsureeApproval.label") : formatMessage(intl, "exception", "exceptionInsuree.tab.label")}
         />
       )
     );

@@ -15,6 +15,7 @@
   "policyHolder.dateValidTo": "Date Valid To",
   "policyHolder.isDeleted": "Show deleted",
   "policyHolder.policyHolders.searcher.results.title": "{policyHoldersTotalCount} Policy Holders Found",
+  "policyHolder.exceptionReasons.searcher.results.title": "{exceptionReasonsTotalCount} Exception reason Found",
   "policyHolder.any": "Any",
   "policyHolder.emptyLabel": " ",
   "policyHolder.delete": "Delete",
@@ -142,7 +143,8 @@
   "policyHolder.payment.code": "Payment Code",
   "policyHolder.legalStatus": "Legal Form",
   "policyHolder.policyHolder.sample_insureess_data.xlsx": "policyholder_insurees.xlsx",
-  "exception.exceptionInsuree.label": "Insurees Exceptions",
+  "exception.exceptionInsuree.label": "Insurees Exceptions {label}",
+  "exception.exceptionInsuree.tab.label": "Insurees Exceptions",
   "exception.exceptionInsureeApproval.label": "Insurees Exceptions Approval",
   "exception.camuNo": "CAMU No.",
   "exception.firstName": "First Name",
@@ -193,6 +195,7 @@
   "policyHolder.dialog.rejectTitlePolicyholder": "Policyholder Exception Rejection",
   "policyHolder.dialog.approvedTitlePolicyholder": "Policyholder Exception Approval",
   "policyHolder.snackbar.create": "Exception is created successfully!",
+  "policyHolder.snackbar.create.label": "Exception is created successfully! {label}",
   "policyholder.policyholder.SelectValidOption": "Select Valid Option",
   "policyholder.policyholder.SelectValidOption.null": " ",
   "policyholder.policyHolder.SelectValidOption.not_clear_docs": "Documents are not clear",
@@ -235,5 +238,10 @@
   "policyholder.openSanction.title": "Open Sanction",
   "policyholder.openSanction.btn": "Pay",
   "policyholder.openSanction.paidStatus": "Paid",
-  "policyHolder.policyHolder.unlockPolicyholder": "Unlock Policy Holder"
+  "policyHolder.policyHolder.unlockPolicyholder": "Unlock Policy Holder",
+  "exceptionScope.INSUREE": "Insuree",
+  "exceptionScope.POLICY_HOLDER": "Policy Holder",
+  "exception.addExceptionReason": "Add Exception Reason",
+  "exception.editExceptionReason": "Add Exception Reason",
+  "exception.createdTime": "Created Time"
 }

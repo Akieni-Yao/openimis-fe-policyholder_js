@@ -52,49 +52,78 @@ class ExceptionPolicyHolderMasterPanel extends FormPanel {
               label="exception.camuCode"
               readOnly={true}
               value={!edited ? "" : edited[0]?.policyHolder?.code}
-            // onChange={p => this.updateAttribute('receiptNo', p)}
+              // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="tradeName"
-              value={!!edited[0] && !!edited[0]?.policyHolder?.tradeName ? edited[0]?.policyHolder?.tradeName : ""}
+              value={
+                !!edited[0] && !!edited[0]?.policyHolder?.tradeName
+                  ? edited[0]?.policyHolder?.tradeName
+                  : ""
+              }
               // onChange={(v) => this.updateAttribute("tradeName", v)}
               readOnly={true}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          {/* <Grid item xs={3} className={classes.item}>
             <TextInput
               module="policyHolder"
               label="exception.city"
               readOnly={true}
-              value={!!edited[0] && !!edited[0]?.policyHolder?.locations?.parent?.name ? edited[0]?.policyHolder?.locations?.parent?.name : ""}
-            // onChange={p => this.updateAttribute('receiptNo', p)}
+              value={
+                !!edited[0] &&
+                !!edited[0]?.policyHolder?.locations?.parent?.name
+                  ? edited[0]?.policyHolder?.locations?.parent?.name
+                  : ""
+              }
+              // onChange={p => this.updateAttribute('receiptNo', p)}
             />
-          </Grid>
-          <Grid item className={classes.item}>
-            <PublishedComponent
-              pubRef="policyHolder.ExceptionRegionPicker"
+          </Grid> */}
+          <Grid item className={classes.item} xs={12}>
+            <TextInput
               module="policyHolder"
               label="exceptionReason"
               nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
-              value={!!edited[0] && !!edited[0]?.exceptionReason ? edited[0]?.exceptionReason : ""}
+              value={edited[0]?.reason?.reason || ""}
               readOnly={true}
-              // onChange={(v) =>
-              //   // this.updateAttribute({ exceptionReason: v })
-              //   this.updateAttribute("exceptionReason", v)
-              // }
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="exception.month"
+              nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
+              value={`${edited[0]?.reason?.period} mois`}
+              readOnly={true}
+            />
+          </Grid>
+          <Grid item className={classes.item}>
             <TextInput
               module="policyHolder"
               label="exception.exceptionStatus"
               readOnly={true}
-              value={!!edited[0] && !!edited[0]?.status ? edited[0]?.status : ""}
+              value={
+                !!edited[0] && !!edited[0]?.status ? edited[0]?.status : ""
+              }
 
-            // onChange={p => this.updateAttribute('receiptNo', p)}
+              // onChange={p => this.updateAttribute('receiptNo', p)}
+            />
+          </Grid>
+
+          <Grid item className={classes.item}>
+            <PublishedComponent
+              pubRef="core.DatePicker"
+              module="policyHolder"
+              label="exception.date"
+              readOnly={true}
+              value={
+                !!edited[0] && !!edited[0]?.startedAt
+                  ? edited[0]?.startedAt
+                  : ""
+              }
             />
           </Grid>
 
@@ -121,6 +150,10 @@ export default withModulesManager(
     mapStateToProps,
     null
   )(
-    withHistory(injectIntl(withTheme(withStyles(styles)(ExceptionPolicyHolderMasterPanel))))
+    withHistory(
+      injectIntl(
+        withTheme(withStyles(styles)(ExceptionPolicyHolderMasterPanel))
+      )
+    )
   )
 );
