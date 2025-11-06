@@ -49,7 +49,6 @@ const styles = (theme) => ({
 
 const POLICYHOLDER_RIGHTS_PANEL = "policyholder.rightsGeneralInfo";
 class PolicyHolderGeneralInfoPanel extends FormPanel {
-
   constructor(props) {
     super(props);
 
@@ -520,8 +519,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     return false;
   };
 
-  
-
   shouldValidate = (input) => {
     const { savedPolicyHolderCode } = this.props;
     return input !== savedPolicyHolderCode;
@@ -617,8 +614,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       policyHolderId,
       approverData,
       bankList,
-      selectedBank
-
+      selectedBank,
     } = this.props;
     // const capitalizeWords = (inputString) => {
     //   let result = "";
@@ -637,20 +633,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     //   return result;
     // };
 
-    console.log(edited,'edited');
-    
-
-
-
+    console.log(edited, "edited");
 
     const handleBankChange = (option, label) => {
       this.setState({ selectedBank: option });
       console.log("Selected Bank:", option, "Label:", label);
     };
     const fetchBank = (code) => {
-      console.log(bankList,'edited');
-      const filteredBank = bankList?.filter(bank => bank?.code == code);
-      return filteredBank?.length > 0 ? filteredBank[0] : null; 
+      console.log(bankList, "edited");
+      const filteredBank = bankList?.filter((bank) => bank?.code == code);
+      return filteredBank?.length > 0 ? filteredBank[0] : null;
     };
 
     return (
@@ -834,13 +826,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.dateValidFrom
                   ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
-                    "YYYY-MM-DD"
-                  )
+                      "YYYY-MM-DD"
+                    )
                   : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={false}
-            // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
 
@@ -1017,22 +1009,25 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               placeholder="Select a bank"
               multiple={false}
             /> */}
-              <PublishedComponent
+            <PublishedComponent
               pubRef="policyHolder.BankPicker"
               module="policyHolder"
-              label="bank"  
+              label="bank"
               withNull={true}
               required
-              value = {!!edited && !!edited.bank ? edited.bank : fetchBank(edited?.bankAccount?.bank)}
+              value={
+                !!edited && !!edited.bank
+                  ? edited.bank
+                  : fetchBank(edited?.bankAccount?.bank)
+              }
               onChange={(v) => {
-                this.updateAttribute("bank", v)
-             
-                this.updateAttributes({ bankAccount: { bank: v.code } })
+                this.updateAttribute("bank", v);
 
-                console.log(edited,'editedd');
-                
+                this.updateAttributes({ bankAccount: { bank: v.code } });
+
+                console.log(edited, "editedd");
               }}
-              readOnly={ false}
+              readOnly={false}
             />
           </Grid>
           <Grid item xs={2} className={classes.item}>
@@ -1047,7 +1042,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               // }
               value={
                 !!edited?.bank?.code
-                  ? edited?.bank?.code// If bank account exists, use bank.code
+                  ? edited?.bank?.code // If bank account exists, use bank.code
                   : edited?.bankAccount?.bank // Otherwise, use selectedBank's code or an empty string
               }
               // error={this.regexError("bankCode", edited?.bankAccount?.bank)}
@@ -1110,6 +1105,29 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
+          {/* erpPartnerId */}
+          {edited?.erpPartnerId && (
+            <Grid item xs={2} className={classes.item}>
+              <TextInput
+                module="policyHolder"
+                label="erpPartnerId"
+                value={edited?.erpPartnerId}
+                readOnly={true}
+                type="text"
+              />
+            </Grid>
+          )}
+          {edited?.erpPartnerAccessId && (
+            <Grid item xs={2} className={classes.item}>
+              <TextInput
+                module="policyHolder"
+                label="erpPartnerAccessId"
+                value={edited?.erpPartnerAccessId}
+                readOnly={true}
+                type="text"
+              />
+            </Grid>
+          )}
 
           {/* <Grid item xs={2} className={classes.item}>
             <TextInput
@@ -1145,15 +1163,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
 
 const mapStateToProps = (store, props) => {
   // Log the store and props to the console for debugging
-  console.log('Store:', store);
+  console.log("Store:", store);
 
   return {
     // isCodeValid: store.policyHolder?.validationFields?.policyHolderCode?.isValid,
     // isCodeValidating:
     //   store.policyHolder?.validationFields?.policyHolderCode?.isValidating,
-    bankList:store.policyHolder.BankList,
+    bankList: store.policyHolder.BankList,
     policyHolderId: props?.edited?.id,
-    validationError: store.policyHolder?.validationFields?.policyHolderCode?.validationError,
+    validationError:
+      store.policyHolder?.validationFields?.policyHolderCode?.validationError,
     savedPolicyHolderCode: store.policyHolder?.policyHolder?.code,
     approverData: store.policyHolder.approverData,
   };
