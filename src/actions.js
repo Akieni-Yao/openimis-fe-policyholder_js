@@ -51,6 +51,8 @@ const POLICYHOLDER_FULL_PROJECTION = (modulesManager) => [
   "isDeleted",
   "jsonExt",
   "status",
+  "erpPartnerId",
+  "erpPartnerAccessId",
 ];
 
 export const POLICYHOLDER_PICKER_PROJECTION = ["id", "code", "tradeName"];
