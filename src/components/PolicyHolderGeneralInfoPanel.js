@@ -1106,28 +1106,24 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             />
           </Grid>
           {/* erpPartnerId */}
-          {edited?.erpPartnerId && (
-            <Grid item xs={2} className={classes.item}>
-              <TextInput
-                module="policyHolder"
-                label="erpPartnerId"
-                value={edited?.erpPartnerId}
-                readOnly={true}
-                type="text"
-              />
-            </Grid>
-          )}
-          {edited?.erpPartnerAccessId && (
-            <Grid item xs={2} className={classes.item}>
-              <TextInput
-                module="policyHolder"
-                label="erpPartnerAccessId"
-                value={edited?.erpPartnerAccessId}
-                readOnly={true}
-                type="text"
-              />
-            </Grid>
-          )}
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="erpPartnerId"
+              value={edited?.erpPartnerId || ""}
+              readOnly={true}
+              type="text"
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="erpPartnerAccessId"
+              value={edited?.erpPartnerAccessId || ""}
+              readOnly={true}
+              type="text"
+            />
+          </Grid>
 
           {/* <Grid item xs={2} className={classes.item}>
             <TextInput
