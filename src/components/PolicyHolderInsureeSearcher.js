@@ -21,6 +21,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import UpdatePolicyHolderInsureeDialog from "../dialogs/UpdatePolicyHolderInsureeDialog";
 import { IconButton, Fab } from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {
   ZERO,
@@ -50,6 +52,8 @@ class PolicyHolderInsureeSearcher extends Component {
       toDelete: null,
       deleted: [],
       queryParams: null,
+      snackbarOpen: false,
+      snackbarMessage: "",
     };
   }
 
@@ -164,16 +168,33 @@ class PolicyHolderInsureeSearcher extends Component {
     printWindow.document.close();
     // printWindow.print();
   };
+
+  handleSnackbarClose = () => {
+    this.setState({ snackbarOpen: false });
+  };
+
   printReport = async (edited) => {
     const data = await this.props.printReportInsuree(
       this.props.modulesManager,
       edited
     );
 
-    const base64Data = data?.payload?.data?.sentNotification?.data;
-    const contentType = "pdf";
-    if (base64Data) {
-      this.displayPrintWindow(base64Data, contentType);
+    const response = data?.payload?.data?.sentNotification;
+
+    if (response?.success) {
+      const base64Data = response.data;
+      const contentType = "pdf";
+      if (base64Data) {
+        this.displayPrintWindow(base64Data, contentType);
+      }
+    } else {
+      console.warn("Print insuree report failed:", response?.message);
+      this.setState({
+        snackbarOpen: true,
+        snackbarMessage: this.props.intl.formatMessage({
+          id: "policyHolder.policyHolderInsuree.print.error",
+        }),
+      });
     }
   };
   itemFormatters = () => {
@@ -425,6 +446,15 @@ class PolicyHolderInsureeSearcher extends Component {
           rowDisabled={this.isRowDisabled}
           defaultFilters={this.defaultFilters()}
         />
+        <Snackbar
+          open={this.state.snackbarOpen}
+          autoHideDuration={6000}
+          onClose={this.handleSnackbarClose}
+        >
+          <Alert onClose={this.handleSnackbarClose} severity="error">
+            {this.state.snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Fragment>
     );
   }

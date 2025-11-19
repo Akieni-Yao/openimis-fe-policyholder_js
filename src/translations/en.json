@@ -74,6 +74,7 @@
   "policyHolder.policyHolderInsuree.dialog.edit.title": "Edit Policy Holder Insuree",
   "policyHolder.policyHolderInsuree.dialog.delete.title": "Are you sure you want to delete {otherNames} {lastName}?",
   "policyHolder.policyHolderInsuree.dialog.replace.title": "Add new version of Policy Holder Insuree",
+  "policyHolder.policyHolderInsuree.print.error": "Échec de l'impression du récépissé de l'assuré. Veuillez réessayer.",
   "policyHolder.dialog.cancel": "Cancel",
   "policyHolder.dialog.create": "Create",
   "policyHolder.dialog.update": "Save",
