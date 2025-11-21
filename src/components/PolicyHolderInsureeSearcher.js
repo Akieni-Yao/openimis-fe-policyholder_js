@@ -166,7 +166,6 @@ class PolicyHolderInsureeSearcher extends Component {
     }
 
     printWindow.document.close();
-    // printWindow.print();
   };
 
   handleSnackbarClose = () => {
@@ -188,7 +187,6 @@ class PolicyHolderInsureeSearcher extends Component {
         this.displayPrintWindow(base64Data, contentType);
       }
     } else {
-      console.warn("Print insuree report failed:", response?.message);
       this.setState({
         snackbarOpen: true,
         snackbarMessage: this.props.intl.formatMessage({
