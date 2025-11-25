@@ -237,7 +237,7 @@ class ExceptionPolicyHolderSearcher extends Component {
               {formatMessage(
                 this.props.intl,
                 "policyHolder",
-                `policyHolder.Exception Status.${policyHolderInsuree.status}`
+                `policyHolder.Exception.Status.${policyHolderInsuree.status}`
               )}
             </span>
             {policyHolderInsuree.status === "REJECTED" &&
