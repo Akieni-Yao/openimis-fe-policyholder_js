@@ -54,7 +54,7 @@ class ExceptionInsureeSearcher extends Component {
     ) {
       this.props.fetchInsureeException(
         this.props.modulesManager,
-        // this.state.queryParams
+
         null
       );
     }
@@ -89,9 +89,7 @@ class ExceptionInsureeSearcher extends Component {
     if (!state.beforeCursor && !state.afterCursor) {
       params.push(`first: ${state.pageSize}`);
     }
-    // if (!state.filters.hasOwnProperty("isDeleted")) {
-    //   params.push("isDeleted: false");
-    // }
+
     if (
       this.props.pendingApprovalUser &&
       !state.filters.hasOwnProperty("status")
@@ -126,7 +124,6 @@ class ExceptionInsureeSearcher extends Component {
       "exception.exceptionType",
       "exception.month",
       "exception.createdTime",
-      
     ];
     if (!pendingApprovalUser) {
       result.push("exception.exceptionStatus");
@@ -142,7 +139,6 @@ class ExceptionInsureeSearcher extends Component {
     printWindow.document.open();
 
     if (contentType === "pdf") {
-      // printWindow.print(`<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`);
       printWindow.document.write(
         `<embed type="application/pdf" width="100%" height="100%" src="data:application/pdf;base64,${base64Data}" />`
       );
@@ -196,16 +192,7 @@ class ExceptionInsureeSearcher extends Component {
         !!policyHolderInsuree.insuree
           ? policyHolderInsuree.insuree.lastName
           : "",
-      // (policyHolderInsuree) =>
-      //   policyHolderInsuree?.insuree ? policyHolderInsuree?.insuree.dob : "",
-      // (policyHolderInsuree) =>
-      //   !!policyHolderInsuree.insuree ? policyHolderInsuree.insuree.phone : "",
-      // (policyHolderInsuree) =>
-      //   policyHolderInsuree?.employerNumber
-      //     ? policyHolderInsuree?.employerNumber
-      //     : "",
-      // (policyHolderInsuree) =>
-      // !!policyHolderInsuree.status ? policyHolderInsuree.status : "",
+
       (policyHolderInsuree) =>
         !!policyHolderInsuree.startDate
           ? formatDateFromISO(
@@ -221,70 +208,50 @@ class ExceptionInsureeSearcher extends Component {
 
       (policyHolderInsuree) => policyHolderInsuree?.reason?.reason,
       (policyHolderInsuree) => policyHolderInsuree?.reason?.period,
-      (policyHolderInsuree) => policyHolderInsuree?.createdTime ? formatDateFromISO(modulesManager, intl, policyHolderInsuree?.createdTime) : "",
+      (policyHolderInsuree) =>
+        policyHolderInsuree?.createdTime
+          ? formatDateFromISO(
+              modulesManager,
+              intl,
+              policyHolderInsuree?.createdTime
+            )
+          : "",
     ];
 
-    // result.push((policyHolderInsuree) => {
-    //   try {
-    //     const insureeLocations = JSON.parse(policyHolderInsuree.insuree.jsonExt)
-    //       .insureelocations;
-    //     const parentData = insureeLocations.parent;
-    //     return `${parentData.name}`;
-    //   } catch (error) {
-    //     console.error("Error parsing JSON or extracting parent data:", error);
-    //     return "N/A";
-    //   }
-    // });
-    // if (!pendingApprovalUser) {
-    //   result.push((policyHolderInsuree) =>
-    //     !!policyHolderInsuree.status ? policyHolderInsuree.status : ""
-    //   );
-    // }
     if (!pendingApprovalUser) {
-      result.push(
-        (policyHolderInsuree) => {
-          let color = "inherit"; // Default color
-          if (policyHolderInsuree.status === "APPROVED") {
-            color = "green"; // Green color for APPROVED status
-          } else if (policyHolderInsuree.status === "REJECTED") {
-            color = "red"; // Red color for REJECTED status
-          } else if (policyHolderInsuree.status === "PENDING") {
-            color = "orange"; // Red color for REJECTED status
-          }
-          return (
-            <Fragment>
-              <span style={{ color, fontWeight: "bold" }}>
-                {formatMessage(
-                  this.props.intl,
-                  "policyHolder",
-                  `policyHolder.Exception.Status.${policyHolderInsuree.status}`
-                )}
-              </span>
-              {policyHolderInsuree.status === "REJECTED" &&
-                policyHolderInsuree.rejectionReason && (
-                  <Tooltip
-                    placement="right"
-                    arrow
-                    // classes={{
-                    //   tooltip: this.props.classes.tooltip,
-                    //   arrow: this.props.classes.customArrow
-                    // }}
-                    title={this.rejectedCommentsTooltip(policyHolderInsuree)}
-                  >
-                    <IconButton>
-                      <HelpIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-            </Fragment>
-            // <span style={{ color,fontWeight:"bold" }}>
-            //   {policyHolderInsuree.status}
-            // </span>
-          );
+      result.push((policyHolderInsuree) => {
+        let color = "inherit"; // Default color
+        if (policyHolderInsuree.status === "APPROVED") {
+          color = "green"; // Green color for APPROVED status
+        } else if (policyHolderInsuree.status === "REJECTED") {
+          color = "red"; // Red color for REJECTED status
+        } else if (policyHolderInsuree.status === "PENDING") {
+          color = "orange"; // Red color for REJECTED status
         }
-        // <span style={{ color: policyHolderInsuree.status === "APPROVED" ? "green" : policyHolderInsuree.status === "REJETCED" ? "red" : "black" }}>{!!policyHolderInsuree.status ? policyHolderInsuree.status : ""}</span>
-        // !!policyHolderInsuree.status ? policyHolderInsuree.status : ""
-      );
+        return (
+          <Fragment>
+            <span style={{ color, fontWeight: "bold" }}>
+              {formatMessage(
+                this.props.intl,
+                "policyHolder",
+                `policyHolder.Exception.Status.${policyHolderInsuree.status}`
+              )}
+            </span>
+            {policyHolderInsuree.status === "REJECTED" &&
+              policyHolderInsuree.rejectionReason && (
+                <Tooltip
+                  placement="right"
+                  arrow
+                  title={this.rejectedCommentsTooltip(policyHolderInsuree)}
+                >
+                  <IconButton>
+                    <HelpIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+          </Fragment>
+        );
+      });
     }
     return result;
   };
@@ -381,10 +348,6 @@ class ExceptionInsureeSearcher extends Component {
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           defaultPageSize={DEFAULT_PAGE_SIZE}
           defaultOrderBy={DEFAULT_ORDER_BY}
-          // rowLocked={this.isRowDisabled}
-          // rowDisabled={this.isRowDisabled}
-          //   defaultFilters={this.defaultFilters()}
-          // pendingApprovalUser &&
           actions={actions}
           onDoubleClick={(insuree) => this.onDoubleClick(insuree)}
         />
@@ -403,8 +366,7 @@ class ExceptionInsureeSearcher extends Component {
             </Typography>
           </Box>
         )}
-        {/* {(rights.includes(RIGHT_POLICYHOLDERINSUREE_CREATE) ||
-              rights.includes(RIGHT_PORTALPOLICYHOLDERINSUREE_CREATE)) && ( */}
+
         <Grid
           container
           justifyContent="flex-end"
