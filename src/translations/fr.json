@@ -11,6 +11,7 @@
     "policyHolder.snackbar.create.label": "Exception est créée avec succès! {label}",
     "policyHolder.erpPartnerId": "Identifiant Partenaire ERP",
     "policyHolder.erpPartnerAccessId": "Identifiant Accès Partenaire ERP",
+    "policyHolder.policyHolderInsuree.print.error": "Échec de l'impression du récépissé de l'assuré. Veuillez réessayer.",
     "policyHolder.Exception Status.EXPIRED": "Expiré",
     "policyHolder.requeststatus.Locked": "Verrouillé"
 }
