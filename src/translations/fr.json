@@ -12,6 +12,9 @@
     "policyHolder.erpPartnerId": "Identifiant Partenaire ERP",
     "policyHolder.erpPartnerAccessId": "Identifiant Accès Partenaire ERP",
     "policyHolder.policyHolderInsuree.print.error": "Échec de l'impression du récépissé de l'assuré. Veuillez réessayer.",
-    "policyHolder.Exception Status.EXPIRED": "Expiré",
+    "policyHolder.Exception.Status.EXPIRED": "Expiré",
+    "policyHolder.Exception.Status.PENDING": "En attente",
+    "policyHolder.Exception.Status.APPROVED": "Approuvé",
+    "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejeté",
     "policyHolder.requeststatus.Locked": "Verrouillé"
 }

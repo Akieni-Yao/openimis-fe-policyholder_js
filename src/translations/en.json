@@ -244,5 +244,9 @@
   "exceptionScope.POLICY_HOLDER": "Policy Holder",
   "exception.addExceptionReason": "Add Exception Reason",
   "exception.editExceptionReason": "Add Exception Reason",
-  "exception.createdTime": "Created Time"
+  "exception.createdTime": "Created Time",
+  "policyHolder.Exception.Status.EXPIRED": "Expired",
+  "policyHolder.Exception.Status.PENDING": "Pending",
+  "policyHolder.Exception.Status.APPROVED": "Approved",
+  "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejected"
 }
