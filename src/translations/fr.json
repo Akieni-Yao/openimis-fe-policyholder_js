@@ -14,7 +14,7 @@
   "payment.penaltyAmount": "Montant de la pénalité",
   "payment.sanctionAmount": "Montant de la sanction",
   "payment.totalAmount": "Montant total",
-  "policyHolder.exceptionStatus.PENDING": "En attente",
+  "policyHolder.exceptionStatus.Pending": "En attente",
   "policyHolder.exceptionStatus.Approved": "Approuvé",
   "policyHolder.exceptionStatus.Rejected": "Rejeté",
   "policyHolder.exceptionStatus.Locked": "Verrouillé",
