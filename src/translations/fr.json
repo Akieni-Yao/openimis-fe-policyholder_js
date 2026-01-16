@@ -13,5 +13,14 @@
   "policyHolder.erpPartnerAccessId": "Identifiant Accès Partenaire ERP",
   "payment.penaltyAmount": "Montant de la pénalité",
   "payment.sanctionAmount": "Montant de la sanction",
-  "payment.totalAmount": "Montant total"
+  "payment.totalAmount": "Montant total",
+  "policyHolder.exceptionStatus.PENDING": "En attente",
+  "policyHolder.exceptionStatus.Approved": "Approuvé",
+  "policyHolder.exceptionStatus.Rejected": "Rejeté",
+  "policyHolder.exceptionStatus.Locked": "Verrouillé",
+  "policyHolder.exceptionStatus.Unlocked": "Déverrouillé",
+  "policyHolder.exceptionStatus.Expired": "Expiré",
+  "policyHolder.exceptionStatus.Cancelled": "Annulé",
+  "policyHolder.exceptionStatus.Suspended": "Suspendu",
+  "policyHolder.exceptionStatus.Resumed": "Repris"
 }
