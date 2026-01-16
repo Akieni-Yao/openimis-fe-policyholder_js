@@ -237,7 +237,7 @@ class ExceptionPolicyHolderSearcher extends Component {
               {formatMessage(
                 this.props.intl,
                 "policyHolder",
-                `policyHolder.Exception Status.${policyHolderInsuree.status}`
+                `policyHolder.Exception.Status.${policyHolderInsuree.status}`
               )}
             </span>
             {policyHolderInsuree.status === "REJECTED" &&
@@ -245,10 +245,6 @@ class ExceptionPolicyHolderSearcher extends Component {
                 <Tooltip
                   placement="right"
                   arrow
-                  // classes={{
-                  //   tooltip: this.props.classes.tooltip,
-                  //   arrow: this.props.classes.customArrow
-                  // }}
                   title={this.rejectedCommentsTooltip(policyHolderInsuree)}
                 >
                   <IconButton>
@@ -257,9 +253,6 @@ class ExceptionPolicyHolderSearcher extends Component {
                 </Tooltip>
               )}
           </Fragment>
-          // <span style={{ color,fontWeight:"bold" }}>
-          //   {policyHolderInsuree.status}
-          // </span>
         );
       });
     }
