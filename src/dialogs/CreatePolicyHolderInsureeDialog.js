@@ -99,6 +99,7 @@ class CreatePolicyHolderInsureeDialog extends Component {
                     size="small"
                     color="primary"
                     onClick={this.handleOpen}>
+                    disabled={this.props.disabled}
                     <AddIcon />
                 </Fab>
                 <Dialog open={open} onClose={this.handleClose}>
