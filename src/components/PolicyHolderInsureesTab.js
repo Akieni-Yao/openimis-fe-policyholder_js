@@ -8,12 +8,16 @@ import {
   CircularProgress,
   Snackbar,
   Box,
+  Fab,
 } from "@material-ui/core";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { withStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import { injectIntl } from "react-intl";
 import {
   formatMessage,
+  withTooltip,
   PublishedComponent,
   FormattedMessage,
   baseApiUrl,
@@ -31,6 +35,11 @@ import CreatePolicyHolderInsureeDialog from "../dialogs/CreatePolicyHolderInsure
 import * as XLSX from "xlsx";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
+
+const styles = (theme) => ({
+  fab: { ...theme.fab, bottom: 200 },
+});
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -58,7 +67,7 @@ class PolicyHolderInsureesTabLabel extends Component {
   }
 }
 
-class PolicyHolderInsureesTabPanel extends Component {
+class PolicyHolderInsureesTabPanelClass extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -261,6 +270,10 @@ class PolicyHolderInsureesTabPanel extends Component {
 
       const taskData = await this.getActiveTask(policyHolder.code, savedTaskId);
 
+      if (taskData.download_url) {
+        this.setState({ downloadUrl: taskData.download_url });
+      }
+
       if (!taskData) {
         this.setState({
           isImporting: false,
@@ -290,27 +303,16 @@ class PolicyHolderInsureesTabPanel extends Component {
         if (this.fileInputRef.current) {
           this.fileInputRef.current.value = "";
         }
-
-        if (taskData.download_url) {
-          this.setState({ downloadUrl: taskData.download_url });
-        }
-
         if (!this.state.snackbarOpen) {
           if (taskData.successful) {
-            const successMessage =
-              taskData?.success_count !== undefined &&
-              taskData?.error_count !== undefined
-                ? `Téléchargement réussi - ${
-                    taskData.success_count || 0
-                  } succès, ${taskData.error_count || 0} erreurs`
-                : "Téléchargement réussi";
+            const successMessage = `Téléchargement réussi - ${
+              taskData.success_count || 0
+            } succès, ${taskData.error_count || 0} erreurs`;
             this.setState({
               snackbarMessage: successMessage,
               snackbarSeverity: "success",
               snackbarOpen: true,
-              insureeCheck: true,
             });
-            this.onSave();
           } else {
             const errorMessage = "Téléchargement échoué";
             this.setState({
@@ -412,14 +414,22 @@ class PolicyHolderInsureesTabPanel extends Component {
       isImporting: false,
       importProgress: null,
       currentTaskId: null,
-      downloadUrl: progressData?.download_url || this.state.downloadUrl,
+      downloadUrl: progressData?.download_url || null,
       snackbarMessage: successMessage,
       snackbarSeverity: "success",
       snackbarOpen: true,
       insureeCheck: true,
     });
 
-    if (document.visibilityState !== "visible" && policyHolder?.code) {
+    if (this.fileInputRef.current) {
+      this.fileInputRef.current.value = "";
+    }
+
+    this.setState((state) => ({
+      reset: state.reset + 1,
+    }));
+
+    if (document.visibilityState !== "visible") {
       const result = {
         message: successMessage,
         severity: "success",
@@ -430,10 +440,6 @@ class PolicyHolderInsureesTabPanel extends Component {
         `importResult_${policyHolder.code}`,
         JSON.stringify(result)
       );
-    }
-
-    if (this.fileInputRef.current) {
-      this.fileInputRef.current.value = "";
     }
 
     this.onSave();
@@ -455,22 +461,31 @@ class PolicyHolderInsureesTabPanel extends Component {
     }
 
     const errorMessage = "Téléchargement échoué";
+    const downloadUrl = progressData?.download_url || null;
 
     this.setState({
       isImporting: false,
       importProgress: null,
       currentTaskId: null,
-      downloadUrl: progressData?.download_url || this.state.downloadUrl,
+      downloadUrl: downloadUrl,
       snackbarMessage: errorMessage,
       snackbarSeverity: "error",
       snackbarOpen: true,
     });
 
-    if (document.visibilityState !== "visible" && policyHolder?.code) {
+    if (this.fileInputRef.current) {
+      this.fileInputRef.current.value = "";
+    }
+
+    this.setState((state) => ({
+      reset: state.reset + 1,
+    }));
+
+    if (document.visibilityState !== "visible") {
       const result = {
         message: errorMessage,
         severity: "error",
-        downloadUrl: progressData?.download_url || null,
+        downloadUrl: downloadUrl,
         timestamp: Date.now(),
       };
       localStorage.setItem(
@@ -478,10 +493,6 @@ class PolicyHolderInsureesTabPanel extends Component {
         JSON.stringify(result)
       );
     }
-
-    this.setState((state) => ({
-      reset: state.reset + 1,
-    }));
 
     if (this.fileInputRef.current) {
       this.fileInputRef.current.value = "";
@@ -541,6 +552,11 @@ class PolicyHolderInsureesTabPanel extends Component {
       event.preventDefault();
       return;
     }
+
+    if (policyHolder?.code) {
+      localStorage.removeItem(`importResult_${policyHolder.code}`);
+    }
+
     let formData = new FormData();
     formData.append("file", file);
 
@@ -720,7 +736,8 @@ class PolicyHolderInsureesTabPanel extends Component {
   };
 
   render() {
-    const { rights, value, isTabsEnabled, policyHolder, intl } = this.props;
+    const { rights, value, isTabsEnabled, policyHolder, intl, classes } =
+      this.props;
     const {
       snackbarOpen,
       snackbarMessage,
@@ -913,22 +930,24 @@ class PolicyHolderInsureesTabPanel extends Component {
                       />
                     </Button>
                   </label>
-                  {downloadUrl && (
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<GetAppIcon />}
-                        onClick={this.handleDownloadResult}
-                        disabled={isImporting || checkingTask}
-                      >
-                        <FormattedMessage
-                          module="policyHolder"
-                          id="policyHolderInsuree.downloadImportResults"
-                        />
-                      </Button>
-                    </Grid>
-                  )}
+                  {downloadUrl &&
+                    intl &&
+                    withTooltip(
+                      <div className={classes.fab}>
+                        <Fab
+                          color="primary"
+                          onClick={this.handleDownloadResult}
+                          style={{ boxShadow: "none" }}
+                        >
+                          <GetAppIcon />
+                        </Fab>
+                      </div>,
+                      formatMessage(
+                        intl,
+                        "policyHolder",
+                        "policyHolderInsuree.downloadImportResults"
+                      )
+                    )}
                   <Grid item>
                     <Typography>
                       <FormattedMessage
@@ -973,4 +992,7 @@ class PolicyHolderInsureesTabPanel extends Component {
   }
 }
 
-export { PolicyHolderInsureesTabLabel, PolicyHolderInsureesTabPanel };
+export { PolicyHolderInsureesTabLabel };
+export const PolicyHolderInsureesTabPanel = injectIntl(
+  withStyles(styles)(PolicyHolderInsureesTabPanelClass)
+);
