@@ -89,5 +89,6 @@
   "policyHolder.Exception.Status.EXPIRED": "Expiré",
   "policyHolder.Exception.Status.PENDING": "En attente",
   "policyHolder.Exception.Status.APPROVED": "Approuvé",
+  "policyHolder.Exception.Status.REJECTED": "Rejeté",
   "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejeté"
 }
