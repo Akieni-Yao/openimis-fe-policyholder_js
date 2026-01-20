@@ -1,40 +1,33 @@
-import React, { Fragment } from "react";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { injectIntl } from "react-intl";
-import _ from "lodash";
 import {
-  Checkbox,
-  Paper,
-  IconButton,
-  Grid,
-  Divider,
-  Typography,
-  Tooltip,
   Button,
-  Box,
+  Divider,
+  Grid,
+  IconButton,
+  Paper,
+  Tooltip,
+  Typography
 } from "@material-ui/core";
+import { withStyles, withTheme } from "@material-ui/core/styles";
+import HelpIcon from "@material-ui/icons/Help";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import {
-  formatMessage,
-  formatMessageWithValues,
-  withModulesManager,
-  formatDateFromISO,
-  historyPush,
-  withTooltip,
-  FormattedMessage,
-  formatSorter,
-  sort,
   coreAlert,
-  Table,
+  formatMessage,
+  formatSorter,
+  FormattedMessage,
+  historyPush,
   PagedDataHandler,
-  PublishedComponent,
   ProgressOrError,
-  ConstantBasedPicker,
+  sort,
+  Table,
+  withModulesManager,
+  withTooltip
 } from "@openimis/fe-core";
+import React from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { fetchInsureeDocuments } from "../actions";
-import HelpIcon from "@material-ui/icons/Help";
 import DocumentView from "./DocumentView";
 
 const styles = (theme) => ({
@@ -184,8 +177,8 @@ class ExceptionDocuments extends PagedDataHandler {
   };
 
   headers = [
-    "Documents Name",
-    "View Documents",
+    "exception.documents.name",
+    "exception.documents.view",
     // "Insuree.status",
   ];
 
@@ -427,8 +420,8 @@ class ExceptionDocuments extends PagedDataHandler {
               <Grid item xs={8}>
                 <Typography className={classes.tableTitle}>
                   <FormattedMessage
-                    module="location"
-                    id="Exception Documents"
+                    module="policyHolder"
+                    id="exception.documents.title"
                   />
                 </Typography>
               </Grid>
@@ -453,7 +446,7 @@ class ExceptionDocuments extends PagedDataHandler {
             </Grid>
             {documentDetails?.length > 0 && !fetchingDocuments ? (
               <Table
-                module="location"
+                module="policyHolder"
                 headers={this.headers}
                 headerActions={this.headerActions}
                 itemFormatters={this.formatters}
