@@ -3,6 +3,9 @@
   "policyHolder.exceptionReasons.searcher.results.title": "{exceptionReasonsTotalCount} raison d'exception trouvée",
   "exceptionScope.INSUREE": "Assuré",
   "exceptionScope.POLICY_HOLDER": "Souscripteur",
+  "exceptionScope": "Portée",
+  "exception.reason": "Motif",
+  "exception.period": "Période",
   "exception.addExceptionReason": "Ajouter une raison d'exception",
   "exception.editExceptionReason": "Modifier la raison d'exception",
   "exception.exceptionInsuree.label": "Exceptions d'assurés {label}",
@@ -93,5 +96,6 @@
   "policyHolder.Exception.Status.PENDING": "En attente",
   "policyHolder.Exception.Status.APPROVED": "Approuvé",
   "policyHolder.Exception.Status.REJECTED": "Rejeté",
-  "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejeté"
+  "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejeté",
+  "exception.exceptionStatus.EXPIRED": "Expiré"
 }
