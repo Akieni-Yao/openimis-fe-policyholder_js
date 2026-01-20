@@ -98,7 +98,6 @@ class PolicyHolderInsureesTabPanelClass extends Component {
   };
 
   componentDidMount() {
-    this.checkStoredResults();
     this.checkForActiveTask();
   }
 
@@ -108,7 +107,6 @@ class PolicyHolderInsureesTabPanelClass extends Component {
     if (policyHolder?.code && policyHolder?.code !== prevPolicyHolder?.code) {
       this.setState({ checkingTask: true }, () => {
         this.checkForActiveTask();
-        this.checkStoredResults();
       });
     }
   }
@@ -151,6 +149,7 @@ class PolicyHolderInsureesTabPanelClass extends Component {
     onProgress
   ) => {
     const interval = 1000 * 2;
+    let consecutiveFetchFailures = 0;
 
     const progressInterval = setInterval(() => {
       checkProgress();
@@ -170,13 +169,13 @@ class PolicyHolderInsureesTabPanelClass extends Component {
       }
 
       if (!activeTaskData) {
-        clearInterval(progressInterval);
-        if (savedTaskId) {
-          localStorage.removeItem(`active_insuree_task_${phCode}`);
+        consecutiveFetchFailures += 1;
+        if (consecutiveFetchFailures >= 5) {
+          clearInterval(progressInterval);
         }
-        onError();
         return;
       }
+      consecutiveFetchFailures = 0;
 
       const progress = {
         status: activeTaskData.status,
@@ -195,7 +194,10 @@ class PolicyHolderInsureesTabPanelClass extends Component {
       if (!activeTaskData.has_active_task && activeTaskData.ready) {
         clearInterval(progressInterval);
         localStorage.removeItem(`active_insuree_task_${phCode}`);
-        if (activeTaskData.status === "FAILED" || !activeTaskData.successful) {
+        if (
+          activeTaskData.status === "FAILED" ||
+          activeTaskData.successful === false
+        ) {
           onError(progress);
           return;
         }
@@ -225,37 +227,6 @@ class PolicyHolderInsureesTabPanelClass extends Component {
     };
   };
 
-  checkStoredResults = () => {
-    const { policyHolder } = this.props;
-    if (!policyHolder?.code) return;
-
-    const storedResult = localStorage.getItem(
-      `importResult_${policyHolder.code}`
-    );
-
-    if (storedResult) {
-      try {
-        const result = JSON.parse(storedResult);
-        const twentyFourHoursAgo = Date.now() - 24 * 60 * 60 * 1000;
-
-        if (result.timestamp && result.timestamp > twentyFourHoursAgo) {
-          this.setState({
-            snackbarMessage: result.message,
-            snackbarSeverity: result.severity,
-            snackbarOpen: true,
-            downloadUrl: result.downloadUrl || this.state.downloadUrl,
-          });
-          localStorage.removeItem(`importResult_${policyHolder.code}`);
-        } else {
-          localStorage.removeItem(`importResult_${policyHolder.code}`);
-        }
-      } catch (err) {
-        console.warn("Error parsing stored result:", err);
-        localStorage.removeItem(`importResult_${policyHolder.code}`);
-      }
-    }
-  };
-
   checkForActiveTask = async () => {
     const { policyHolder } = this.props;
     if (!policyHolder?.code) {
@@ -281,19 +252,19 @@ class PolicyHolderInsureesTabPanelClass extends Component {
           currentTaskId: null,
           checkingTask: false,
         });
-        if (savedTaskId) {
-          localStorage.removeItem(`active_insuree_task_${policyHolder.code}`);
-        }
         return;
       }
 
       if (taskData?.task_id && taskData?.ready && !taskData?.has_active_task) {
+        const wasTrackingThisTask = !!savedTaskId;
+
         this.setState(
           {
             isImporting: false,
             importProgress: null,
             currentTaskId: null,
             checkingTask: false,
+            downloadUrl: taskData.download_url || this.state.downloadUrl,
           },
           () => {}
         );
@@ -303,25 +274,24 @@ class PolicyHolderInsureesTabPanelClass extends Component {
         if (this.fileInputRef.current) {
           this.fileInputRef.current.value = "";
         }
-        if (!this.state.snackbarOpen) {
-          if (taskData.successful) {
-            const successMessage = `Téléchargement réussi - ${
-              taskData.success_count || 0
-            } succès, ${taskData.error_count || 0} erreurs`;
-            this.setState({
-              snackbarMessage: successMessage,
-              snackbarSeverity: "success",
-              snackbarOpen: true,
-            });
-          } else {
-            const errorMessage = "Téléchargement échoué";
-            this.setState({
-              snackbarMessage: errorMessage,
-              snackbarSeverity: "error",
-              snackbarOpen: true,
-            });
-          }
+        if (wasTrackingThisTask) {
+          const isFailed =
+            taskData.status === "FAILED" || taskData.successful === false;
+          const message = isFailed
+            ? taskData.error_message || "Import échoué"
+            : `Import terminé - ${taskData.success_count || 0} succès, ${
+                taskData.error_count || 0
+              } erreurs`;
+          this.setState({
+            snackbarMessage: message,
+            snackbarSeverity: isFailed ? "error" : "success",
+            snackbarOpen: true,
+          });
         }
+        setTimeout(() => {
+          this.checkForActiveTask();
+        }, 100);
+
         return;
       }
 
@@ -429,19 +399,6 @@ class PolicyHolderInsureesTabPanelClass extends Component {
       reset: state.reset + 1,
     }));
 
-    if (document.visibilityState !== "visible") {
-      const result = {
-        message: successMessage,
-        severity: "success",
-        downloadUrl: progressData?.download_url || null,
-        timestamp: Date.now(),
-      };
-      localStorage.setItem(
-        `importResult_${policyHolder.code}`,
-        JSON.stringify(result)
-      );
-    }
-
     this.onSave();
   };
 
@@ -480,19 +437,6 @@ class PolicyHolderInsureesTabPanelClass extends Component {
     this.setState((state) => ({
       reset: state.reset + 1,
     }));
-
-    if (document.visibilityState !== "visible") {
-      const result = {
-        message: errorMessage,
-        severity: "error",
-        downloadUrl: downloadUrl,
-        timestamp: Date.now(),
-      };
-      localStorage.setItem(
-        `importResult_${policyHolder.code}`,
-        JSON.stringify(result)
-      );
-    }
 
     if (this.fileInputRef.current) {
       this.fileInputRef.current.value = "";
@@ -551,10 +495,6 @@ class PolicyHolderInsureesTabPanelClass extends Component {
     if (this.state.isImporting || this.state.checkingTask) {
       event.preventDefault();
       return;
-    }
-
-    if (policyHolder?.code) {
-      localStorage.removeItem(`importResult_${policyHolder.code}`);
     }
 
     let formData = new FormData();
@@ -618,7 +558,14 @@ class PolicyHolderInsureesTabPanelClass extends Component {
       if (this.fileInputRef.current) {
         this.fileInputRef.current.value = "";
       }
-      this.onErrorUpload();
+      this.setState({
+        isImporting: false,
+        importProgress: null,
+        currentTaskId: null,
+        snackbarMessage: "Erreur lors de l’envoi du fichier",
+        snackbarSeverity: "error",
+        snackbarOpen: true,
+      });
     }
   };
 
