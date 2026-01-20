@@ -247,6 +247,14 @@
   "exception.createdTime": "Created Time",
   "policyHolder.Exception.Status.EXPIRED": "Expired",
   "policyHolder.Exception.Status.PENDING": "Pending",
+  "policyHolder.policyHolderInsuree.downloadImportResults": "Download Import Results",
+  "policyHolder.policyHolderInsuree.insureeImportProgress": "Insuree Import Progress",
+  "policyHolder.statusProcessing": "Processing",
+  "policyHolder.statusCompleted": "Completed",
+  "policyHolder.statusSuccess": "Success",
+  "policyHolder.statusFailed": "Failed",
+  "policyHolder.statusUploading": "Uploading",
+  "policyHolder.statusPending": "Pending",
   "policyHolder.Exception.Status.APPROVED": "Approved",
   "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejected"
 }
