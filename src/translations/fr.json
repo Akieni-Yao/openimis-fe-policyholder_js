@@ -24,5 +24,9 @@
   "policyHolder.statusSuccess": "Succès",
   "policyHolder.statusFailed": "Échec",
   "policyHolder.statusUploading": "Envoi en cours",
-  "policyHolder.statusPending": "En attente"
+  "policyHolder.statusPending": "En attente",
+  "policyHolder.status": "Statut",
+  "policyHolder.processed": "traité",
+  "policyHolder.success": "succès",
+  "policyHolder.errors": "erreurs"
 }

@@ -255,6 +255,10 @@
   "policyHolder.statusFailed": "Failed",
   "policyHolder.statusUploading": "Uploading",
   "policyHolder.statusPending": "Pending",
+  "policyHolder.status": "Status",
+  "policyHolder.processed": "processed",
+  "policyHolder.success": "success",
+  "policyHolder.errors": "errors",
   "policyHolder.Exception.Status.APPROVED": "Approved",
   "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejected"
 }
