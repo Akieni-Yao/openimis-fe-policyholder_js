@@ -286,7 +286,9 @@ class PolicyHolderInsureesTabPanelClass extends Component {
             snackbarMessage: message,
             snackbarSeverity: isFailed ? "error" : "success",
             snackbarOpen: true,
+            insureeCheck: true,
           });
+          this.onSave();
           setTimeout(() => {
             this.checkForActiveTask();
           }, 100);
