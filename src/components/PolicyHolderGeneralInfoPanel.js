@@ -1,43 +1,31 @@
 import React, { Fragment } from "react";
-import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
 
-import { Grid, Divider, Typography } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Divider, Grid, Typography } from "@material-ui/core";
+import { withStyles, withTheme } from "@material-ui/core/styles";
 
 import {
-  withModulesManager,
   formatMessage,
-  FormPanel,
-  TextInput,
-  ValidatedTextInput,
-  TextAreaInput,
   FormattedMessage,
+  FormPanel,
   PublishedComponent,
-  Contributions,
+  TextAreaInput,
+  TextInput,
+  withModulesManager
 } from "@openimis/fe-core";
+import _ from "lodash";
+import moment from "moment";
 import {
-  policyHolderCodeClear,
-  policyHolderCodeSetValid,
-  policyHolderCodeValidation,
-} from "../actions";
-import {
-  MAX_ACCOUNTANCYACCOUNT_LENGTH,
   MAX_ADDRESS_LENGTH,
   MAX_BANK_CODE_LENGTH,
   MAX_BANK_NUMBER_LENGTH,
-  MAX_CODE_LENGTH,
   MAX_EMAIL_LENGTH,
-  MAX_FAX_LENGTH,
   MAX_MAIN_ACTIVITY_LENGTH,
-  MAX_PAYMENTREFERENCE_LENGTH,
   MAX_PHONE_LENGTH,
   MAX_RIB_LENGTH,
-  MAX_TRADENAME_LENGTH,
+  MAX_TRADENAME_LENGTH
 } from "../constants";
-import _ from "lodash";
-import moment from "moment";
-import BankPicker from "../pickers/BankAutoPicker";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -899,7 +887,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="phone"
-              required
               inputProps={{ maxLength: MAX_PHONE_LENGTH }}
               value={!!edited && !!edited.phone ? edited.phone : ""}
               error={this.regexError("phone", edited.phone)}

@@ -1,50 +1,46 @@
-import React, { Component, Fragment } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
+import { withStyles, withTheme } from "@material-ui/core/styles";
 import _ from "lodash";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import React, { Component, Fragment } from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 import {
-  Form,
-  withModulesManager,
-  withHistory,
-  formatMessage,
-  formatMessageWithValues,
-  journalize,
-  Helmet,
-  FormattedMessage,
-  historyPush,
-  decodeId,
-} from "@openimis/fe-core";
-import {
-  fetchPolicyHolder,
-  clearPolicyHolder,
-  sendEmail,
-  printReport,
-  havingPAymentApprove,
-  fetchBankList,
-} from "../actions";
-import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Button,
-  Typography,
+  Typography
 } from "@material-ui/core";
+import {
+  Form,
+  formatMessage,
+  formatMessageWithValues,
+  FormattedMessage,
+  Helmet,
+  historyPush,
+  journalize,
+  withHistory,
+  withModulesManager
+} from "@openimis/fe-core";
+import {
+  clearPolicyHolder,
+  fetchBankList,
+  fetchPolicyHolder,
+  havingPAymentApprove,
+  printReport,
+  sendEmail,
+} from "../actions";
 
 import {
-  RIGHT_PORTALPOLICYHOLDER_SEARCH,
   RIGHT_POLICYHOLDER_CREATE,
   RIGHT_POLICYHOLDER_UPDATE,
+  RIGHT_PORTALPOLICYHOLDER_SEARCH,
 } from "../constants";
+import CommonSnackbar from "./CommonSnackbar";
 import PolicyHolderGeneralInfoPanel from "./PolicyHolderGeneralInfoPanel";
 import PolicyHolderTabPanel from "./PolicyHolderTabPanel";
-import Alert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
-import CommonSnackbar from "./CommonSnackbar";
 const styles = (theme) => ({
   paper: theme.paper.paper,
   paperHeader: theme.paper.header,
@@ -179,7 +175,6 @@ class PolicyHolderForm extends Component {
           "activityCode",
           "contactName",
           "address",
-          "phone",
           "legalForm",
           "jsonExt.rccm",
           "jsonExt.nbEmployees",
@@ -193,7 +188,6 @@ class PolicyHolderForm extends Component {
           "activityCode",
           "contactName",
           "address",
-          "phone",
           "legalForm",
         ];
 
