@@ -106,5 +106,11 @@
   "policyHolder.status.CANCELLED": "Annulé",
   "policyHolder.status.EXPIRED": "Expiré",
   "policyHolder.status.UNLOCKED": "Déverrouillé",
-  "policyHolder.status.CREATED": "Créé"
+  "policyHolder.status.CREATED": "Créé",
+  "policyHolder.requeststatus.Pending": "En attente",
+  "policyHolder.requeststatus.Approved": "Approuvé",
+  "policyHolder.requeststatus.Rejected": "Rejeté",
+  "policyHolder.requeststatus.Rework": "Envoyé pour correction",
+  "policyHolder.requeststatus.Created": "Créé",
+  "policyHolder.requeststatus.Locked": "Verrouillé"
 }
