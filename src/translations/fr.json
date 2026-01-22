@@ -97,5 +97,14 @@
   "policyHolder.Exception.Status.APPROVED": "Approuvé",
   "policyHolder.Exception.Status.REJECTED": "Rejeté",
   "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejeté",
-  "exception.exceptionStatus.EXPIRED": "Expiré"
+  "exception.exceptionStatus.EXPIRED": "Expiré",
+  "policyHolder.status.APPROVED": "Approuvé",
+  "policyHolder.status.LOCKED": "Verrouillé",
+  "policyHolder.status.PENDING": "En attente",
+  "policyHolder.status.REJECTED": "Rejeté",
+  "policyHolder.status.SUSPENDED": "Suspendu",
+  "policyHolder.status.CANCELLED": "Annulé",
+  "policyHolder.status.EXPIRED": "Expiré",
+  "policyHolder.status.UNLOCKED": "Déverrouillé",
+  "policyHolder.status.CREATED": "Créé"
 }

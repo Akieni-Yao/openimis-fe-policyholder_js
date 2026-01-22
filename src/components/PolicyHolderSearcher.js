@@ -1,31 +1,31 @@
-import React, { Component, Fragment } from "react";
-import { injectIntl } from "react-intl";
+import { IconButton, Tooltip } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import {
-  withModulesManager,
+  coreConfirm,
+  formatDateFromISO,
   formatMessage,
   formatMessageWithValues,
-  formatDateFromISO,
-  coreConfirm,
   journalize,
-  Searcher,
   PublishedComponent,
+  Searcher,
+  withModulesManager,
 } from "@openimis/fe-core";
-import PolicyHolderFilter from "./PolicyHolderFilter";
-import { fetchPolicyHolders, deletePolicyHolder } from "../actions";
-import { bindActionCreators } from "redux";
+import React, { Component, Fragment } from "react";
+import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import { IconButton, Tooltip } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { bindActionCreators } from "redux";
+import { deletePolicyHolder, fetchPolicyHolders } from "../actions";
 import {
-  ZERO,
-  MAX_CLIENTMUTATIONLABEL_LENGTH,
-  RIGHT_POLICYHOLDER_UPDATE,
-  RIGHT_POLICYHOLDER_DELETE,
   DEFAULT_PAGE_SIZE,
-  ROWS_PER_PAGE_OPTIONS,
+  MAX_CLIENTMUTATIONLABEL_LENGTH,
+  RIGHT_POLICYHOLDER_DELETE,
+  RIGHT_POLICYHOLDER_UPDATE,
   RIGHT_PORTALPOLICYHOLDER_SEARCH,
+  ROWS_PER_PAGE_OPTIONS,
+  ZERO,
 } from "../constants";
+import PolicyHolderFilter from "./PolicyHolderFilter";
 
 class PolicyHolderSearcher extends Component {
   constructor(props) {
@@ -93,6 +93,26 @@ class PolicyHolderSearcher extends Component {
       policyHolderPageLink,
       rights,
     } = this.props;
+    const statusKeyByValue = {
+      APPROVED: "status.APPROVED",
+      Approved: "status.APPROVED",
+      LOCKED: "status.LOCKED",
+      Locked: "status.LOCKED",
+      PENDING: "status.PENDING",
+      Pending: "status.PENDING",
+      REJECTED: "status.REJECTED",
+      Rejected: "status.REJECTED",
+      SUSPENDED: "status.SUSPENDED",
+      Suspended: "status.SUSPENDED",
+      CANCELLED: "status.CANCELLED",
+      Cancelled: "status.CANCELLED",
+      EXPIRED: "status.EXPIRED",
+      Expired: "status.EXPIRED",
+      UNLOCKED: "status.UNLOCKED",
+      Unlocked: "status.UNLOCKED",
+      CREATED: "status.CREATED",
+      Created: "status.CREATED",
+    };
     let result = [
       (policyHolder) =>
         !!policyHolder.code && policyHolder.tradeName
@@ -144,10 +164,14 @@ class PolicyHolderSearcher extends Component {
         !!policyHolder.dateValidTo
           ? formatDateFromISO(modulesManager, intl, policyHolder.dateValidTo)
           : "",
-      (policyHolder) =>
-        !!policyHolder.status
-          ? policyHolder.status
-          : "",
+      (policyHolder) => {
+        const status = policyHolder?.status;
+        if (!status) {
+          return "";
+        }
+        const statusKey = statusKeyByValue[status];
+        return statusKey ? formatMessage(intl, "policyHolder", statusKey) : status;
+      },
     ];
     if (
       rights.includes(RIGHT_POLICYHOLDER_UPDATE) ||
