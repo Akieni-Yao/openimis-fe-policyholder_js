@@ -19,10 +19,13 @@
   "policyHolder.requeststatus.Locked": "Verrouillé",
   "policyHolder.policyHolderInsuree.downloadImportResults": "Télécharger les résultats de l'import",
   "policyHolder.policyHolderInsuree.insureeImportProgress": "Progression de l'importation des assurés",
-  "policyHolder.statusProcessing": "Traitement en cours",
-  "policyHolder.statusCompleted": "Terminé",
-  "policyHolder.statusSuccess": "Succès",
-  "policyHolder.statusFailed": "Échec",
-  "policyHolder.statusUploading": "Envoi en cours",
-  "policyHolder.statusPending": "En attente"
+  "policyHolder.policyHolderInsuree.importStatus": "Statut",
+  "policyHolder.policyHolderInsuree.importProcessed": "traité",
+  "policyHolder.policyHolderInsuree.importErrors": "erreurs",
+  "policyHolder.policyHolderInsuree.importStatusProcessing": "Traitement en cours",
+  "policyHolder.policyHolderInsuree.importStatusCompleted": "Terminé",
+  "policyHolder.policyHolderInsuree.importStatusSuccess": "Succès",
+  "policyHolder.policyHolderInsuree.importStatusFailed": "Échec",
+  "policyHolder.policyHolderInsuree.importStatusUploading": "Envoi en cours",
+  "policyHolder.policyHolderInsuree.importStatusPending": "En attente"
 }

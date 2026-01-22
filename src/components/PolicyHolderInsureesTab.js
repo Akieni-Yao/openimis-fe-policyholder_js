@@ -286,7 +286,9 @@ class PolicyHolderInsureesTabPanelClass extends Component {
             snackbarMessage: message,
             snackbarSeverity: isFailed ? "error" : "success",
             snackbarOpen: true,
+            insureeCheck: true,
           });
+          this.onSave();
           setTimeout(() => {
             this.checkForActiveTask();
           }, 100);
@@ -449,12 +451,12 @@ class PolicyHolderInsureesTabPanelClass extends Component {
 
   getStatusTranslationId = (status) => {
     const statusMap = {
-      PROCESSING: "statusProcessing",
-      COMPLETED: "statusCompleted",
-      SUCCESS: "statusSuccess",
-      FAILED: "statusFailed",
-      UPLOADING: "statusUploading",
-      PENDING: "statusPending",
+      PROCESSING: "policyHolderInsuree.importStatusProcessing",
+      COMPLETED: "policyHolderInsuree.importStatusCompleted",
+      SUCCESS: "policyHolderInsuree.importStatusSuccess",
+      FAILED: "policyHolderInsuree.importStatusFailed",
+      UPLOADING: "policyHolderInsuree.importStatusUploading",
+      PENDING: "policyHolderInsuree.importStatusPending",
     };
     return statusMap[status] || null;
   };
@@ -760,7 +762,10 @@ class PolicyHolderInsureesTabPanelClass extends Component {
                           </Box>
                         </Box>
                         <Typography variant="body2">
-                          <FormattedMessage module="policyHolder" id="status" />
+                          <FormattedMessage
+                            module="policyHolder"
+                            id="policyHolderInsuree.importStatus"
+                          />
                           :{" "}
                           {this.getStatusTranslationId(
                             importProgress.status
@@ -781,8 +786,7 @@ class PolicyHolderInsureesTabPanelClass extends Component {
                               {importProgress.total}{" "}
                               <FormattedMessage
                                 module="policyHolder"
-                                id="processed"
-                                defaultMessage="processed"
+                                id="policyHolderInsuree.importProcessed"
                               />
                             </>
                           )}
@@ -792,14 +796,12 @@ class PolicyHolderInsureesTabPanelClass extends Component {
                           <Typography variant="body2">
                             <FormattedMessage
                               module="policyHolder"
-                              id="success"
-                              defaultMessage="Success"
+                              id="policyHolderInsuree.importStatusSuccess"
                             />
                             : {importProgress.success_count || 0} |{" "}
                             <FormattedMessage
                               module="policyHolder"
-                              id="errors"
-                              defaultMessage="Errors"
+                              id="policyHolderInsuree.importErrors"
                             />
                             : {importProgress.error_count || 0}
                           </Typography>
