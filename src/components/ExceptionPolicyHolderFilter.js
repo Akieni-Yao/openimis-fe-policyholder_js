@@ -1,10 +1,10 @@
+import { Grid } from "@material-ui/core";
+import { withStyles, withTheme } from "@material-ui/core/styles";
+import { PublishedComponent, TextInput, formatMessage, withModulesManager } from "@openimis/fe-core";
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import { withModulesManager, TextInput, PublishedComponent, formatMessage } from "@openimis/fe-core";
-import { Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { STARTS_WITH_LOOKUP, DATE_TO_DATETIME_SUFFIX, CONTAINS_LOOKUP } from "../constants";
+import { CONTAINS_LOOKUP, DATE_TO_DATETIME_SUFFIX } from "../constants";
 
 const styles = (theme) => ({
   form: {
@@ -84,7 +84,7 @@ class ExceptionPolicyHolderFilter extends Component {
           <PublishedComponent
             pubRef="policyHolder.ExceptionStatusPicker"
             module="policyHolder"
-            label="Exception Status"
+            label="exception.exceptionStatus"
             nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
             value={this._filterValue("exceptionStatus")}
             onChange={(v) =>

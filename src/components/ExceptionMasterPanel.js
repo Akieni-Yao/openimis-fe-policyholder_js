@@ -1,19 +1,15 @@
-import React, { Fragment } from "react";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { injectIntl } from "react-intl";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import { withStyles, withTheme } from "@material-ui/core/styles";
 import {
-  withHistory,
-  withModulesManager,
-  AmountInput,
-  TextInput,
-  NumberInput,
-  PublishedComponent,
-  FormPanel,
   Contributions,
-  ConstantBasedPicker,
   formatMessage,
+  FormPanel,
+  TextInput,
+  withHistory,
+  withModulesManager
 } from "@openimis/fe-core";
+import React, { Fragment } from "react";
+import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 
 const styles = (theme) => ({
@@ -153,7 +149,15 @@ class ExceptionMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.exceptionStatus"
               readOnly={true}
-              value={!edited ? "" : edited[0]?.status}
+              value={
+                !!edited && !!edited[0]?.status
+                  ? formatMessage(
+                      intl,
+                      "policyHolder",
+                      `exception.exceptionStatus.${edited[0]?.status}`
+                    )
+                  : ""
+              }
 
             // value={!edited ? "" : edited.paymentCode}
             // onChange={p => this.updateAttribute('receiptNo', p)}

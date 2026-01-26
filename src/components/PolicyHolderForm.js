@@ -344,7 +344,6 @@ class PolicyHolderForm extends Component {
         newTab
       );
 
-
     let actions = [];
     if (
       !!this.state.policyHolder &&
@@ -354,8 +353,12 @@ class PolicyHolderForm extends Component {
         {
           button: (
             <Typography component="span" className={classes.spanPadding}>
-              {formatMessage(intl, "policyholder", "policyholder.status")}
-              :{this.state.policyHolder.status}
+              {formatMessage(intl, "policyholder", "policyholder.status")} :
+              {formatMessage(
+                intl,
+                "policyHolder",
+                `exceptionStatus.${this.state.policyHolder.status}`
+              )}
             </Typography>
           ),
         },
@@ -366,7 +369,11 @@ class PolicyHolderForm extends Component {
               color="primary"
               onClick={() => unlockPolicyholder(policyHolderId)}
             >
-              {formatMessage(intl, "policyHolder", "policyHolder.unlockPolicyholder")}
+              {formatMessage(
+                intl,
+                "policyHolder",
+                "policyHolder.unlockPolicyholder"
+              )}
             </Button>
           ),
         }

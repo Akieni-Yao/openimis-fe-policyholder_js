@@ -99,22 +99,24 @@ class UnlockPolicyHolderMasterPanel extends FormPanel {
               module="policyHolder"
               label="exception.exceptionStatus"
               readOnly={true}
-              value={!!edited && !!edited?.status ? edited?.status : ""}
+              value={
+                !!edited &&
+                !!formatMessage(
+                  intl,
+                  "policyHolder",
+                  `exceptionStatus.${edited?.status}`
+                )
+                  ? formatMessage(
+                      intl,
+                      "policyHolder",
+                      `exceptionStatus.${edited?.status}`
+                    )
+                  : ""
+              }
 
               // onChange={p => this.updateAttribute('receiptNo', p)}
             />
           </Grid>
-
-          {/* <Grid container>
-            <Grid item xs={6}>
-              <Contributions
-                {...this.props}
-                edited={edited}
-                updateAttribute={this.updateAttribute}
-                contributionKey={EXCEPTION_DOCUMENTS_KEY}
-              />
-            </Grid>
-          </Grid> */}
         </Grid>
       </Fragment>
     );
