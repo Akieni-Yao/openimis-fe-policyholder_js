@@ -112,7 +112,7 @@
   "policyHolder.requeststatus.Rejected": "Rejeté",
   "policyHolder.requeststatus.Rework": "Envoyé pour correction",
   "policyHolder.requeststatus.Created": "Créé",
-  "policyHolder.requeststatus.Locked": "Verrouillé"
+  "policyHolder.requeststatus.Locked": "Verrouillé",
   "policyHolder.policyHolderInsuree.print.error": "Échec de l'impression du récépissé de l'assuré. Veuillez réessayer.",
   "policyHolder.Exception.Status.EXPIRED": "Expiré",
   "policyHolder.Exception.Status.PENDING": "En attente",
