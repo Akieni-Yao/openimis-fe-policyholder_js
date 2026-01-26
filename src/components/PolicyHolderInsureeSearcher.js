@@ -266,9 +266,10 @@ class PolicyHolderInsureeSearcher extends Component {
       !!policyHolderInsuree ? (
         <IconButton
           disabled={
-            policyHolderInsuree?.insuree?.status == INSUREE_STATUS
+            !this.props.isActionEnabled ||
+            (policyHolderInsuree?.insuree?.status == INSUREE_STATUS
               ? false
-              : true
+              : true)
           }
           onClick={(e) => this.printReport(policyHolderInsuree)}
         >
@@ -290,6 +291,7 @@ class PolicyHolderInsureeSearcher extends Component {
               policyHolderInsuree={policyHolderInsuree}
               onSave={onSave}
               disabled={
+                !this.props.isActionEnabled ||
                 this.state.deleted.includes(policyHolderInsuree.id) ||
                 this.isReplaced(policyHolderInsuree)
               }
@@ -310,6 +312,7 @@ class PolicyHolderInsureeSearcher extends Component {
               policyHolderInsuree={policyHolderInsuree}
               onSave={onSave}
               disabled={
+                !this.props.isActionEnabled ||
                 this.state.deleted.includes(policyHolderInsuree.id) ||
                 this.isReplaced(policyHolderInsuree)
               }
@@ -328,7 +331,10 @@ class PolicyHolderInsureeSearcher extends Component {
             <div>
               <IconButton
                 onClick={() => this.onDelete(policyHolderInsuree)}
-                disabled={this.state.deleted.includes(policyHolderInsuree.id)}
+                disabled={
+                  !this.props.isActionEnabled ||
+                  this.state.deleted.includes(policyHolderInsuree.id)
+                }
               >
                 <DeleteIcon />
               </IconButton>
@@ -481,8 +487,14 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default withModulesManager(
+const ConnectedPolicyHolderInsureeSearcher = withModulesManager(
   injectIntl(
     connect(mapStateToProps, mapDispatchToProps)(PolicyHolderInsureeSearcher)
   )
 );
+
+ConnectedPolicyHolderInsureeSearcher.defaultProps = {
+  isActionEnabled: true,
+};
+
+export default ConnectedPolicyHolderInsureeSearcher;

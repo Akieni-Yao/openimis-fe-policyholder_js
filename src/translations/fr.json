@@ -113,4 +113,21 @@
   "policyHolder.requeststatus.Rework": "Envoyé pour correction",
   "policyHolder.requeststatus.Created": "Créé",
   "policyHolder.requeststatus.Locked": "Verrouillé"
+  "policyHolder.policyHolderInsuree.print.error": "Échec de l'impression du récépissé de l'assuré. Veuillez réessayer.",
+  "policyHolder.Exception.Status.EXPIRED": "Expiré",
+  "policyHolder.Exception.Status.PENDING": "En attente",
+  "policyHolder.Exception.Status.APPROVED": "Approuvé",
+  "policyHolder.policyHolder.Exception.Status.REJECTED": "Rejeté",
+  "policyHolder.requeststatus.Locked": "Verrouillé",
+  "policyHolder.policyHolderInsuree.downloadImportResults": "Télécharger les résultats de l'import",
+  "policyHolder.policyHolderInsuree.insureeImportProgress": "Progression de l'importation des assurés",
+  "policyHolder.policyHolderInsuree.importStatus": "Statut",
+  "policyHolder.policyHolderInsuree.importProcessed": "traité",
+  "policyHolder.policyHolderInsuree.importErrors": "erreurs",
+  "policyHolder.policyHolderInsuree.importStatusProcessing": "Traitement en cours",
+  "policyHolder.policyHolderInsuree.importStatusCompleted": "Terminé",
+  "policyHolder.policyHolderInsuree.importStatusSuccess": "Succès",
+  "policyHolder.policyHolderInsuree.importStatusFailed": "Échec",
+  "policyHolder.policyHolderInsuree.importStatusUploading": "Envoi en cours",
+  "policyHolder.policyHolderInsuree.importStatusPending": "En attente"
 }

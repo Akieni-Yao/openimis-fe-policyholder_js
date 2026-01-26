@@ -11,7 +11,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import {
   Form,
@@ -22,7 +22,7 @@ import {
   historyPush,
   journalize,
   withHistory,
-  withModulesManager,
+  withModulesManager
 } from "@openimis/fe-core";
 import {
   clearPolicyHolder,
@@ -175,7 +175,6 @@ class PolicyHolderForm extends Component {
           "activityCode",
           "contactName",
           "address",
-          "phone",
           "legalForm",
           "jsonExt.rccm",
           "jsonExt.nbEmployees",
@@ -189,7 +188,6 @@ class PolicyHolderForm extends Component {
           "activityCode",
           "contactName",
           "address",
-          "phone",
           "legalForm",
         ];
 
