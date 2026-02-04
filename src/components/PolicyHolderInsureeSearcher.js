@@ -21,6 +21,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import UpdatePolicyHolderInsureeDialog from "../dialogs/UpdatePolicyHolderInsureeDialog";
 import { IconButton, Fab } from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {
   ZERO,
@@ -50,6 +52,8 @@ class PolicyHolderInsureeSearcher extends Component {
       toDelete: null,
       deleted: [],
       queryParams: null,
+      snackbarOpen: false,
+      snackbarMessage: "",
     };
   }
 
@@ -162,18 +166,33 @@ class PolicyHolderInsureeSearcher extends Component {
     }
 
     printWindow.document.close();
-    // printWindow.print();
   };
+
+  handleSnackbarClose = () => {
+    this.setState({ snackbarOpen: false });
+  };
+
   printReport = async (edited) => {
     const data = await this.props.printReportInsuree(
       this.props.modulesManager,
       edited
     );
 
-    const base64Data = data?.payload?.data?.sentNotification?.data;
-    const contentType = "pdf";
-    if (base64Data) {
-      this.displayPrintWindow(base64Data, contentType);
+    const response = data?.payload?.data?.sentNotification;
+
+    if (response?.success) {
+      const base64Data = response.data;
+      const contentType = "pdf";
+      if (base64Data) {
+        this.displayPrintWindow(base64Data, contentType);
+      }
+    } else {
+      this.setState({
+        snackbarOpen: true,
+        snackbarMessage: this.props.intl.formatMessage({
+          id: "policyHolder.policyHolderInsuree.print.error",
+        }),
+      });
     }
   };
   itemFormatters = () => {
@@ -247,9 +266,10 @@ class PolicyHolderInsureeSearcher extends Component {
       !!policyHolderInsuree ? (
         <IconButton
           disabled={
-            policyHolderInsuree?.insuree?.status == INSUREE_STATUS
+            !this.props.isActionEnabled ||
+            (policyHolderInsuree?.insuree?.status == INSUREE_STATUS
               ? false
-              : true
+              : true)
           }
           onClick={(e) => this.printReport(policyHolderInsuree)}
         >
@@ -271,6 +291,7 @@ class PolicyHolderInsureeSearcher extends Component {
               policyHolderInsuree={policyHolderInsuree}
               onSave={onSave}
               disabled={
+                !this.props.isActionEnabled ||
                 this.state.deleted.includes(policyHolderInsuree.id) ||
                 this.isReplaced(policyHolderInsuree)
               }
@@ -291,6 +312,7 @@ class PolicyHolderInsureeSearcher extends Component {
               policyHolderInsuree={policyHolderInsuree}
               onSave={onSave}
               disabled={
+                !this.props.isActionEnabled ||
                 this.state.deleted.includes(policyHolderInsuree.id) ||
                 this.isReplaced(policyHolderInsuree)
               }
@@ -309,7 +331,10 @@ class PolicyHolderInsureeSearcher extends Component {
             <div>
               <IconButton
                 onClick={() => this.onDelete(policyHolderInsuree)}
-                disabled={this.state.deleted.includes(policyHolderInsuree.id)}
+                disabled={
+                  !this.props.isActionEnabled ||
+                  this.state.deleted.includes(policyHolderInsuree.id)
+                }
               >
                 <DeleteIcon />
               </IconButton>
@@ -425,6 +450,15 @@ class PolicyHolderInsureeSearcher extends Component {
           rowDisabled={this.isRowDisabled}
           defaultFilters={this.defaultFilters()}
         />
+        <Snackbar
+          open={this.state.snackbarOpen}
+          autoHideDuration={6000}
+          onClose={this.handleSnackbarClose}
+        >
+          <Alert onClose={this.handleSnackbarClose} severity="error">
+            {this.state.snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Fragment>
     );
   }
@@ -453,8 +487,14 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default withModulesManager(
+const ConnectedPolicyHolderInsureeSearcher = withModulesManager(
   injectIntl(
     connect(mapStateToProps, mapDispatchToProps)(PolicyHolderInsureeSearcher)
   )
 );
+
+ConnectedPolicyHolderInsureeSearcher.defaultProps = {
+  isActionEnabled: true,
+};
+
+export default ConnectedPolicyHolderInsureeSearcher;

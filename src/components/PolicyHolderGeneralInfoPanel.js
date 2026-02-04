@@ -1,43 +1,31 @@
 import React, { Fragment } from "react";
-import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
 
-import { Grid, Divider, Typography } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Divider, Grid, Typography } from "@material-ui/core";
+import { withStyles, withTheme } from "@material-ui/core/styles";
 
 import {
-  withModulesManager,
   formatMessage,
-  FormPanel,
-  TextInput,
-  ValidatedTextInput,
-  TextAreaInput,
   FormattedMessage,
+  FormPanel,
   PublishedComponent,
-  Contributions,
+  TextAreaInput,
+  TextInput,
+  withModulesManager
 } from "@openimis/fe-core";
+import _ from "lodash";
+import moment from "moment";
 import {
-  policyHolderCodeClear,
-  policyHolderCodeSetValid,
-  policyHolderCodeValidation,
-} from "../actions";
-import {
-  MAX_ACCOUNTANCYACCOUNT_LENGTH,
   MAX_ADDRESS_LENGTH,
   MAX_BANK_CODE_LENGTH,
   MAX_BANK_NUMBER_LENGTH,
-  MAX_CODE_LENGTH,
   MAX_EMAIL_LENGTH,
-  MAX_FAX_LENGTH,
   MAX_MAIN_ACTIVITY_LENGTH,
-  MAX_PAYMENTREFERENCE_LENGTH,
   MAX_PHONE_LENGTH,
   MAX_RIB_LENGTH,
-  MAX_TRADENAME_LENGTH,
+  MAX_TRADENAME_LENGTH
 } from "../constants";
-import _ from "lodash";
-import moment from "moment";
-import BankPicker from "../pickers/BankAutoPicker";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -49,7 +37,6 @@ const styles = (theme) => ({
 
 const POLICYHOLDER_RIGHTS_PANEL = "policyholder.rightsGeneralInfo";
 class PolicyHolderGeneralInfoPanel extends FormPanel {
-
   constructor(props) {
     super(props);
 
@@ -520,8 +507,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     return false;
   };
 
-  
-
   shouldValidate = (input) => {
     const { savedPolicyHolderCode } = this.props;
     return input !== savedPolicyHolderCode;
@@ -617,8 +602,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
       policyHolderId,
       approverData,
       bankList,
-      selectedBank
-
+      selectedBank,
     } = this.props;
     // const capitalizeWords = (inputString) => {
     //   let result = "";
@@ -637,20 +621,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
     //   return result;
     // };
 
-    console.log(edited,'edited');
-    
-
-
-
+    console.log(edited, "edited");
 
     const handleBankChange = (option, label) => {
       this.setState({ selectedBank: option });
       console.log("Selected Bank:", option, "Label:", label);
     };
     const fetchBank = (code) => {
-      console.log(bankList,'edited');
-      const filteredBank = bankList?.filter(bank => bank?.code == code);
-      return filteredBank?.length > 0 ? filteredBank[0] : null; 
+      console.log(bankList, "edited");
+      const filteredBank = bankList?.filter((bank) => bank?.code == code);
+      return filteredBank?.length > 0 ? filteredBank[0] : null;
     };
 
     return (
@@ -834,13 +814,13 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               value={
                 !!edited && !!edited.dateValidFrom
                   ? moment(edited.dateValidFrom, "YYYY-MM-DD").format(
-                    "YYYY-MM-DD"
-                  )
+                      "YYYY-MM-DD"
+                    )
                   : moment().format("YYYY-MM-DD")
               }
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
               readOnly={false}
-            // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
+              // readOnly={(!!edited && !!edited.id) || isPolicyHolderPortalUser}
             />
           </Grid>
 
@@ -907,7 +887,6 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
             <TextInput
               module="policyHolder"
               label="phone"
-              required
               inputProps={{ maxLength: MAX_PHONE_LENGTH }}
               value={!!edited && !!edited.phone ? edited.phone : ""}
               error={this.regexError("phone", edited.phone)}
@@ -1017,22 +996,25 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               placeholder="Select a bank"
               multiple={false}
             /> */}
-              <PublishedComponent
+            <PublishedComponent
               pubRef="policyHolder.BankPicker"
               module="policyHolder"
-              label="bank"  
+              label="bank"
               withNull={true}
               required
-              value = {!!edited && !!edited.bank ? edited.bank : fetchBank(edited?.bankAccount?.bank)}
+              value={
+                !!edited && !!edited.bank
+                  ? edited.bank
+                  : fetchBank(edited?.bankAccount?.bank)
+              }
               onChange={(v) => {
-                this.updateAttribute("bank", v)
-             
-                this.updateAttributes({ bankAccount: { bank: v.code } })
+                this.updateAttribute("bank", v);
 
-                console.log(edited,'editedd');
-                
+                this.updateAttributes({ bankAccount: { bank: v.code } });
+
+                console.log(edited, "editedd");
               }}
-              readOnly={ false}
+              readOnly={false}
             />
           </Grid>
           <Grid item xs={2} className={classes.item}>
@@ -1047,7 +1029,7 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               // }
               value={
                 !!edited?.bank?.code
-                  ? edited?.bank?.code// If bank account exists, use bank.code
+                  ? edited?.bank?.code // If bank account exists, use bank.code
                   : edited?.bankAccount?.bank // Otherwise, use selectedBank's code or an empty string
               }
               // error={this.regexError("bankCode", edited?.bankAccount?.bank)}
@@ -1110,6 +1092,25 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
               readOnly={isPolicyHolderPortalUser}
             />
           </Grid>
+          {/* erpPartnerId */}
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="erpPartnerId"
+              value={edited?.erpPartnerId || ""}
+              readOnly={true}
+              type="text"
+            />
+          </Grid>
+          <Grid item xs={2} className={classes.item}>
+            <TextInput
+              module="policyHolder"
+              label="erpPartnerAccessId"
+              value={edited?.erpPartnerAccessId || ""}
+              readOnly={true}
+              type="text"
+            />
+          </Grid>
 
           {/* <Grid item xs={2} className={classes.item}>
             <TextInput
@@ -1145,15 +1146,16 @@ class PolicyHolderGeneralInfoPanel extends FormPanel {
 
 const mapStateToProps = (store, props) => {
   // Log the store and props to the console for debugging
-  console.log('Store:', store);
+  console.log("Store:", store);
 
   return {
     // isCodeValid: store.policyHolder?.validationFields?.policyHolderCode?.isValid,
     // isCodeValidating:
     //   store.policyHolder?.validationFields?.policyHolderCode?.isValidating,
-    bankList:store.policyHolder.BankList,
+    bankList: store.policyHolder.BankList,
     policyHolderId: props?.edited?.id,
-    validationError: store.policyHolder?.validationFields?.policyHolderCode?.validationError,
+    validationError:
+      store.policyHolder?.validationFields?.policyHolderCode?.validationError,
     savedPolicyHolderCode: store.policyHolder?.policyHolder?.code,
     approverData: store.policyHolder.approverData,
   };

@@ -1,29 +1,28 @@
-import React, { Component, Fragment } from "react";
+import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import AddIcon from "@material-ui/icons/Add";
+import { withStyles, withTheme } from "@material-ui/core/styles";
 import {
-  FormattedMessage,
-  formatMessageWithValues,
-  PublishedComponent,
   formatMessage,
+  formatMessageWithValues,
+  FormattedMessage,
+  PublishedComponent,
   TextInput,
 } from "@openimis/fe-core";
-import { Fab, Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import {
-  createPolicyHolderInsuree,
-  createPolicyHolderException,
-  createExceptionReason,
-  updateExceptionReason,
-  fetchExceptionReasons,
-} from "../actions";
+import React, { Component, Fragment } from "react";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import {
+  createExceptionReason,
+  createPolicyHolderException,
+  createPolicyHolderInsuree,
+  fetchExceptionReasons,
+  updateExceptionReason,
+} from "../actions";
 
 import CommonSnackbar from "../components/CommonSnackbar";
 
@@ -152,7 +151,7 @@ class CreateExceptionReasonDialog extends Component {
               <Grid item className={classes.item}>
                 <TextInput
                   module="policyHolder"
-                  label="Raison"
+                  label="exception.reason"
                   required
                   value={edited?.reason}
                   onChange={(v) => this.updateAttribute("reason", v)}
@@ -162,7 +161,7 @@ class CreateExceptionReasonDialog extends Component {
                 <PublishedComponent
                   pubRef="policyHolder.ExceptionScopePicker"
                   module="policyHolder"
-                  label="Scope"
+                  label="exceptionScope"
                   nullLabel={formatMessage(intl, "policyHolder", "emptyLabel")}
                   value={edited?.scope}
                   onChange={(v) => this.updateAttribute("scope", v)}
@@ -171,7 +170,7 @@ class CreateExceptionReasonDialog extends Component {
               <Grid item className={classes.item}>
                 <TextInput
                   module="policyHolder"
-                  label="Période"
+                  label="exception.period"
                   required
                   type="number"
                   value={edited?.period}
