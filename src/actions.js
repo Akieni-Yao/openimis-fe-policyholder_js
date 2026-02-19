@@ -65,7 +65,7 @@ const POLICYHOLDERINSUREE_FULL_PROJECTION = (modulesManager) => [
   "jsonExt",
   "lastPolicy{id}",
   "policyHolder{id}",
-  "insuree" + modulesManager.getProjection("insuree.InsureePicker.projection"),
+  "insuree{id,uuid,chfId,camuNumber,lastName,otherNames,dob,phone,marital,jsonExt,status,gender{code},age,family{id,uuid,headInsuree{lastName otherNames chfId camuNumber}},policyholderinsureeSet{edges{node{policyHolder{tradeName,code}}}}}",
   "contributionPlanBundle" +
     modulesManager.getProjection(
       "contributionPlan.ContributionPlanBundlePicker.projection"
