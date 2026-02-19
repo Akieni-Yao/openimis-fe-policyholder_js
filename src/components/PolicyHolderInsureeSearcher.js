@@ -10,6 +10,8 @@ import {
   coreConfirm,
   decodeId,
   Contributions,
+  withHistory,
+  historyPush,
 } from "@openimis/fe-core";
 import PolicyHolderInsureeFilter from "./PolicyHolderInsureeFilter";
 import {
@@ -20,10 +22,19 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import UpdatePolicyHolderInsureeDialog from "../dialogs/UpdatePolicyHolderInsureeDialog";
-import { IconButton, Fab } from "@material-ui/core";
+import {
+  IconButton,
+  Fab,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Button,
+} from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { FormattedMessage } from "@openimis/fe-core";
 import {
   ZERO,
   MAX_CLIENTMUTATIONLABEL_LENGTH,
@@ -54,6 +65,7 @@ class PolicyHolderInsureeSearcher extends Component {
       queryParams: null,
       snackbarOpen: false,
       snackbarMessage: "",
+      receiptValidationError: null,
     };
   }
 
@@ -80,7 +92,8 @@ class PolicyHolderInsureeSearcher extends Component {
       }));
     } else if (
       prevState.deleted !== this.state.deleted ||
-      prevProps.reset !== this.props.reset || prevProps.loading !== this.props.loading
+      prevProps.reset !== this.props.reset ||
+      prevProps.loading !== this.props.loading
     ) {
       this.refetch();
     }
@@ -172,7 +185,68 @@ class PolicyHolderInsureeSearcher extends Component {
     this.setState({ snackbarOpen: false });
   };
 
+  validateMandatoryFieldsForPreEnrollment = (insuree) => {
+    const missingFields = [];
+    const fm = (key, module = "insuree") =>
+      formatMessage(this.props.intl, module, key);
+
+    if (!insuree?.lastName) missingFields.push(fm("lastName"));
+    if (!insuree?.otherNames) missingFields.push(fm("otherNames"));
+    if (!insuree?.dob) missingFields.push(fm("Insuree.dob"));
+    if (!insuree?.gender || !insuree?.gender.code)
+      missingFields.push(fm("Insuree.gender"));
+    if (!insuree?.marital) missingFields.push(fm("InsureeMaritalStatus"));
+    if (!insuree?.phone) missingFields.push(fm("Insuree.phone"));
+
+    const jsonExt = insuree?.jsonExt
+      ? typeof insuree.jsonExt === "string"
+        ? JSON.parse(insuree.jsonExt)
+        : insuree.jsonExt
+      : {};
+    const location = jsonExt?.insureelocations;
+    if (!location?.parent?.name) missingFields.push(fm("Department"));
+    if (!location?.parent?.parent?.name)
+      missingFields.push(
+        formatMessage(this.props.intl, "location", "Location1Picker.label")
+      );
+    if (!location?.parent?.parent?.parent?.name)
+      missingFields.push(
+        formatMessage(this.props.intl, "location", "Location2Picker.label")
+      );
+    if (!location?.name)
+      missingFields.push(
+        formatMessage(this.props.intl, "location", "Location3Picker.label")
+      );
+
+    return missingFields;
+  };
+
+  cancel = () => {
+    this.setState({
+      receiptValidationError: null,
+    });
+  };
+
   printReport = async (edited) => {
+    const insuree = edited?.insuree;
+
+    if (!insuree?.camuNumber) {
+      const missingFields =
+        this.validateMandatoryFieldsForPreEnrollment(insuree);
+      if (missingFields.length > 0) {
+        const errorMessage = formatMessageWithValues(
+          this.props.intl,
+          "insuree",
+          "receiptValidationError",
+          {
+            fields: missingFields.join(", "),
+          }
+        );
+        this.setState({ receiptValidationError: errorMessage });
+        return;
+      }
+    }
+
     const data = await this.props.printReportInsuree(
       this.props.modulesManager,
       edited
@@ -202,23 +276,23 @@ class PolicyHolderInsureeSearcher extends Component {
         !!policyHolderInsuree.insuree
           ? `${policyHolderInsuree.insuree.lastName}-${policyHolderInsuree.insuree.otherNames}`
           : // policyHolderInsuree.insuree.lastName + "-" + policyHolderInsuree.insuree.otherNames
-          // Comment for perform issue
-          // ? <PolicyHolderInsureePicker
-          //     value={policyHolderInsuree.insuree}
-          //     withLabel={false}
-          //     policyHolderId={decodeId(policyHolder.id)}
-          //     readOnly />
-          "",
+            // Comment for perform issue
+            // ? <PolicyHolderInsureePicker
+            //     value={policyHolderInsuree.insuree}
+            //     withLabel={false}
+            //     policyHolderId={decodeId(policyHolder.id)}
+            //     readOnly />
+            "",
       (policyHolderInsuree) =>
         !!policyHolderInsuree.contributionPlanBundle
           ? `${policyHolderInsuree.contributionPlanBundle?.code} - ${policyHolderInsuree.contributionPlanBundle?.name}`
           : // Comment for perform issue
-          //  <PolicyHolderContributionPlanBundlePicker
-          //     value={policyHolderInsuree.contributionPlanBundle}
-          //     withLabel={false}
-          //     policyHolderId={decodeId(policyHolder.id)}
-          //     readOnly />
-          "",
+            //  <PolicyHolderContributionPlanBundlePicker
+            //     value={policyHolderInsuree.contributionPlanBundle}
+            //     withLabel={false}
+            //     policyHolderId={decodeId(policyHolder.id)}
+            //     readOnly />
+            "",
       (policyHolderInsuree) => {
         /**
          * Mapping @see lastPolicy property into @see policy property is required
@@ -232,14 +306,14 @@ class PolicyHolderInsureeSearcher extends Component {
         return !!policyHolderInsuree.jsonExt
           ? income
           : // Comment for perform issue
-          //  <Contributions
-          //     contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
-          //     intl={this.props.intl}
-          //     className={POLICYHOLDERINSUREE_CLASSNAME}
-          //     entity={{ policy, ...others }}
-          //     value={policyHolderInsuree.jsonExt}
-          //     readOnly />
-          "";
+            //  <Contributions
+            //     contributionKey={POLICYHOLDERINSUREE_CALCULATION_CONTRIBUTION_KEY}
+            //     intl={this.props.intl}
+            //     className={POLICYHOLDERINSUREE_CLASSNAME}
+            //     entity={{ policy, ...others }}
+            //     value={policyHolderInsuree.jsonExt}
+            //     readOnly />
+            "";
       },
       (policyHolderInsuree) =>
         policyHolderInsuree?.employerNumber
@@ -248,18 +322,18 @@ class PolicyHolderInsureeSearcher extends Component {
       (policyHolderInsuree) =>
         !!policyHolderInsuree.dateValidFrom
           ? formatDateFromISO(
-            modulesManager,
-            intl,
-            policyHolderInsuree.dateValidFrom
-          )
+              modulesManager,
+              intl,
+              policyHolderInsuree.dateValidFrom
+            )
           : "",
       (policyHolderInsuree) =>
         !!policyHolderInsuree.dateValidTo
           ? formatDateFromISO(
-            modulesManager,
-            intl,
-            policyHolderInsuree.dateValidTo
-          )
+              modulesManager,
+              intl,
+              policyHolderInsuree.dateValidTo
+            )
           : "",
     ];
     result.push((policyHolderInsuree) =>
@@ -393,6 +467,18 @@ class PolicyHolderInsureeSearcher extends Component {
     this.state.deleted.includes(policyHolderInsuree.id) &&
     !this.isDeletedFilterEnabled(policyHolderInsuree);
 
+  onDoubleClick = (policyHolderInsuree) => {
+    const { modulesManager, history } = this.props;
+    if (policyHolderInsuree?.insuree?.uuid) {
+      historyPush(
+        modulesManager,
+        history,
+        "insuree.route.insuree",
+        [policyHolderInsuree.insuree.uuid]
+      );
+    }
+  };
+
   sorts = () => {
     return [
       ["insuree", true],
@@ -449,6 +535,7 @@ class PolicyHolderInsureeSearcher extends Component {
           rowLocked={this.isRowDisabled}
           rowDisabled={this.isRowDisabled}
           defaultFilters={this.defaultFilters()}
+          onDoubleClick={(policyHolderInsuree) => this.onDoubleClick(policyHolderInsuree)}
         />
         <Snackbar
           open={this.state.snackbarOpen}
@@ -459,6 +546,46 @@ class PolicyHolderInsureeSearcher extends Component {
             {this.state.snackbarMessage}
           </Alert>
         </Snackbar>
+        {this.state.receiptValidationError && (
+          <Dialog
+            open={!!this.state.receiptValidationError}
+            onClose={this.cancel}
+            maxWidth="md"
+          >
+            <DialogContent
+              style={{
+                backgroundColor: "#FFFFFF",
+                width: 600,
+                padding: "20px",
+              }}
+            >
+              <DialogContentText
+                style={{
+                  font: "normal normal medium 20px/22px Roboto",
+                  color: "#d32f2f",
+                  margin: 0,
+                }}
+              >
+                {this.state.receiptValidationError}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions
+              style={{ backgroundColor: "#FFFFFF", padding: "10px 20px" }}
+            >
+              <Button
+                onClick={this.cancel}
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #999999",
+                  color: "#999999",
+                  borderRadius: "4px",
+                }}
+              >
+                <FormattedMessage module="core" id="ok" />
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
       </Fragment>
     );
   }
@@ -487,9 +614,11 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-const ConnectedPolicyHolderInsureeSearcher = withModulesManager(
-  injectIntl(
-    connect(mapStateToProps, mapDispatchToProps)(PolicyHolderInsureeSearcher)
+const ConnectedPolicyHolderInsureeSearcher = withHistory(
+  withModulesManager(
+    injectIntl(
+      connect(mapStateToProps, mapDispatchToProps)(PolicyHolderInsureeSearcher)
+    )
   )
 );
 
